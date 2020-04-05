@@ -1,4 +1,4 @@
-import { createClient, Client } from '../'
+import { createClient, Client } from './createClient'
 
 describe('API Client', () => {
 	let client: Client
