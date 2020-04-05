@@ -4,6 +4,7 @@ on: push
 
 env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   tests:
@@ -17,6 +18,7 @@ jobs:
       - name: Authenticate with NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN" >> ~/.npmrc
       - name: Keep npm cache around to speed up installs
         uses: actions/cache@v1
         with:
