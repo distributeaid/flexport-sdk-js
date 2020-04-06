@@ -12,9 +12,8 @@
     "url": "git+https://github.com/distributeaid/flexport-sdk-js.git"
   },
   "keywords": [
-    "flexport",
-    "api",
-    "node.js"
+    "Distribute Aid",
+    "Flexport"
   ],
   "author": "Distribute Aid | https://distributeaid.org/",
   "license": "AGPL-3.0-only",
