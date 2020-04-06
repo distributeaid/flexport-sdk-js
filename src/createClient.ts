@@ -29,12 +29,14 @@ const handleResponse = async <A extends ApiResponseObject>(
 const get = <A extends ApiResponseObject>({
 	endpoint,
 	headers,
+	fetchImplementation,
 }: {
 	endpoint: string
 	headers: object
+	fetchImplementation?: any
 }) => async (resource: string): Promise<A> =>
 	handleResponse(
-		fetch(`${endpoint}/api/${resource}`, {
+		(fetchImplementation || fetch)(`${endpoint}/${resource}`, {
 			method: 'GET',
 			headers,
 		}),
@@ -43,14 +45,19 @@ const get = <A extends ApiResponseObject>({
 export const createClient = ({
 	apiKey,
 	endpoint,
+	fetchImplementation,
 }: {
 	apiKey: string
 	endpoint?: string
+	fetchImplementation?: any
 }): Client => {
-	const authorizedGet = <A extends ApiResponseObject>(resource: string) => () =>
+	const authorizedGet = <A extends ApiResponseObject>(
+		resource: string,
+	) => async () =>
 		get<A>({
 			headers: headers({ apiKey }),
 			endpoint: endpoint?.replace(/\/$/, '') || 'https://api.flexport.com',
+			fetchImplementation,
 		})(resource)
 	return {
 		listAllShipments: authorizedGet<Page<Shipment>>('shipments'),
