@@ -78,7 +78,8 @@
     "remoteTags": true
   },
   "dependencies": {
-    "fetch-ponyfill": "^6.1.0"
+    "fetch-ponyfill": "^6.1.0",
+    "fp-ts": "^2.5.3"
   },
   "publishConfig": {
     "access": "public"

@@ -1,32 +1,28 @@
 import { ApiResponseObject } from './types/ApiResponseObject'
+import { ApiObject } from './types/ApiObject'
 import { Shipment } from './types/Shipment'
 import * as fetchPonyfill from 'fetch-ponyfill'
 import { Page } from './types/Page'
 import { headers } from './headers'
+import { transformResponse } from './transformer/transform'
+import { ApiError } from './types'
+import { Either } from 'fp-ts/lib/Either'
 
 const { fetch, Response } = fetchPonyfill()
 
 export type Client = {
-	listAllShipments: () => Promise<Page<Shipment>>
+	listAllShipments: () => Promise<Either<ApiError, Page<Shipment>>>
 }
 
-const handleResponse = async <A extends ApiResponseObject>(
+const handleResponse = async <A extends ApiObject>(
 	r: Promise<typeof Response>,
-): Promise<A> => {
+): Promise<Either<ApiError, A>> => {
 	const res = await r
-	if (res.status >= 400) {
-		if (
-			res.headers?.get('content-length') &&
-			res.headers?.get('content-type')?.includes('application/json')
-		) {
-			return res.json()
-		}
-		throw new Error(`${res.status} ${await res.text()}`.trim())
-	}
-	return res.json()
+	const d: ApiResponseObject = await res.json()
+	return transformResponse<A>(d as ApiResponseObject)
 }
 
-const get = <A extends ApiResponseObject>({
+const get = <A extends ApiObject>({
 	endpoint,
 	headers,
 	fetchImplementation,
@@ -34,7 +30,7 @@ const get = <A extends ApiResponseObject>({
 	endpoint: string
 	headers: object
 	fetchImplementation?: any
-}) => async (resource: string): Promise<A> =>
+}) => async (resource: string): Promise<Either<ApiError, A>> =>
 	handleResponse(
 		(fetchImplementation || fetch)(`${endpoint}/${resource}`, {
 			method: 'GET',
@@ -51,9 +47,7 @@ export const createClient = ({
 	endpoint?: string
 	fetchImplementation?: any
 }): Client => {
-	const authorizedGet = <A extends ApiResponseObject>(
-		resource: string,
-	) => async () =>
+	const authorizedGet = <A extends ApiObject>(resource: string) => async () =>
 		get<A>({
 			headers: headers({ apiKey }),
 			endpoint: endpoint?.replace(/\/$/, '') || 'https://api.flexport.com',
