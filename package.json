@@ -1,7 +1,7 @@
 {
-  "name": "@distributeaid/flexport-api",
+  "name": "@distributeaid/flexport-sdk",
   "version": "0.0.0-development",
-  "description": "API client for Flexport's API v2",
+  "description": "JavaScript client SDK for Flexport's API v2",
   "scripts": {
     "test": "jest"
   },
@@ -9,7 +9,7 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/distributeaid/flexport-api.git"
+    "url": "git+https://github.com/distributeaid/flexport-sdk-js.git"
   },
   "keywords": [
     "flexport",
@@ -19,9 +19,9 @@
   "author": "Distribute Aid | https://distributeaid.org/",
   "license": "AGPL-3.0-only",
   "bugs": {
-    "url": "https://github.com/distributeaid/flexport-api/issues"
+    "url": "https://github.com/distributeaid/flexport-sdk-js/issues"
   },
-  "homepage": "https://github.com/distributeaid/flexport-api#readme",
+  "homepage": "https://github.com/distributeaid/flexport-sdk-js#readme",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -e",
