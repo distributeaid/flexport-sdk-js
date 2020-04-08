@@ -1,5 +1,7 @@
 import { ApiResponseObject } from './ApiResponseObject'
 import { ApiObject } from './ApiObject'
+import { ApiError } from './ApiError'
+import { Either, right } from 'fp-ts/lib/Either'
 
 export const SHIPMENT_TYPE = '/shipment'
 
@@ -85,22 +87,23 @@ const dateFields = [
 	'estimated_departure_date',
 	'actual_departure_date',
 	'estimated_arrival_date',
-	'actual_arrival_date:',
+	'actual_arrival_date',
 	'estimated_picked_up_in_full_date',
 	'actual_picked_up_in_full_date',
 	'estimated_delivered_in_full_date',
 	'actual_delivered_in_full_date',
 ]
-export const toShipment = (apiResponseObject: ApiObject): Shipment =>
-	({
+
+export const toShipment = (
+	apiResponseObject: ApiObject,
+): Either<ApiError, Shipment> =>
+	right({
 		...apiResponseObject,
 		...dateFields.reduce(
 			(d, f) => ({
 				...d,
-				[f]: new Date(
-					(apiResponseObject.data as { [key: string]: any })[f] as string,
-				),
+				[f]: apiResponseObject[f] ? new Date(apiResponseObject[f]) : undefined,
 			}),
-			{} as { [key: string]: Date },
+			{} as { [key: string]: Date | undefined },
 		),
 	} as Shipment)

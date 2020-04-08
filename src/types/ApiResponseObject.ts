@@ -19,4 +19,9 @@ export type ApiResponseObject = ApiObject & {
 	 * @see https://apibeta.flexport.com/reference-link/errors
 	 */
 	error: null | ApiError
+	/**
+	 * The resource data requested for a successful response.
+	 * null on error.
+	 */
+	data: any | null
 }

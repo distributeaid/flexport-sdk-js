@@ -1,5 +1,7 @@
-import { ApiResponseObject } from './ApiResponseObject'
 import { ApiObject } from './ApiObject'
+import { Either, right, isLeft, isRight } from 'fp-ts/lib/Either'
+import { ApiError } from './ApiError'
+import { transform } from '../transformer/transform'
 
 export const PAGE_TYPE = '/api/collections/paginated'
 
@@ -8,7 +10,7 @@ export const PAGE_TYPE = '/api/collections/paginated'
  *
  * @see https://apibeta.flexport.com/reference/pagination
  */
-export type Page<A extends ApiResponseObject> = ApiObject & {
+export type Page<A extends ApiObject> = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/api/collections/paginated` for this object.
 	 */
@@ -31,9 +33,16 @@ export type Page<A extends ApiResponseObject> = ApiObject & {
 	data: A[]
 }
 
+export type PageApiObject = ApiObject & { data: ApiObject[] | null }
+
 export const toPage = <A extends ApiObject>(
-	apiResponseObject: ApiObject,
-): Page<A> =>
-	({
-		...apiResponseObject,
-	} as Page<A>)
+	pageResponse: PageApiObject,
+): Either<ApiError, Page<A>> => {
+	const items = pageResponse.data?.map(item => transform<A>(item)) ?? []
+	const itemError = items.find(item => isLeft(item))
+	if (itemError) return itemError as Either<ApiError, never>
+	return right({
+		...(pageResponse as Page<A>),
+		data: items.map(i => isRight(i) && i.right) as A[],
+	})
+}

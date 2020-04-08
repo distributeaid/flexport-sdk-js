@@ -4,7 +4,7 @@ import { Shipment } from './types/Shipment'
 import * as fetchPonyfill from 'fetch-ponyfill'
 import { Page } from './types/Page'
 import { headers } from './headers'
-import { transformResponse } from './transformer/transform'
+import { transformPaginatedResponse } from './transformer/transform'
 import { ApiError } from './types'
 import { Either } from 'fp-ts/lib/Either'
 
@@ -16,26 +16,30 @@ export type Client = {
 
 const handleResponse = async <A extends ApiObject>(
 	r: Promise<typeof Response>,
-): Promise<Either<ApiError, A>> => {
+	responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>,
+) => {
 	const res = await r
 	const d: ApiResponseObject = await res.json()
-	return transformResponse<A>(d as ApiResponseObject)
+	return responseTransformer(d)
 }
 
 const get = <A extends ApiObject>({
 	endpoint,
 	headers,
 	fetchImplementation,
+	responseTransformer,
 }: {
 	endpoint: string
 	headers: object
+	responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>
 	fetchImplementation?: any
-}) => async (resource: string): Promise<Either<ApiError, A>> =>
+}) => async (resource: string) =>
 	handleResponse(
 		(fetchImplementation || fetch)(`${endpoint}/${resource}`, {
 			method: 'GET',
 			headers,
 		}),
+		responseTransformer,
 	)
 
 export const createClient = ({
@@ -47,13 +51,20 @@ export const createClient = ({
 	endpoint?: string
 	fetchImplementation?: any
 }): Client => {
-	const authorizedGet = <A extends ApiObject>(resource: string) => async () =>
-		get<A>({
+	const authorizedGet = <A extends ApiObject>(
+		resource: string,
+		responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>,
+	) => async () =>
+		get({
 			headers: headers({ apiKey }),
 			endpoint: endpoint?.replace(/\/$/, '') || 'https://api.flexport.com',
 			fetchImplementation,
+			responseTransformer,
 		})(resource)
 	return {
-		listAllShipments: authorizedGet<Page<Shipment>>('shipments'),
+		listAllShipments: authorizedGet(
+			'shipments',
+			transformPaginatedResponse<Shipment>(),
+		),
 	}
 }

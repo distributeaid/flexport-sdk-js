@@ -1,10 +1,10 @@
-import { transformResponse } from './transform'
+import { transformPaginatedResponse } from './transform'
 import { PAGE_TYPE, Shipment, Page, SHIPMENT_TYPE } from '../types'
 import { isRight, Right } from 'fp-ts/lib/Either'
 
 describe('transformer', () => {
 	it('should transform an API response', () => {
-		const maybeShipments = transformResponse({
+		const maybeShipments = transformPaginatedResponse<Shipment>()({
 			_object: '/api/response',
 			data: {
 				_object: '/api/collections/paginated',

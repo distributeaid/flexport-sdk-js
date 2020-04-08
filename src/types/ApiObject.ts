@@ -13,9 +13,5 @@ export type ApiObject = {
 	 * @see https://apibeta.flexport.com/reference-link/versioning
 	 */
 	version: 2
-	/**
-	 * The resource data requested for a successful response.
-	 * null on error.
-	 */
-	data: any | null
+	[key: string]: any | null
 }

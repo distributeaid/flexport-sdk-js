@@ -1,6 +1,7 @@
 {
-	"extends": "@bifravst/eslint-config-typescript",
-	"rules": {
-		"@typescript-eslint/indent": "warn"
-	}
+  "extends": "@bifravst/eslint-config-typescript",
+  "rules": {
+    "@typescript-eslint/indent": "warn",
+    "@typescript-eslint/camelcase": "off"
+  }
 }
