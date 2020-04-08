@@ -2,6 +2,18 @@ import { ApiResponseObject } from './ApiResponseObject'
 import { ApiObject } from './ApiObject'
 import { ApiError } from './ApiError'
 import { Either, right } from 'fp-ts/lib/Either'
+import {
+	ResolvableCollection,
+	ResolvableObject,
+	linkCollection,
+	linkObject,
+} from './Link'
+import { Booking } from './Booking'
+import { Page } from './Page'
+import { CustomsEntry } from './CustomsEntry'
+import { Document } from './Document'
+import { CommercialInvoice } from './CommercialInvoice'
+import { ShipmentLeg } from './ShipmentLeg'
 
 export const SHIPMENT_TYPE = '/shipment'
 
@@ -79,6 +91,27 @@ export type Shipment = ApiResponseObject & {
 	 * Actual delivery date to the destination location. For ocean shipments with multiple containers, this is the date of last delivered container. In ISO8601 format with timezone denoted by +/-HH:MM.
 	 */
 	actual_delivered_in_full_date: Date
+
+	/**
+	 * The booking associated with this shipment
+	 */
+	booking?: ResolvableObject<Booking>
+	/**
+	 * the legs of the shipment
+	 */
+	legs?: ResolvableCollection<Page<ShipmentLeg>>
+	/**
+	 * customs entries for this shipment
+	 */
+	customs_entries?: ResolvableCollection<Page<CustomsEntry>>
+	/**
+	 * commercial invoices for this shipment
+	 */
+	commercial_invoices?: ResolvableCollection<Page<CommercialInvoice>>
+	/**
+	 * the documents for this shipment,
+	 */
+	documents?: ResolvableCollection<Page<Document>>
 }
 
 const dateFields = [
@@ -106,4 +139,13 @@ export const toShipment = (
 			}),
 			{} as { [key: string]: Date | undefined },
 		),
+		booking: linkObject<Booking>(apiResponseObject.booking),
+		legs: linkCollection<ShipmentLeg>(apiResponseObject.legs),
+		customs_entries: linkCollection<CustomsEntry>(
+			apiResponseObject.customs_entries,
+		),
+		commercial_invoices: linkCollection<CommercialInvoice>(
+			apiResponseObject.commercial_invoices,
+		),
+		documents: linkCollection<Document>(apiResponseObject.documents),
 	} as Shipment)

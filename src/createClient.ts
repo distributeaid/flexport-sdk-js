@@ -4,7 +4,10 @@ import { Shipment } from './types/Shipment'
 import * as fetchPonyfill from 'fetch-ponyfill'
 import { Page } from './types/Page'
 import { headers } from './headers'
-import { transformPaginatedResponse } from './transformer/transform'
+import {
+	transformPaginatedResponse,
+	transformResponse,
+} from './transformer/transform'
 import { ApiError } from './types'
 import { Either } from 'fp-ts/lib/Either'
 
@@ -12,6 +15,12 @@ const { fetch, Response } = fetchPonyfill()
 
 export type Client = {
 	listAllShipments: () => Promise<Either<ApiError, Page<Shipment>>>
+	resolveCollectionRef: <A extends ApiObject>(
+		link: string,
+	) => Promise<Either<ApiError, Page<A>>>
+	resolveObjectRef: <A extends ApiObject>(
+		link: string,
+	) => Promise<Either<ApiError, A>>
 }
 
 const handleResponse = async <A extends ApiObject>(
@@ -24,18 +33,16 @@ const handleResponse = async <A extends ApiObject>(
 }
 
 const get = <A extends ApiObject>({
-	endpoint,
 	headers,
 	fetchImplementation,
 	responseTransformer,
 }: {
-	endpoint: string
 	headers: object
 	responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>
 	fetchImplementation?: any
-}) => async (resource: string) =>
+}) => async (url: string) =>
 	handleResponse(
-		(fetchImplementation || fetch)(`${endpoint}/${resource}`, {
+		(fetchImplementation || fetch)(url, {
 			method: 'GET',
 			headers,
 		}),
@@ -54,17 +61,23 @@ export const createClient = ({
 	const authorizedGet = <A extends ApiObject>(
 		resource: string,
 		responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>,
-	) => async () =>
-		get({
+	) => async () => {
+		const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
+		const url = resource.startsWith('http') ? resource : `${e}/${resource}`
+		return get({
 			headers: headers({ apiKey }),
-			endpoint: endpoint?.replace(/\/$/, '') || 'https://api.flexport.com',
 			fetchImplementation,
 			responseTransformer,
-		})(resource)
+		})(url)
+	}
 	return {
 		listAllShipments: authorizedGet(
 			'shipments',
 			transformPaginatedResponse<Shipment>(),
 		),
+		resolveCollectionRef: async <A extends ApiObject>(link: string) =>
+			authorizedGet(link, transformPaginatedResponse<A>())(),
+		resolveObjectRef: async <A extends ApiObject>(link: string) =>
+			authorizedGet(link, transformResponse<A>())(),
 	}
 }

@@ -1,6 +1,7 @@
 import { ApiObject } from './ApiObject'
 import { Either, right, isLeft, isRight } from 'fp-ts/lib/Either'
 import { ApiError } from './ApiError'
+import { ResolvableCollection } from './Link'
 import { transform } from '../transformer/transform'
 
 export const PAGE_TYPE = '/api/collections/paginated'
@@ -18,11 +19,11 @@ export type Page<A extends ApiObject> = ApiObject & {
 	/**
 	 * link to the previous page
 	 */
-	prev: string
+	prev?: ResolvableCollection<Page<A>>
 	/**
 	 * link to the next page
 	 */
-	next: string
+	next?: ResolvableCollection<Page<A>>
 	/**
 	 * total number of elements for this query
 	 */
@@ -41,8 +42,9 @@ export const toPage = <A extends ApiObject>(
 	const items = pageResponse.data?.map(item => transform<A>(item)) ?? []
 	const itemError = items.find(item => isLeft(item))
 	if (itemError) return itemError as Either<ApiError, never>
+	const data = items.map(i => isRight(i) && i.right) as A[]
 	return right({
 		...(pageResponse as Page<A>),
-		data: items.map(i => isRight(i) && i.right) as A[],
+		data,
 	})
 }
