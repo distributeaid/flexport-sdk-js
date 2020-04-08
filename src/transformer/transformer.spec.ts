@@ -23,14 +23,16 @@ describe('transformer', () => {
 		expect(isRight(maybeShipments)).toBeTruthy()
 		shipments = (maybeShipments as Right<Page<Shipment>>).right
 		expect(shipments._object).toEqual(PAGE_TYPE)
-		expect(shipments.data).toHaveLength(1)
-		expect(shipments.data[0]._object).toEqual(SHIPMENT_TYPE)
-		expect(shipments.data[0].actual_delivered_in_full_date).toBeInstanceOf(Date)
-		const bookingLink = shipments.data[0].booking
-		const legsLink = shipments.data[0].legs
-		const customsEntriesLink = shipments.data[0].customs_entries
-		const commercialInvoicesLink = shipments.data[0].commercial_invoices
-		const documentsLink = shipments.data[0].documents
+		expect(shipments.items).toHaveLength(1)
+		expect(shipments.items[0]._object).toEqual(SHIPMENT_TYPE)
+		expect(shipments.items[0].actual_delivered_in_full_date).toBeInstanceOf(
+			Date,
+		)
+		const bookingLink = shipments.items[0].booking
+		const legsLink = shipments.items[0].legs
+		const customsEntriesLink = shipments.items[0].customs_entries
+		const commercialInvoicesLink = shipments.items[0].commercial_invoices
+		const documentsLink = shipments.items[0].documents
 		expect(bookingLink).toBeDefined()
 		expect(legsLink).toBeDefined()
 		expect(customsEntriesLink).toBeDefined()

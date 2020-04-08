@@ -31,7 +31,7 @@ export type Page<A extends ApiObject> = ApiObject & {
 	/**
 	 * list of elements in the current page
 	 */
-	data: A[]
+	items: A[]
 }
 
 export type PageApiObject = ApiObject & { data: ApiObject[] | null }
@@ -39,12 +39,14 @@ export type PageApiObject = ApiObject & { data: ApiObject[] | null }
 export const toPage = <A extends ApiObject>(
 	pageResponse: PageApiObject,
 ): Either<ApiError, Page<A>> => {
-	const items = pageResponse.data?.map(item => transform<A>(item)) ?? []
-	const itemError = items.find(item => isLeft(item))
+	const { data, ...rest } = pageResponse
+	const transformedItems =
+		pageResponse.data?.map(item => transform<A>(item)) ?? []
+	const itemError = transformedItems.find(item => isLeft(item))
 	if (itemError) return itemError as Either<ApiError, never>
-	const data = items.map(i => isRight(i) && i.right) as A[]
+	const items = transformedItems.map(i => isRight(i) && i.right) as A[]
 	return right({
-		...(pageResponse as Page<A>),
-		data,
+		...(rest as Page<A>),
+		items,
 	})
 }
