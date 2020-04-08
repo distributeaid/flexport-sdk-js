@@ -3,6 +3,7 @@ import { toCollectionLink, toObjectLink } from './types/Link'
 import { Document } from './types/Document'
 import { emptyPageMock, shipmentMock } from '../testdata/mocks'
 import { Shipment } from './types'
+import { pipe } from 'fp-ts/lib/pipeable'
 
 describe('API Client', () => {
 	it('can be instantiated', () => {
@@ -16,7 +17,7 @@ describe('API Client', () => {
 			fetchImplementation: fetchMock,
 		})
 
-		await client.listAllShipments()
+		await pipe(client.listAllShipments())()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments',
 			{
@@ -42,7 +43,7 @@ describe('API Client', () => {
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
 		})
-		await documentsLink(client)
+		await pipe(documentsLink(client))()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/documents?f.shipment.id=677632',
 			{
@@ -70,7 +71,7 @@ describe('API Client', () => {
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
 		})
-		await shipmentLink(client)
+		await pipe(shipmentLink(client))()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments/677632',
 			{

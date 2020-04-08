@@ -3,26 +3,26 @@ import { Client } from '../createClient'
 import { ApiObject } from './ApiObject'
 import { ApiError } from './ApiError'
 import { Page } from './Page'
-import { Either } from 'fp-ts/lib/Either'
 import { isLinkedCollectionRef } from './ApiCollectionRef'
 import { isLinkedObjectRef, ApiObjectRef } from './ApiObjectRef'
+import { TaskEither } from 'fp-ts/lib/TaskEither'
 
 export type ResolvableCollection<A extends ApiObject> = (
 	apiClient: Client,
-) => Promise<Either<ApiError, Page<A>>>
+) => TaskEither<ApiError, Page<A>>
 
 export const toCollectionLink = <A extends ApiObject>({
 	link,
-}: ApiCollectionRef): ResolvableCollection<A> => async (apiClient: Client) =>
+}: ApiCollectionRef): ResolvableCollection<A> => (apiClient: Client) =>
 	apiClient.resolveCollectionRef<A>(link)
 
 export type ResolvableObject<A extends ApiObject> = (
 	apiClient: Client,
-) => Promise<Either<ApiError, A>>
+) => TaskEither<ApiError, A>
 
 export const toObjectLink = <A extends ApiObject>({
 	link,
-}: ApiObjectRef): ResolvableObject<A> => async (apiClient: Client) =>
+}: ApiObjectRef): ResolvableObject<A> => (apiClient: Client) =>
 	apiClient.resolveObjectRef<A>(link)
 
 export const linkCollection = <A extends ApiObject>(c: any | null) =>
