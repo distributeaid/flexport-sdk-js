@@ -34,6 +34,7 @@ describe('API Client', () => {
 				method: 'GET',
 				headers: {
 					Authorization: 'Bearer some-api-key',
+					Accept: 'application/json',
 					'Content-Type': 'application/json',
 					'Flexport-Version': 2,
 				},
