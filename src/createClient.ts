@@ -23,10 +23,10 @@ const { fetch, Response } = fetchPonyfill()
 export type Client = {
 	getShipment: (id: string | number) => TE.TaskEither<ApiError, Shipment>
 	listAllShipments: () => TE.TaskEither<ApiError, Page<Shipment>>
-	resolveCollectionRef: <A extends ApiObject>(
+	resolveCollectionRef: <A extends ApiObject>() => (
 		link: ResolvableCollection,
 	) => TE.TaskEither<ApiError, Page<A>>
-	resolveObjectRef: <A extends ApiObject>(
+	resolveObjectRef: <A extends ApiObject>() => (
 		link: ResolvableObject,
 	) => TE.TaskEither<ApiError, A>
 }
@@ -87,9 +87,10 @@ export const createClient = ({
 			authorizedGet(`shipments/${id}`, transformResponse<Shipment>()),
 		listAllShipments: () =>
 			authorizedGet('shipments', transformPaginatedResponse<Shipment>()),
-		resolveCollectionRef: <A extends ApiObject>(link: ResolvableCollection) =>
-			authorizedGet(link.link, transformPaginatedResponse<A>()),
-		resolveObjectRef: <A extends ApiObject>(link: ResolvableObject) =>
+		resolveCollectionRef: <A extends ApiObject>() => (
+			link: ResolvableCollection,
+		) => authorizedGet(link.link, transformPaginatedResponse<A>()),
+		resolveObjectRef: <A extends ApiObject>() => (link: ResolvableObject) =>
 			authorizedGet(link.link, transformResponse<A>()),
 	}
 }

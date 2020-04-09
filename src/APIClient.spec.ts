@@ -1,6 +1,6 @@
 import { createClient } from './createClient'
 import { emptyPageMock, shipmentMock } from './testdata/mocks'
-import { linkCollection, linkObject, Type } from './types'
+import { linkCollection, linkObject, Type, ApiError } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
 
@@ -43,9 +43,9 @@ describe('API Client', () => {
 			fetchImplementation: fetchMock,
 		})
 		await pipe(
-			documentsLink,
-			TE.fromOption(() => undefined),
-			TE.map(async link => client.resolveCollectionRef(link)()),
+			TE.right(documentsLink),
+			TE.chain(TE.fromOption(() => (undefined as unknown) as ApiError)),
+			TE.chain(client.resolveCollectionRef()),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/documents?f.shipment.id=677632',
@@ -75,9 +75,9 @@ describe('API Client', () => {
 			fetchImplementation: fetchMock,
 		})
 		await pipe(
-			shipmentLink,
-			TE.fromOption(() => undefined),
-			TE.map(async link => client.resolveObjectRef(link)()),
+			TE.right(shipmentLink),
+			TE.chain(TE.fromOption(() => (undefined as unknown) as ApiError)),
+			TE.chain(client.resolveObjectRef()),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments/677632',
