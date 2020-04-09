@@ -1,7 +1,7 @@
 import { createClient } from './createClient'
 import { toCollectionLink, toObjectLink } from './types/Link'
 import { Document } from './types/Document'
-import { emptyPageMock, shipmentMock } from '../testdata/mocks'
+import { emptyPageMock, shipmentMock } from './testdata/mocks'
 import { Shipment } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
 

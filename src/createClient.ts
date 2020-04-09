@@ -27,7 +27,7 @@ export type Client = {
 
 const fetchJSON = (fn: () => Promise<typeof Response>) =>
 	TE.tryCatch<ApiError, ApiResponseObject>(
-		() => fn().then(async res => res.json()),
+		async () => fn().then(async res => res.json()),
 		reason => createError((reason as Error).message),
 	)
 
@@ -35,11 +35,13 @@ const get = <A extends ApiObject>({
 	headers,
 	fetchImplementation,
 	responseTransformer,
+	url,
 }: {
+	url: string
 	headers: object
 	responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>
-	fetchImplementation?: any
-}) => (url: string) =>
+	fetchImplementation?: typeof fetch
+}) =>
 	pipe(
 		fetchJSON(() =>
 			(fetchImplementation || fetch)(url, {
@@ -59,7 +61,7 @@ export const createClient = ({
 }: {
 	apiKey: string
 	endpoint?: string
-	fetchImplementation?: any
+	fetchImplementation?: typeof fetch
 }): Client => {
 	const authorizedGet = <A extends ApiObject>(
 		resource: string,
@@ -68,10 +70,11 @@ export const createClient = ({
 		const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
 		const url = resource.startsWith('http') ? resource : `${e}/${resource}`
 		return get({
+			url,
 			headers: headers({ apiKey }),
 			fetchImplementation,
 			responseTransformer,
-		})(url)
+		})
 	}
 	return {
 		listAllShipments: () =>
