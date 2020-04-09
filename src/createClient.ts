@@ -8,45 +8,50 @@ import {
 	transformPaginatedResponse,
 	transformResponse,
 } from './transformer/transform'
-import { ApiError } from './types'
+import { ApiError, createError } from './types'
 import { Either } from 'fp-ts/lib/Either'
+import * as TE from 'fp-ts/lib/TaskEither'
+import { pipe } from 'fp-ts/lib/pipeable'
 
 const { fetch, Response } = fetchPonyfill()
 
 export type Client = {
-	listAllShipments: () => Promise<Either<ApiError, Page<Shipment>>>
+	listAllShipments: () => TE.TaskEither<ApiError, Page<Shipment>>
 	resolveCollectionRef: <A extends ApiObject>(
 		link: string,
-	) => Promise<Either<ApiError, Page<A>>>
+	) => TE.TaskEither<ApiError, Page<A>>
 	resolveObjectRef: <A extends ApiObject>(
 		link: string,
-	) => Promise<Either<ApiError, A>>
+	) => TE.TaskEither<ApiError, A>
 }
 
-const handleResponse = async <A extends ApiObject>(
-	r: Promise<typeof Response>,
-	responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>,
-) => {
-	const res = await r
-	const d: ApiResponseObject = await res.json()
-	return responseTransformer(d)
-}
+const fetchJSON = (fn: () => Promise<typeof Response>) =>
+	TE.tryCatch<ApiError, ApiResponseObject>(
+		async () => fn().then(async res => res.json()),
+		reason => createError((reason as Error).message),
+	)
 
 const get = <A extends ApiObject>({
 	headers,
 	fetchImplementation,
 	responseTransformer,
+	url,
 }: {
+	url: string
 	headers: object
 	responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>
-	fetchImplementation?: any
-}) => async (url: string) =>
-	handleResponse(
-		(fetchImplementation || fetch)(url, {
-			method: 'GET',
-			headers,
-		}),
-		responseTransformer,
+	fetchImplementation?: typeof fetch
+}) =>
+	pipe(
+		fetchJSON(() =>
+			(fetchImplementation || fetch)(url, {
+				method: 'GET',
+				headers,
+			}),
+		),
+		TE.map(r => responseTransformer(r)),
+		TE.map(TE.fromEither),
+		TE.flatten,
 	)
 
 export const createClient = ({
@@ -56,28 +61,27 @@ export const createClient = ({
 }: {
 	apiKey: string
 	endpoint?: string
-	fetchImplementation?: any
+	fetchImplementation?: typeof fetch
 }): Client => {
 	const authorizedGet = <A extends ApiObject>(
 		resource: string,
 		responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>,
-	) => async () => {
+	) => {
 		const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
 		const url = resource.startsWith('http') ? resource : `${e}/${resource}`
 		return get({
+			url,
 			headers: headers({ apiKey }),
 			fetchImplementation,
 			responseTransformer,
-		})(url)
+		})
 	}
 	return {
-		listAllShipments: authorizedGet(
-			'shipments',
-			transformPaginatedResponse<Shipment>(),
-		),
-		resolveCollectionRef: async <A extends ApiObject>(link: string) =>
-			authorizedGet(link, transformPaginatedResponse<A>())(),
-		resolveObjectRef: async <A extends ApiObject>(link: string) =>
-			authorizedGet(link, transformResponse<A>())(),
+		listAllShipments: () =>
+			authorizedGet('shipments', transformPaginatedResponse<Shipment>()),
+		resolveCollectionRef: <A extends ApiObject>(link: string) =>
+			authorizedGet(link, transformPaginatedResponse<A>()),
+		resolveObjectRef: <A extends ApiObject>(link: string) =>
+			authorizedGet(link, transformResponse<A>()),
 	}
 }
