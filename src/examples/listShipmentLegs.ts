@@ -7,8 +7,12 @@ import { createError } from '../types'
 
 const client = createClient({ apiKey: process.env.FLEXPORT_API_KEY || '' })
 
+const shipmentId = process.env.SHIPMENT_ID || 677632
+
+console.log(`Fetching legs for shipment ${shipmentId}`)
+
 pipe(
-	client.getShipment(677632),
+	client.getShipment(shipmentId),
 	TE.map(({ legs }) => legs),
 	TE.map(l => {
 		if (isSome(l)) return l.value(client)
@@ -18,6 +22,7 @@ pipe(
 	TE.map(legs => {
 		legs.items.map(leg => {
 			console.log(
+				'-',
 				(
 					leg.actual_departure_date || leg.estimated_departure_date
 				)?.toLocaleDateString(),

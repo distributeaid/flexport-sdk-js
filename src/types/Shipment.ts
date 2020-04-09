@@ -1,6 +1,6 @@
 import { ApiObject } from './ApiObject'
 import { ApiError } from './ApiError'
-import { Either, right } from 'fp-ts/lib/Either'
+import { Either, right, isLeft } from 'fp-ts/lib/Either'
 import {
 	ResolvableCollection,
 	ResolvableObject,
@@ -14,6 +14,7 @@ import { CommercialInvoice } from './CommercialInvoice'
 import { ShipmentLeg } from './ShipmentLeg'
 import { Option } from 'fp-ts/lib/Option'
 import { parseDateFields } from '../transformer/parseDateFields'
+import { Quantity, toQuantity } from './Quantity'
 
 export const SHIPMENT_TYPE = '/shipment'
 
@@ -112,6 +113,18 @@ export type Shipment = ApiObject & {
 	 * the documents for this shipment,
 	 */
 	documents: Option<ResolvableCollection<Document>>
+	/**
+	 * Total weight (kg or lbs) of the shipment, calculated from individual pieces if package dimensions are known.
+	 */
+	calculated_weight?: Quantity
+	/**
+	 * Total volume (cbm or cft) of the shipment, calculated from individual pieces if package dimensions are known.
+	 */
+	calculated_volume?: Quantity
+	/**
+	 * Total number of pieces in the shipment.
+	 */
+	pieces: number
 }
 
 const dateFields = [
@@ -129,8 +142,20 @@ const dateFields = [
 
 export const toShipment = (
 	apiResponseObject: ApiObject,
-): Either<ApiError, Shipment> =>
-	right({
+): Either<ApiError, Shipment> => {
+	let calculated_volume
+	if (apiResponseObject.calculated_volume) {
+		calculated_volume = toQuantity(apiResponseObject.calculated_volume)
+		if (isLeft(calculated_volume)) return calculated_volume
+	}
+
+	let calculated_weight
+	if (apiResponseObject.calculated_weight) {
+		calculated_weight = toQuantity(apiResponseObject.calculated_weight)
+		if (isLeft(calculated_weight)) return calculated_weight
+	}
+
+	return right({
 		...apiResponseObject,
 		...parseDateFields(apiResponseObject, dateFields),
 		booking: linkObject<Booking>(apiResponseObject.booking),
@@ -142,4 +167,7 @@ export const toShipment = (
 			apiResponseObject.commercial_invoices,
 		),
 		documents: linkCollection<Document>(apiResponseObject.documents),
+		calculated_volume: calculated_volume?.right,
+		calculated_weight: calculated_weight?.right,
 	} as Shipment)
+}
