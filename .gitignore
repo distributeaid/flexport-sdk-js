@@ -3,4 +3,4 @@ npm-debug.log
 dist/
 pack/
 cdk.out/
-ecdsa-p256*coverage/
+coverage/
