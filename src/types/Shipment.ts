@@ -1,4 +1,3 @@
-import { ApiResponseObject } from './ApiResponseObject'
 import { ApiObject } from './ApiObject'
 import { ApiError } from './ApiError'
 import { Either, right } from 'fp-ts/lib/Either'
@@ -9,15 +8,16 @@ import {
 	linkObject,
 } from './Link'
 import { Booking } from './Booking'
-import { Page } from './Page'
 import { CustomsEntry } from './CustomsEntry'
 import { Document } from './Document'
 import { CommercialInvoice } from './CommercialInvoice'
 import { ShipmentLeg } from './ShipmentLeg'
+import { Option } from 'fp-ts/lib/Option'
+import { parseDateFields } from '../transformer/parseDateFields'
 
 export const SHIPMENT_TYPE = '/shipment'
 
-export type Shipment = ApiResponseObject & {
+export type Shipment = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment` for this object.
 	 */
@@ -95,23 +95,23 @@ export type Shipment = ApiResponseObject & {
 	/**
 	 * The booking associated with this shipment
 	 */
-	booking?: ResolvableObject<Booking>
+	booking: Option<ResolvableObject<Booking>>
 	/**
 	 * the legs of the shipment
 	 */
-	legs?: ResolvableCollection<Page<ShipmentLeg>>
+	legs: Option<ResolvableCollection<ShipmentLeg>>
 	/**
 	 * customs entries for this shipment
 	 */
-	customs_entries?: ResolvableCollection<Page<CustomsEntry>>
+	customs_entries: Option<ResolvableCollection<CustomsEntry>>
 	/**
 	 * commercial invoices for this shipment
 	 */
-	commercial_invoices?: ResolvableCollection<Page<CommercialInvoice>>
+	commercial_invoices: Option<ResolvableCollection<CommercialInvoice>>
 	/**
 	 * the documents for this shipment,
 	 */
-	documents?: ResolvableCollection<Page<Document>>
+	documents: Option<ResolvableCollection<Document>>
 }
 
 const dateFields = [
@@ -132,13 +132,7 @@ export const toShipment = (
 ): Either<ApiError, Shipment> =>
 	right({
 		...apiResponseObject,
-		...dateFields.reduce(
-			(d, f) => ({
-				...d,
-				[f]: apiResponseObject[f] ? new Date(apiResponseObject[f]) : undefined,
-			}),
-			{} as { [key: string]: Date | undefined },
-		),
+		...parseDateFields(apiResponseObject, dateFields),
 		booking: linkObject<Booking>(apiResponseObject.booking),
 		legs: linkCollection<ShipmentLeg>(apiResponseObject.legs),
 		customs_entries: linkCollection<CustomsEntry>(

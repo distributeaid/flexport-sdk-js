@@ -16,6 +16,7 @@ import { pipe } from 'fp-ts/lib/pipeable'
 const { fetch, Response } = fetchPonyfill()
 
 export type Client = {
+	getShipment: (id: string | number) => TE.TaskEither<ApiError, Shipment>
 	listAllShipments: () => TE.TaskEither<ApiError, Page<Shipment>>
 	resolveCollectionRef: <A extends ApiObject>(
 		link: string,
@@ -77,6 +78,8 @@ export const createClient = ({
 		})
 	}
 	return {
+		getShipment: (id: string | number) =>
+			authorizedGet(`shipments/${id}`, transformResponse<Shipment>()),
 		listAllShipments: () =>
 			authorizedGet('shipments', transformPaginatedResponse<Shipment>()),
 		resolveCollectionRef: <A extends ApiObject>(link: string) =>

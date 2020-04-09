@@ -4,6 +4,7 @@ import { Document } from './types/Document'
 import { emptyPageMock, shipmentMock } from './testdata/mocks'
 import { Shipment } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
+import * as TE from 'fp-ts/lib/TaskEither'
 
 describe('API Client', () => {
 	it('can be instantiated', () => {
@@ -43,7 +44,11 @@ describe('API Client', () => {
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
 		})
-		await pipe(documentsLink(client))()
+		await pipe(
+			documentsLink,
+			TE.fromOption(() => undefined),
+			TE.map(async link => link(client)()),
+		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/documents?f.shipment.id=677632',
 			{
@@ -71,7 +76,11 @@ describe('API Client', () => {
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
 		})
-		await pipe(shipmentLink(client))()
+		await pipe(
+			shipmentLink,
+			TE.fromOption(() => undefined),
+			TE.map(async link => link(client)()),
+		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments/677632',
 			{

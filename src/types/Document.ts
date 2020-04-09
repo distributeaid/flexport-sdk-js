@@ -1,8 +1,8 @@
-import { ApiResponseObject } from './ApiResponseObject'
+import { ApiObject } from './ApiObject'
 
 export const DOCUMENT_TYPE = '/document'
 
-export type Document = ApiResponseObject & {
+export type Document = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/document` for this object.
 	 */

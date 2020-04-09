@@ -10,25 +10,28 @@ import {
 	toPage,
 	Page,
 	PageApiObject,
+	SHIPMENT_LEG_TYPE,
+	toShipmentLeg,
 } from '../types'
 import { Either, left, right } from 'fp-ts/lib/Either'
 
 const transformers = {
 	[SHIPMENT_TYPE]: toShipment,
+	[SHIPMENT_LEG_TYPE]: toShipmentLeg,
 } as {
 	[key: string]: <O extends ApiObject>(
 		apiResponseObject: O,
 	) => Either<ApiError, unknown>
 }
 
-const passTransformer = <O extends ApiObject>(
+export const passThrough = <O extends ApiObject>(
 	apiResponseObject: O,
 ): Either<never, O> => right(apiResponseObject)
 
 const getTransformer = (_object: string) => {
 	if (transformers[_object]) return transformers[_object]
 	console.debug(`Using pass transformer for ${_object}.`)
-	return passTransformer
+	return passThrough
 }
 
 export const transform = <A>(o: ApiObject): Either<ApiError, A> =>

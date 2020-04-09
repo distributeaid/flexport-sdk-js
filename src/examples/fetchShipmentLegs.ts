@@ -1,18 +1,35 @@
-import { createClient } from '../'
+import { createClient } from '..'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
+import { handleError } from './handleError'
+import { isSome } from 'fp-ts/lib/Option'
+import { createError } from '../types'
 
 const client = createClient({ apiKey: process.env.FLEXPORT_API_KEY || '' })
 
-const handleError = (err: Error) => {
-	console.error(err)
-	process.exit(1)
-}
-
-// Fetch all shipments
 pipe(
-	client.listAllShipments(),
-	TE.map(shipments => {
-		console.dir(shipments, { depth: 5 })
+	client.getShipment(677632),
+	TE.map(({ legs }) => legs),
+	TE.map(l => {
+		if (isSome(l)) return l.value(client)
+		return TE.left(createError(`Shipment has no legs.`))
+	}),
+	TE.chain(l => pipe(l)),
+	TE.map(legs => {
+		legs.items.map(leg => {
+			console.log(
+				(
+					leg.actual_departure_date || leg.estimated_departure_date
+				)?.toLocaleDateString(),
+				leg.origin.place.name,
+				`(${leg.origin.place.address.street_address}, ${leg.origin.place.address.zip} ${leg.origin.place.address.city}, ${leg.origin.place.address.country_code})`,
+				'->',
+				(
+					leg.actual_arrival_date || leg.estimated_arrival_date
+				)?.toLocaleDateString(),
+				leg.destination.place.name,
+				`(${leg.destination.place.address.street_address}, ${leg.destination.place.address.zip} ${leg.destination.place.address.city}, ${leg.destination.place.address.country_code})`,
+			)
+		})
 	}),
 )().catch(handleError)

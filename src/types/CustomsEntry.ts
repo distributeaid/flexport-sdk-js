@@ -1,8 +1,8 @@
-import { ApiResponseObject } from './ApiResponseObject'
+import { ApiObject } from './ApiObject'
 
 export const CUSTOMS_ENTRY_TYPE = '/customs_entry'
 
-export type CustomsEntry = ApiResponseObject & {
+export type CustomsEntry = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/customs_entry` for this object.
 	 */
