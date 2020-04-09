@@ -6,13 +6,13 @@ import * as path from 'path'
 
 const pageJSON = JSON.parse(
 	fs
-		.readFileSync(path.join(process.cwd(), 'testdata', 'shipments.json'))
+		.readFileSync(path.join(process.cwd(), 'src', 'testdata', 'shipments.json'))
 		.toString(),
 )
 
 const shipmentJSON = JSON.parse(
 	fs
-		.readFileSync(path.join(process.cwd(), 'testdata', 'shipment.json'))
+		.readFileSync(path.join(process.cwd(), 'src', 'testdata', 'shipment.json'))
 		.toString(),
 )
 

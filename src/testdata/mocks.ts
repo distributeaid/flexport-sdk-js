@@ -23,7 +23,7 @@ export const emptyPageMock = () =>
 
 const shipment = JSON.parse(
 	fs
-		.readFileSync(path.join(process.cwd(), 'testdata', 'shipment.json'))
+		.readFileSync(path.join(process.cwd(), 'src', 'testdata', 'shipment.json'))
 		.toString(),
 )
 export const shipmentMock = () =>
