@@ -2,12 +2,10 @@ import { ApiObject } from './ApiObject'
 import { ApiError, createError } from './ApiError'
 import { right, Either, isLeft, left } from 'fp-ts/lib/Either'
 import { linkObject, ResolvableObject } from './Link'
-import { Shipment } from './Shipment'
 import { ShipmentNode, toShipmentNode } from './ShipmentNode'
 import { isNone } from 'fp-ts/lib/Option'
 import { parseDateFields } from '../transformer/parseDateFields'
-
-export const SHIPMENT_LEG_TYPE = '/shipment_leg'
+import { Type } from './types'
 
 /**
  * @see https://apibeta.flexport.com/reference/shipmentleg
@@ -16,7 +14,7 @@ export type ShipmentLeg = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment_leg` for this object.
 	 */
-	_object: typeof SHIPMENT_LEG_TYPE
+	_object: Type.SHIPMENT_LEG_TYPE
 
 	/**
 	 * Estimated date when shipment arrives at the destination ShipmentNode of the shipment leg.
@@ -51,7 +49,7 @@ export type ShipmentLeg = ApiObject & {
 	/**
 	 * Link to the shipment
 	 */
-	shipment: ResolvableObject<Shipment>
+	shipment: ResolvableObject
 
 	/**
 	 * Name of the shipment leg's transportation carrier.
@@ -73,7 +71,7 @@ export const toShipmentLeg = (
 	const destination = toShipmentNode(apiResponseObject.destination)
 	if (isLeft(origin)) return origin
 	if (isLeft(destination)) return destination
-	const shipment = linkObject<Shipment>(apiResponseObject.shipment)
+	const shipment = linkObject(apiResponseObject.shipment)
 	if (isNone(shipment)) return left(createError(`No shipment link found!`))
 	return right({
 		...apiResponseObject,

@@ -7,22 +7,16 @@ import {
 	linkCollection,
 	linkObject,
 } from './Link'
-import { Booking } from './Booking'
-import { CustomsEntry } from './CustomsEntry'
-import { Document } from './Document'
-import { CommercialInvoice } from './CommercialInvoice'
-import { ShipmentLeg } from './ShipmentLeg'
 import { Option } from 'fp-ts/lib/Option'
 import { parseDateFields } from '../transformer/parseDateFields'
 import { Quantity, toQuantity } from './Quantity'
-
-export const SHIPMENT_TYPE = '/shipment'
+import { Type } from './types'
 
 export type Shipment = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment` for this object.
 	 */
-	_object: typeof SHIPMENT_TYPE
+	_object: Type.SHIPMENT_TYPE
 	/**
 	 * Unique identifier for the object.
 	 */
@@ -96,23 +90,23 @@ export type Shipment = ApiObject & {
 	/**
 	 * The booking associated with this shipment
 	 */
-	booking: Option<ResolvableObject<Booking>>
+	booking: Option<ResolvableObject>
 	/**
 	 * the legs of the shipment
 	 */
-	legs: Option<ResolvableCollection<ShipmentLeg>>
+	legs: Option<ResolvableCollection>
 	/**
 	 * customs entries for this shipment
 	 */
-	customs_entries: Option<ResolvableCollection<CustomsEntry>>
+	customs_entries: Option<ResolvableCollection>
 	/**
 	 * commercial invoices for this shipment
 	 */
-	commercial_invoices: Option<ResolvableCollection<CommercialInvoice>>
+	commercial_invoices: Option<ResolvableCollection>
 	/**
 	 * the documents for this shipment,
 	 */
-	documents: Option<ResolvableCollection<Document>>
+	documents: Option<ResolvableCollection>
 	/**
 	 * Total weight (kg or lbs) of the shipment, calculated from individual pieces if package dimensions are known.
 	 */
@@ -158,15 +152,11 @@ export const toShipment = (
 	return right({
 		...apiResponseObject,
 		...parseDateFields(apiResponseObject, dateFields),
-		booking: linkObject<Booking>(apiResponseObject.booking),
-		legs: linkCollection<ShipmentLeg>(apiResponseObject.legs),
-		customs_entries: linkCollection<CustomsEntry>(
-			apiResponseObject.customs_entries,
-		),
-		commercial_invoices: linkCollection<CommercialInvoice>(
-			apiResponseObject.commercial_invoices,
-		),
-		documents: linkCollection<Document>(apiResponseObject.documents),
+		booking: linkObject(apiResponseObject.booking),
+		legs: linkCollection(apiResponseObject.legs),
+		customs_entries: linkCollection(apiResponseObject.customs_entries),
+		commercial_invoices: linkCollection(apiResponseObject.commercial_invoices),
+		documents: linkCollection(apiResponseObject.documents),
 		calculated_volume: calculated_volume?.right,
 		calculated_weight: calculated_weight?.right,
 	} as Shipment)

@@ -1,13 +1,12 @@
 import { passThrough } from '../transformer/transform'
 import { ApiObject } from './ApiObject'
-
-export const RAILPORT_TYPE = '/ocean/railport'
+import { Type } from './types'
 
 export type Railport = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/ocean/railport` for this object.
 	 */
-	_object: typeof RAILPORT_TYPE
+	_object: Type.RAILPORT_TYPE
 
 	/**
 	 * Port code used by US Customs and Border Protection (US CBP).

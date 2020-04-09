@@ -1,5 +1,5 @@
 import { transformPaginatedResponse, transformResponse } from './transform'
-import { PAGE_TYPE, Shipment, Page, SHIPMENT_TYPE, ShipmentLeg } from '../types'
+import { Shipment, Page, ShipmentLeg, Type } from '../types'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -32,9 +32,9 @@ describe('transformer', () => {
 		)
 		expect(isRight(maybeShipments)).toBeTruthy()
 		shipments = (maybeShipments as Right<Page<Shipment>>).right
-		expect(shipments._object).toEqual(PAGE_TYPE)
+		expect(shipments._object).toEqual(Type.PAGE_TYPE)
 		expect(shipments.items).toHaveLength(1)
-		expect(shipments.items[0]._object).toEqual(SHIPMENT_TYPE)
+		expect(shipments.items[0]._object).toEqual(Type.SHIPMENT_TYPE)
 		expect(shipments.items[0].actual_delivered_in_full_date).toBeInstanceOf(
 			Date,
 		)
@@ -53,7 +53,7 @@ describe('transformer', () => {
 		const maybeShipment = transformResponse<Shipment>()(shipmentJSON)
 		expect(isRight(maybeShipment)).toBeTruthy()
 		const shipment = (maybeShipment as Right<Shipment>).right
-		expect(shipment._object).toEqual(SHIPMENT_TYPE)
+		expect(shipment._object).toEqual(Type.SHIPMENT_TYPE)
 		expect(shipment.actual_delivered_in_full_date).toBeInstanceOf(Date)
 		const bookingLink = shipment.booking
 		const legsLink = shipment.legs

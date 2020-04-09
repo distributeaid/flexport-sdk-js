@@ -1,33 +1,52 @@
+import { none, some } from 'fp-ts/lib/Option'
+import { Type } from './types'
 import { ApiCollectionRef } from './ApiCollectionRef'
-import { Client } from '../createClient'
-import { ApiObject } from './ApiObject'
-import { ApiError } from './ApiError'
-import { Page } from './Page'
-import { isLinkedCollectionRef } from './ApiCollectionRef'
-import { isLinkedObjectRef, ApiObjectRef } from './ApiObjectRef'
-import { TaskEither } from 'fp-ts/lib/TaskEither'
-import { none, Option, some } from 'fp-ts/lib/Option'
+import { ApiObjectRef } from './ApiObjectRef'
 
-export type ResolvableCollection<A extends ApiObject> = (
-	apiClient: Client,
-) => TaskEither<ApiError, Page<A>>
+export type ResolvableCollection = {
+	/**
+	 * The type of each individual element of the list that `link` points to.
+	 */
+	refType: Type
+	/**
+	 * API end point that points to a list of resources
+	 */
+	link: string
+}
 
-export const toCollectionLink = <A extends ApiObject>({
-	link,
-}: ApiCollectionRef): Option<ResolvableCollection<A>> =>
-	some((apiClient: Client) => apiClient.resolveCollectionRef<A>(link))
+export type ResolvableObject = {
+	/**
+	 * The type of the object that the link points to.
+	 */
+	refType: Type
+	/**
+	 * API end point that points to a list of resources
+	 */
+	link: string
+	/**
+	 * The `id` value of the object that the link points to.
+	 */
+	id: string | number
+}
 
-export type ResolvableObject<A extends ApiObject> = (
-	apiClient: Client,
-) => TaskEither<ApiError, A>
+const isLinkedCollectionRef = (o?: { _object: string }) =>
+	o?._object === Type.COLLECTION_REF_TYPE
 
-export const toObjectLink = <A extends ApiObject>({
-	link,
-}: ApiObjectRef): Option<ResolvableObject<A>> =>
-	some((apiClient: Client) => apiClient.resolveObjectRef<A>(link))
+export const linkCollection = (c: ApiCollectionRef | null) =>
+	c !== null && isLinkedCollectionRef(c)
+		? some({
+				link: c.link,
+				refType: c._object as Type,
+		  } as ResolvableCollection)
+		: none
 
-export const linkCollection = <A extends ApiObject>(c: any | null) =>
-	isLinkedCollectionRef(c) ? toCollectionLink<A>(c) : none
+const isLinkedObjectRef = (o?: { _object: string }) =>
+	o?._object === Type.OBJECT_REF_TYPE
 
-export const linkObject = <A extends ApiObject>(c: any | null) =>
-	isLinkedObjectRef(c) ? toObjectLink<A>(c) : none
+export const linkObject = (c: ApiObjectRef | null) =>
+	c !== null && isLinkedObjectRef(c)
+		? some({
+				link: c.link,
+				refType: c._object as Type,
+		  } as ResolvableObject)
+		: none

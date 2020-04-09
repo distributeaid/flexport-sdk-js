@@ -1,7 +1,6 @@
 import { ApiError } from './ApiError'
 import { ApiObject } from './ApiObject'
-
-export const API_RESPONSE_TYPE = '/api/response'
+import { Type } from './types'
 
 /**
  * All responses to authenticated API requests follow the same structure, wrapping resource data within an `/api/response` object of the following form
@@ -12,7 +11,7 @@ export type ApiResponseObject = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/api/response` for this object.
 	 */
-	_object: typeof API_RESPONSE_TYPE
+	_object: Type.API_RESPONSE_TYPE
 	/**
 	 * The error object indicating what went wrong.
 	 *

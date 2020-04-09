@@ -1,10 +1,9 @@
 import { ApiObject } from './ApiObject'
-
-export const BOOKING_TYPE = '/booking'
+import { Type } from './types'
 
 export type Booking = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/booking` for this object.
 	 */
-	_object: typeof BOOKING_TYPE
+	_object: Type.BOOKING_TYPE
 }

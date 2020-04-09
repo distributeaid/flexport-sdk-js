@@ -1,13 +1,12 @@
 import { Address, toAddress } from './Address'
-import { Airport, AIRPORT_TYPE, toAirport } from './Airport'
-import { Seaport, SEAPORT_TYPE, toSeaport } from './Seaport'
-import { Roadport, ROADPORT_TYPE, toRoadport } from './Roadport'
-import { Railport, RAILPORT_TYPE, toRailport } from './Railport'
+import { Airport, toAirport } from './Airport'
+import { Seaport, toSeaport } from './Seaport'
+import { Roadport, toRoadport } from './Roadport'
+import { Railport, toRailport } from './Railport'
 import { Either, right, isLeft, left, Left, Right } from 'fp-ts/lib/Either'
 import { ApiError } from './ApiError'
 import { ApiObject } from './ApiObject'
-
-export const PLACE_TYPE = '/place'
+import { Type } from './types'
 
 type PortDetail = Airport | Seaport | Roadport | Railport
 
@@ -15,7 +14,7 @@ export type Place = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/place` for this object.
 	 */
-	_object: typeof PLACE_TYPE
+	_object: Type.PLACE_TYPE
 
 	/**
 	 * Name for this place.
@@ -42,13 +41,13 @@ export const toPlace = (
 	const details: Either<ApiError, PortDetail>[] = apiResponseObject.details.map(
 		(o: ApiObject) => {
 			switch (o._object) {
-				case AIRPORT_TYPE:
+				case Type.AIRPORT_TYPE:
 					return toAirport(o)
-				case SEAPORT_TYPE:
+				case Type.SEAPORT_TYPE:
 					return toSeaport(o)
-				case ROADPORT_TYPE:
+				case Type.ROADPORT_TYPE:
 					return toRoadport(o)
-				case RAILPORT_TYPE:
+				case Type.RAILPORT_TYPE:
 					return toRailport(o)
 				default:
 					return left(`Unknown Place detail: ${o._object}!`)

@@ -1,10 +1,9 @@
 import { ApiObject } from './ApiObject'
-
-export const CUSTOMS_ENTRY_TYPE = '/customs_entry'
+import { Type } from './types'
 
 export type CustomsEntry = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/customs_entry` for this object.
 	 */
-	_object: typeof CUSTOMS_ENTRY_TYPE
+	_object: Type.CUSTOMS_ENTRY_TYPE
 }

@@ -1,23 +1,20 @@
 import {
-	SHIPMENT_TYPE,
 	toShipment,
 	ApiObject,
 	ApiResponseObject,
-	API_RESPONSE_TYPE,
 	ApiError,
 	createError,
-	PAGE_TYPE,
 	toPage,
 	Page,
 	PageApiObject,
-	SHIPMENT_LEG_TYPE,
 	toShipmentLeg,
+	Type,
 } from '../types'
 import { Either, left, right } from 'fp-ts/lib/Either'
 
 const transformers = {
-	[SHIPMENT_TYPE]: toShipment,
-	[SHIPMENT_LEG_TYPE]: toShipmentLeg,
+	[Type.SHIPMENT_TYPE]: toShipment,
+	[Type.SHIPMENT_LEG_TYPE]: toShipmentLeg,
 } as {
 	[key: string]: <O extends ApiObject>(
 		apiResponseObject: O,
@@ -44,8 +41,8 @@ const transformPage = <A extends ApiObject>(
 export const transformResponse = <A extends ApiObject>() => (
 	response: ApiResponseObject,
 ): Either<ApiError, A> => {
-	if (response._object !== API_RESPONSE_TYPE) {
-		return left(createError(`Must pass an ${API_RESPONSE_TYPE}!`))
+	if (response._object !== Type.API_RESPONSE_TYPE) {
+		return left(createError(`Must pass an ${Type.API_RESPONSE_TYPE}!`))
 	}
 	if (response.error) return left(response.error)
 	try {
@@ -60,12 +57,14 @@ export const transformResponse = <A extends ApiObject>() => (
 export const transformPaginatedResponse = <A extends ApiObject>() => (
 	response: ApiResponseObject,
 ): Either<ApiError, Page<A>> => {
-	if (response._object !== API_RESPONSE_TYPE) {
-		return left(createError(`Must pass an ${API_RESPONSE_TYPE}!`))
+	if (response._object !== Type.API_RESPONSE_TYPE) {
+		return left(createError(`Must pass an ${Type.API_RESPONSE_TYPE}!`))
 	}
-	if (response.data._object !== PAGE_TYPE) {
+	if (response.data._object !== Type.PAGE_TYPE) {
 		return left(
-			createError(`Must pass an ${API_RESPONSE_TYPE} with a ${PAGE_TYPE}!`),
+			createError(
+				`Must pass an ${Type.API_RESPONSE_TYPE} with a ${Type.PAGE_TYPE}!`,
+			),
 		)
 	}
 	try {

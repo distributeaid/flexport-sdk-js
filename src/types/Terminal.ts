@@ -2,14 +2,13 @@ import { Address, toAddress } from './Address'
 import { ApiObject } from './ApiObject'
 import { ApiError } from './ApiError'
 import { Either, isLeft, right } from 'fp-ts/lib/Either'
-
-export const TERMINAL_TYPE = '/shipment_node/terminal'
+import { Type } from './types'
 
 export type Terminal = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment_node/terminal` for this object.
 	 */
-	_object: typeof TERMINAL_TYPE
+	_object: Type.TERMINAL_TYPE
 
 	/**
 	 * Name of the terminal.

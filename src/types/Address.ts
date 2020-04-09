@@ -1,13 +1,12 @@
 import { ApiObject } from './ApiObject'
 import { passThrough } from '../transformer/transform'
-
-export const ADDRESS_TYPE = '/address'
+import { Type } from './types'
 
 export type Address = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/address` for this object.
 	 */
-	_object: typeof ADDRESS_TYPE
+	_object: Type.ADDRESS_TYPE
 
 	/**
 	 * Address line 1 (Street address/PO Box).

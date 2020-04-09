@@ -1,10 +1,9 @@
 import { ApiObject } from './ApiObject'
-
-export const DOCUMENT_TYPE = '/document'
+import { Type } from './types'
 
 export type Document = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/document` for this object.
 	 */
-	_object: typeof DOCUMENT_TYPE
+	_object: Type.DOCUMENT_TYPE
 }

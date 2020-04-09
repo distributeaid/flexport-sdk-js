@@ -1,5 +1,3 @@
-import { ApiCollectionRef } from './ApiCollectionRef'
-
 export type ApiObject = {
 	/**
 	 * String representing the object’s type.
@@ -15,5 +13,5 @@ export type ApiObject = {
 	 * @see https://apibeta.flexport.com/reference-link/versioning
 	 */
 	version: 2
-	[key: string]: any | ApiCollectionRef | null
+	[key: string]: any | null
 }

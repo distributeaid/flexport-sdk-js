@@ -2,15 +2,13 @@ import { passThrough } from '../transformer/transform'
 import { ApiObject } from './ApiObject'
 import { Either, left } from 'fp-ts/lib/Either'
 import { ApiError, createError } from './ApiError'
-
-export const QUANTITY_WEIGHT_TYPE = '/quantity/weight'
-export const QUANTITY_VOLUME_TYPE = '/quantity/volume'
+import { Type } from './types'
 
 export type Weight = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/quantity/weight` for this object.
 	 */
-	_object: typeof QUANTITY_WEIGHT_TYPE
+	_object: Type.QUANTITY_WEIGHT_TYPE
 
 	/**
 	 * Specifies the quantity of units as a float.
@@ -27,7 +25,7 @@ export type Volume = Weight & {
 	/**
 	 * String representing the object’s type. Always `/quantity/weight` for this object.
 	 */
-	_object: typeof QUANTITY_VOLUME_TYPE
+	_object: Type.QUANTITY_VOLUME_TYPE
 
 	/**
 	 * Specifies the unit of measure for this quantity:  either `cbm` (cubic meters) or `cbft` (cubic feet)
@@ -36,9 +34,9 @@ export type Volume = Weight & {
 }
 
 export const toQuantity = (o: ApiObject): Either<ApiError, Quantity> => {
-	if (o._object === QUANTITY_WEIGHT_TYPE)
+	if (o._object === Type.QUANTITY_WEIGHT_TYPE)
 		return passThrough<Weight>(o as Weight)
-	if (o._object === QUANTITY_VOLUME_TYPE)
+	if (o._object === Type.QUANTITY_VOLUME_TYPE)
 		return passThrough<Volume>(o as Volume)
 	return left(createError(`Unknown quantity: ${o._object}!`))
 }

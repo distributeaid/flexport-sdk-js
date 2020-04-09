@@ -4,8 +4,7 @@ import { ApiError } from './ApiError'
 import { ResolvableObject } from './Link'
 import { transform } from '../transformer/transform'
 import { Option } from 'fp-ts/lib/Option'
-
-export const PAGE_TYPE = '/api/collections/paginated'
+import { Type } from './types'
 
 /**
  * All list endpoints return paginated responses. The response object contains elements of the current page, and links to the previous and next pages.
@@ -16,15 +15,15 @@ export type Page<A extends ApiObject> = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/api/collections/paginated` for this object.
 	 */
-	_object: typeof PAGE_TYPE
+	_object: Type.PAGE_TYPE
 	/**
 	 * link to the previous page
 	 */
-	prev: Option<ResolvableObject<Page<A>>>
+	prev: Option<ResolvableObject>
 	/**
 	 * link to the next page
 	 */
-	next: Option<ResolvableObject<Page<A>>>
+	next: Option<ResolvableObject>
 	/**
 	 * total number of elements for this query
 	 */

@@ -1,4 +1,4 @@
-export const OBJECT_REF_TYPE = '/api/refs/object'
+import { Type } from './types'
 
 /**
  * ObjectRefs are expandable
@@ -9,23 +9,20 @@ export type ApiObjectRef = {
 	/**
 	 * String representing the object’s type. Always `/api/refs/object` for this object.
 	 */
-	_object: typeof OBJECT_REF_TYPE
+	_object: Type.OBJECT_REF_TYPE
 
 	/**
-	 *The `_object` value of each individual element of the list that `link` points to.
+	 * The `_object` value of the object that the link points to.
 	 */
 	ref_type: string
 
 	/**
-	 * API end point that points to a list of resources
+	 * API end point that points to a resource.
 	 */
 	link: string
 
 	/**
 	 * The `id` value of the object that the link points to.
 	 */
-	id: number
+	id: string | number
 }
-
-export const isLinkedObjectRef = (o?: { _object: string }) =>
-	o?._object === OBJECT_REF_TYPE

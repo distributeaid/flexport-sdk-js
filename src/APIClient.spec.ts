@@ -1,8 +1,6 @@
 import { createClient } from './createClient'
-import { toCollectionLink, toObjectLink } from './types/Link'
-import { Document } from './types/Document'
 import { emptyPageMock, shipmentMock } from './testdata/mocks'
-import { Shipment } from './types'
+import { linkCollection, linkObject, Type } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
 
@@ -33,8 +31,8 @@ describe('API Client', () => {
 		)
 	})
 	it('resolves collection links', async () => {
-		const documentsLink = toCollectionLink<Document>({
-			_object: '/api/refs/collection',
+		const documentsLink = linkCollection({
+			_object: Type.COLLECTION_REF_TYPE,
 			ref_type: '/document',
 			link: 'https://api.flexport.com/documents?f.shipment.id=677632',
 		})
@@ -47,7 +45,7 @@ describe('API Client', () => {
 		await pipe(
 			documentsLink,
 			TE.fromOption(() => undefined),
-			TE.map(async link => link(client)()),
+			TE.map(async link => client.resolveCollectionRef(link)()),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/documents?f.shipment.id=677632',
@@ -64,8 +62,8 @@ describe('API Client', () => {
 	})
 
 	it('resolves object links', async () => {
-		const shipmentLink = toObjectLink<Shipment>({
-			_object: '/api/refs/object',
+		const shipmentLink = linkObject({
+			_object: Type.OBJECT_REF_TYPE,
 			ref_type: '/shipment',
 			link: 'https://api.flexport.com/shipments/677632',
 			id: 677632,
@@ -79,7 +77,7 @@ describe('API Client', () => {
 		await pipe(
 			shipmentLink,
 			TE.fromOption(() => undefined),
-			TE.map(async link => link(client)()),
+			TE.map(async link => client.resolveObjectRef(link)()),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments/677632',

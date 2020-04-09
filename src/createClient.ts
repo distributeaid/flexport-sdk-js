@@ -8,7 +8,12 @@ import {
 	transformPaginatedResponse,
 	transformResponse,
 } from './transformer/transform'
-import { ApiError, createError } from './types'
+import {
+	ApiError,
+	createError,
+	ResolvableObject,
+	ResolvableCollection,
+} from './types'
 import { Either } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
@@ -19,10 +24,10 @@ export type Client = {
 	getShipment: (id: string | number) => TE.TaskEither<ApiError, Shipment>
 	listAllShipments: () => TE.TaskEither<ApiError, Page<Shipment>>
 	resolveCollectionRef: <A extends ApiObject>(
-		link: string,
+		link: ResolvableCollection,
 	) => TE.TaskEither<ApiError, Page<A>>
 	resolveObjectRef: <A extends ApiObject>(
-		link: string,
+		link: ResolvableObject,
 	) => TE.TaskEither<ApiError, A>
 }
 
@@ -82,9 +87,9 @@ export const createClient = ({
 			authorizedGet(`shipments/${id}`, transformResponse<Shipment>()),
 		listAllShipments: () =>
 			authorizedGet('shipments', transformPaginatedResponse<Shipment>()),
-		resolveCollectionRef: <A extends ApiObject>(link: string) =>
-			authorizedGet(link, transformPaginatedResponse<A>()),
-		resolveObjectRef: <A extends ApiObject>(link: string) =>
-			authorizedGet(link, transformResponse<A>()),
+		resolveCollectionRef: <A extends ApiObject>(link: ResolvableCollection) =>
+			authorizedGet(link.link, transformPaginatedResponse<A>()),
+		resolveObjectRef: <A extends ApiObject>(link: ResolvableObject) =>
+			authorizedGet(link.link, transformResponse<A>()),
 	}
 }

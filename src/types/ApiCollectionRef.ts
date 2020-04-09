@@ -1,4 +1,4 @@
-export const COLLECTION_REF_TYPE = '/api/refs/collection'
+import { Type } from './types'
 
 /**
  * CollectionRefs are expandable
@@ -9,10 +9,10 @@ export type ApiCollectionRef = {
 	/**
 	 * String representing the object’s type. Always `/api/refs/collection` for this object.
 	 */
-	_object: typeof COLLECTION_REF_TYPE
+	_object: Type.COLLECTION_REF_TYPE
 
 	/**
-	 *The `_object` value of each individual element of the list that `link` points to.
+	 * The `_object` value of each individual element of the list that `link` points to.
 	 */
 	ref_type: string
 
@@ -21,6 +21,3 @@ export type ApiCollectionRef = {
 	 */
 	link: string
 }
-
-export const isLinkedCollectionRef = (o?: { _object: string }) =>
-	o?._object === COLLECTION_REF_TYPE
