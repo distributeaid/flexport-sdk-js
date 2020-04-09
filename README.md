@@ -6,3 +6,47 @@
 
 JavaScript client SDK client for [Flexport](https://flexport.com/)'s
 [API v2](https://apibeta.flexport.com/)
+
+## Installation
+
+    npm i --save @distributeaid/flexport-sdk
+
+## Usage
+
+see [`./src/examples`](./src/examples) for working examples.
+
+### Create a client
+
+```typescript
+import { createClient } from "@distributeaid/flexport-sdk";
+
+const client = createClient({ apiKey: "your api key" });
+```
+
+### Query a resource
+
+```typescript
+import * as TE from "fp-ts/lib/TaskEither";
+import { pipe } from "fp-ts/lib/pipeable";
+
+pipe(
+  client.listAllShipments(),
+  TE.map(shipments => {
+    console.dir(shipments, { depth: 9 });
+  })
+)();
+```
+
+### Follow links
+
+```typescript
+pipe(
+  client.getShipment(shipmentId),
+  TE.map(({ legs }) => legs), // Extract legs link, Option<ResolvableCollection>
+  TE.chain(TE.fromOption(() => createError("Shipment has no legs!"))),
+  TE.chain(client.resolveCollectionRef<ShipmentLeg>()), // Resolve the link to the collection
+  TE.map(legs => {
+    console.dir(leg, { depth: 9 });
+  })
+)();
+```
