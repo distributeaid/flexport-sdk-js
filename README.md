@@ -50,3 +50,7 @@ pipe(
   })
 )();
 ```
+
+## Architecture decision records (ADRs)
+
+see [./adr](./adr).
