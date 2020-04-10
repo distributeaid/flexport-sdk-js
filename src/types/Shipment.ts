@@ -38,54 +38,54 @@ export type Shipment = ApiObject & {
 		| 'final_destination'
 
 	/**
-	 * Date when the shipment object was last updated. In ISO8601 UTC format with timezone denoted by Z.
+	 * Date when the shipment object was last updated.
 	 */
 	updated_at: Date
 
 	/**
-	 * Date when the shipment was archived, if applicable. In ISO8601 UTC format with timezone denoted by Z.
+	 * Date when the shipment was archived, if applicable.
 	 */
-	archived_at: Date
+	archived_at?: Date
 
 	/**
-	 * Estimated departure date from the first port of the main voyage. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Estimated departure date from the first port of the main voyage.
 	 */
-	estimated_departure_date: Date
+	estimated_departure_date?: Date
 
 	/**
-	 * Actual departure date from the first port of the main voyage. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Actual departure date from the first port of the main voyage.
 	 */
-	actual_departure_date: Date
+	actual_departure_date?: Date
 
 	/**
-	 * Estimated arrival date to the last port of the main voyage. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Estimated arrival date to the last port of the main voyage.
 	 */
-	estimated_arrival_date: Date
+	estimated_arrival_date?: Date
 
 	/**
-	 * Actual arrival date to the last port of the main voyage. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Actual arrival date to the last port of the main voyage.
 	 */
-	actual_arrival_date: Date
+	actual_arrival_date?: Date
 
 	/**
-	 * Estimated pickup date from the origin location. For ocean shipments with multiple containers, this is the date of last picked up container. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Estimated pickup date from the origin location. For ocean shipments with multiple containers, this is the date of last picked up container.
 	 */
-	estimated_picked_up_in_full_date: Date
+	estimated_picked_up_in_full_date?: Date
 
 	/**
-	 * Actual pickup date from the origin location. For ocean shipments with multiple containers, this is the date of last picked up container. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Actual pickup date from the origin location. For ocean shipments with multiple containers, this is the date of last picked up container.
 	 */
-	actual_picked_up_in_full_date: Date
+	actual_picked_up_in_full_date?: Date
 
 	/**
-	 * Estimated delivery date to the destination location. For ocean shipments with multiple containers, this is the date of last delivered container. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Estimated delivery date to the destination location. For ocean shipments with multiple containers, this is the date of last delivered container.
 	 */
-	estimated_delivered_in_full_date: Date
+	estimated_delivered_in_full_date?: Date
 
 	/**
-	 * Actual delivery date to the destination location. For ocean shipments with multiple containers, this is the date of last delivered container. In ISO8601 format with timezone denoted by +/-HH:MM.
+	 * Actual delivery date to the destination location. For ocean shipments with multiple containers, this is the date of last delivered container.
 	 */
-	actual_delivered_in_full_date: Date
+	actual_delivered_in_full_date?: Date
 
 	/**
 	 * The booking associated with this shipment
