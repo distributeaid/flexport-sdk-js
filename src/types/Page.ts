@@ -1,7 +1,7 @@
 import { ApiObject } from './ApiObject'
 import { Either, right, isLeft, isRight } from 'fp-ts/lib/Either'
 import { ApiError } from './ApiError'
-import { ResolvableObject } from './Link'
+import { linkCollection, ResolvableCollection } from './Link'
 import { transform } from '../transformer/transform'
 import { Option } from 'fp-ts/lib/Option'
 import { Type } from './types'
@@ -19,11 +19,11 @@ export type Page<A extends ApiObject> = ApiObject & {
 	/**
 	 * link to the previous page
 	 */
-	prev: Option<ResolvableObject>
+	prev: Option<ResolvableCollection>
 	/**
 	 * link to the next page
 	 */
-	next: Option<ResolvableObject>
+	next: Option<ResolvableCollection>
 	/**
 	 * total number of elements for this query
 	 */
@@ -38,6 +38,7 @@ export type PageApiObject = ApiObject & { data: ApiObject[] | null }
 
 export const toPage = <A extends ApiObject>(
 	pageResponse: PageApiObject,
+	itemType: Type,
 ): Either<ApiError, Page<A>> => {
 	const { data, ...rest } = pageResponse
 	const transformedItems = data?.map(item => transform<A>(item)) ?? []
@@ -46,6 +47,24 @@ export const toPage = <A extends ApiObject>(
 	const items = transformedItems.map(i => isRight(i) && i.right) as A[]
 	return right({
 		...(rest as Page<A>),
+		next: linkCollection(
+			pageResponse.next
+				? {
+						_object: Type.COLLECTION_REF_TYPE,
+						link: pageResponse.next,
+						ref_type: itemType as string,
+				  }
+				: null,
+		),
+		prev: linkCollection(
+			pageResponse.prev
+				? {
+						_object: Type.COLLECTION_REF_TYPE,
+						link: pageResponse.prev,
+						ref_type: itemType as string,
+				  }
+				: null,
+		),
 		items,
 	})
 }

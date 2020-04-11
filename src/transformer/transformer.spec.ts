@@ -1,8 +1,15 @@
 import { transformPaginatedResponse, transformResponse } from './transform'
-import { Shipment, Page, ShipmentLeg, Type } from '../types'
+import {
+	Shipment,
+	Page,
+	ShipmentLeg,
+	Type,
+	ResolvableCollection,
+} from '../types'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as fs from 'fs'
 import * as path from 'path'
+import { isSome, Some } from 'fp-ts/lib/Option'
 
 const shipmentsPageJSON = JSON.parse(
 	fs
@@ -27,9 +34,9 @@ const shipmentJSON = JSON.parse(
 describe('transformer', () => {
 	let shipments: Page<Shipment>
 	it('should transform an API page response', () => {
-		const maybeShipments = transformPaginatedResponse<Shipment>()(
-			shipmentsPageJSON,
-		)
+		const maybeShipments = transformPaginatedResponse<Shipment>(
+			Type.SHIPMENT_TYPE,
+		)(shipmentsPageJSON)
 		expect(isRight(maybeShipments)).toBeTruthy()
 		shipments = (maybeShipments as Right<Page<Shipment>>).right
 		expect(shipments._object).toEqual(Type.PAGE_TYPE)
@@ -67,9 +74,9 @@ describe('transformer', () => {
 		expect(documentsLink).toBeDefined()
 	})
 	it('should transform a shipment legs API page response', () => {
-		const maybeShipmentLegs = transformPaginatedResponse<ShipmentLeg>()(
-			shipmentLegsPageJSON,
-		)
+		const maybeShipmentLegs = transformPaginatedResponse<ShipmentLeg>(
+			Type.SHIPMENT_LEG_TYPE,
+		)(shipmentLegsPageJSON)
 		expect(isRight(maybeShipmentLegs)).toBeTruthy()
 		const shipmentLegs = (maybeShipmentLegs as Right<Page<ShipmentLeg>>).right
 		expect(shipmentLegs.items).toHaveLength(1)
@@ -84,5 +91,18 @@ describe('transformer', () => {
 		expect(leg.origin.tags).toContain('port_of_loading')
 		expect(leg.transportation_mode).toEqual('ocean')
 		expect(leg.carrier_name).toEqual('Liberty Carrier')
+	})
+	it('should parse pagination links', () => {
+		const { next } = (transformPaginatedResponse<Shipment>(Type.SHIPMENT_TYPE)(
+			shipmentsPageJSON,
+		) as Right<Page<Shipment>>).right
+		expect(next).toBeDefined()
+		expect(isSome(next)).toBeTruthy()
+		expect((next as Some<ResolvableCollection>).value.link).toEqual(
+			'https://api.flexport.com/shipments?page=2',
+		)
+		expect((next as Some<ResolvableCollection>).value.refType).toEqual(
+			Type.SHIPMENT_TYPE,
+		)
 	})
 })

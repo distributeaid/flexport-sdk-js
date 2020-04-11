@@ -36,7 +36,7 @@ export const linkCollection = (c: ApiCollectionRef | null) =>
 	c !== null && isLinkedCollectionRef(c)
 		? some({
 				link: c.link,
-				refType: c._object as Type,
+				refType: c.ref_type as Type,
 		  } as ResolvableCollection)
 		: none
 
@@ -47,6 +47,6 @@ export const linkObject = (c: ApiObjectRef | null) =>
 	c !== null && isLinkedObjectRef(c)
 		? some({
 				link: c.link,
-				refType: c._object as Type,
+				refType: c.ref_type as Type,
 		  } as ResolvableObject)
 		: none

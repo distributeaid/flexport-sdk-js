@@ -13,6 +13,7 @@ import {
 	createError,
 	ResolvableObject,
 	ResolvableCollection,
+	Type,
 } from './types'
 import { Either } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
@@ -86,10 +87,13 @@ export const createClient = ({
 		getShipment: (id: string | number) =>
 			authorizedGet(`shipments/${id}`, transformResponse<Shipment>()),
 		listAllShipments: () =>
-			authorizedGet('shipments', transformPaginatedResponse<Shipment>()),
+			authorizedGet(
+				'shipments',
+				transformPaginatedResponse<Shipment>(Type.SHIPMENT_TYPE),
+			),
 		resolveCollectionRef: <A extends ApiObject>() => (
 			link: ResolvableCollection,
-		) => authorizedGet(link.link, transformPaginatedResponse<A>()),
+		) => authorizedGet(link.link, transformPaginatedResponse<A>(link.refType)),
 		resolveObjectRef: <A extends ApiObject>() => (link: ResolvableObject) =>
 			authorizedGet(link.link, transformResponse<A>()),
 	}

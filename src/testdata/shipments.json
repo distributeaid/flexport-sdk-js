@@ -5,7 +5,7 @@
   "data": {
     "_object": "/api/collections/paginated",
     "prev": null,
-    "next": null,
+    "next": "https://api.flexport.com/shipments?page=2",
     "total_count": 1,
     "data": [
       {
