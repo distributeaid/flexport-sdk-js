@@ -20,4 +20,6 @@ export enum Type {
 	ShipmentLeg = '/shipment_leg',
 	ShipmentNode = '/shipment_node',
 	Terminal = '/shipment_node/terminal',
+	Event = '/event',
+	ShipmentEvent = '/shipment_event_data',
 }
