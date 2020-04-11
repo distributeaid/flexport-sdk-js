@@ -16,7 +16,7 @@ export type Shipment = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment` for this object.
 	 */
-	_object: Type.SHIPMENT_TYPE
+	_object: Type.Shipment
 	/**
 	 * Unique identifier for the object.
 	 */

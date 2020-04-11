@@ -32,7 +32,7 @@ describe('API Client', () => {
 	})
 	it('resolves collection links', async () => {
 		const documentsLink = linkCollection({
-			_object: Type.COLLECTION_REF_TYPE,
+			_object: Type.CollectionRef,
 			ref_type: '/document',
 			link: 'https://api.flexport.com/documents?f.shipment.id=677632',
 		})
@@ -63,7 +63,7 @@ describe('API Client', () => {
 
 	it('resolves object links', async () => {
 		const shipmentLink = linkObject({
-			_object: Type.OBJECT_REF_TYPE,
+			_object: Type.ObjectRef,
 			ref_type: '/shipment',
 			link: 'https://api.flexport.com/shipments/677632',
 			id: 677632,

@@ -89,7 +89,7 @@ export const createClient = ({
 		listAllShipments: () =>
 			authorizedGet(
 				'shipments',
-				transformPaginatedResponse<Shipment>(Type.SHIPMENT_TYPE),
+				transformPaginatedResponse<Shipment>(Type.Shipment),
 			),
 		resolveCollectionRef: <A extends ApiObject>() => (
 			link: ResolvableCollection,

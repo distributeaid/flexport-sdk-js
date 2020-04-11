@@ -11,7 +11,7 @@ export type ApiResponseObject = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/api/response` for this object.
 	 */
-	_object: Type.API_RESPONSE_TYPE
+	_object: Type.ApiResponse
 	/**
 	 * The error object indicating what went wrong.
 	 *

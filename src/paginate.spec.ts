@@ -56,7 +56,7 @@ describe('paginate', () => {
 		expect(isRight(shipments)).toBeTruthy()
 		expect((shipments as Right<Shipment[]>).right).toHaveLength(1)
 		expect((shipments as Right<Shipment[]>).right[0]._object).toEqual(
-			Type.SHIPMENT_TYPE,
+			Type.Shipment,
 		)
 	})
 })

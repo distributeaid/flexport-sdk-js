@@ -6,7 +6,7 @@ export type Address = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/address` for this object.
 	 */
-	_object: Type.ADDRESS_TYPE
+	_object: Type.Address
 
 	/**
 	 * Address line 1 (Street address/PO Box).

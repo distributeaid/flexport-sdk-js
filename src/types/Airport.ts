@@ -6,7 +6,7 @@ export type Airport = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/air/port` for this object.
 	 */
-	_object: Type.AIRPORT_TYPE
+	_object: Type.Airport
 
 	/**
 	 * Port code used by US Customs and Border Protection (US CBP).

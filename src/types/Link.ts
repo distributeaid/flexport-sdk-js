@@ -30,7 +30,7 @@ export type ResolvableObject = {
 }
 
 const isLinkedCollectionRef = (o?: { _object: string }) =>
-	o?._object === Type.COLLECTION_REF_TYPE
+	o?._object === Type.CollectionRef
 
 export const linkCollection = (c: ApiCollectionRef | null) =>
 	c !== null && isLinkedCollectionRef(c)
@@ -41,7 +41,7 @@ export const linkCollection = (c: ApiCollectionRef | null) =>
 		: none
 
 const isLinkedObjectRef = (o?: { _object: string }) =>
-	o?._object === Type.OBJECT_REF_TYPE
+	o?._object === Type.ObjectRef
 
 export const linkObject = (c: ApiObjectRef | null) =>
 	c !== null && isLinkedObjectRef(c)

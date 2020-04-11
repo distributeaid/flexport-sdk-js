@@ -8,7 +8,7 @@ export type Terminal = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment_node/terminal` for this object.
 	 */
-	_object: Type.TERMINAL_TYPE
+	_object: Type.Terminal
 
 	/**
 	 * Name of the terminal.

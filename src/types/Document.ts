@@ -5,5 +5,5 @@ export type Document = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/document` for this object.
 	 */
-	_object: Type.DOCUMENT_TYPE
+	_object: Type.Document
 }

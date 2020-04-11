@@ -34,14 +34,14 @@ const shipmentJSON = JSON.parse(
 describe('transformer', () => {
 	let shipments: Page<Shipment>
 	it('should transform an API page response', () => {
-		const maybeShipments = transformPaginatedResponse<Shipment>(
-			Type.SHIPMENT_TYPE,
-		)(shipmentsPageJSON)
+		const maybeShipments = transformPaginatedResponse<Shipment>(Type.Shipment)(
+			shipmentsPageJSON,
+		)
 		expect(isRight(maybeShipments)).toBeTruthy()
 		shipments = (maybeShipments as Right<Page<Shipment>>).right
-		expect(shipments._object).toEqual(Type.PAGE_TYPE)
+		expect(shipments._object).toEqual(Type.Page)
 		expect(shipments.items).toHaveLength(1)
-		expect(shipments.items[0]._object).toEqual(Type.SHIPMENT_TYPE)
+		expect(shipments.items[0]._object).toEqual(Type.Shipment)
 		expect(shipments.items[0].actual_delivered_in_full_date).toBeInstanceOf(
 			Date,
 		)
@@ -60,7 +60,7 @@ describe('transformer', () => {
 		const maybeShipment = transformResponse<Shipment>()(shipmentJSON)
 		expect(isRight(maybeShipment)).toBeTruthy()
 		const shipment = (maybeShipment as Right<Shipment>).right
-		expect(shipment._object).toEqual(Type.SHIPMENT_TYPE)
+		expect(shipment._object).toEqual(Type.Shipment)
 		expect(shipment.actual_delivered_in_full_date).toBeInstanceOf(Date)
 		const bookingLink = shipment.booking
 		const legsLink = shipment.legs
@@ -75,7 +75,7 @@ describe('transformer', () => {
 	})
 	it('should transform a shipment legs API page response', () => {
 		const maybeShipmentLegs = transformPaginatedResponse<ShipmentLeg>(
-			Type.SHIPMENT_LEG_TYPE,
+			Type.ShipmentLeg,
 		)(shipmentLegsPageJSON)
 		expect(isRight(maybeShipmentLegs)).toBeTruthy()
 		const shipmentLegs = (maybeShipmentLegs as Right<Page<ShipmentLeg>>).right
@@ -93,7 +93,7 @@ describe('transformer', () => {
 		expect(leg.carrier_name).toEqual('Liberty Carrier')
 	})
 	it('should parse pagination links', () => {
-		const { next } = (transformPaginatedResponse<Shipment>(Type.SHIPMENT_TYPE)(
+		const { next } = (transformPaginatedResponse<Shipment>(Type.Shipment)(
 			shipmentsPageJSON,
 		) as Right<Page<Shipment>>).right
 		expect(next).toBeDefined()
@@ -102,7 +102,7 @@ describe('transformer', () => {
 			'https://api.flexport.com/shipments?page=2',
 		)
 		expect((next as Some<ResolvableCollection>).value.refType).toEqual(
-			Type.SHIPMENT_TYPE,
+			Type.Shipment,
 		)
 	})
 })

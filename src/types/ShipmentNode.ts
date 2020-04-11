@@ -9,7 +9,7 @@ export type ShipmentNode = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment_node` for this object.
 	 */
-	_object: Type.SHIPMENT_NODE_TYPE
+	_object: Type.ShipmentNode
 
 	/**
 	 * Identifier(s) associated with node. For example, `origin_address`, `destination_address`, `port_of_loading`, `port_of_unloading`, `port_of_calling`, `fmc_port_of_unloading`, `customs_entry`,`transshipment`, or `place_of_delivery`.

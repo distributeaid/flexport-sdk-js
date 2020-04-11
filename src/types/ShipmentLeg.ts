@@ -14,7 +14,7 @@ export type ShipmentLeg = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/shipment_leg` for this object.
 	 */
-	_object: Type.SHIPMENT_LEG_TYPE
+	_object: Type.ShipmentLeg
 
 	/**
 	 * Estimated date when shipment arrives at the destination ShipmentNode of the shipment leg.

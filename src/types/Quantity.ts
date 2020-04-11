@@ -8,7 +8,7 @@ export type Weight = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/quantity/weight` for this object.
 	 */
-	_object: Type.QUANTITY_WEIGHT_TYPE
+	_object: Type.Weight
 
 	/**
 	 * Specifies the quantity of units as a float.
@@ -25,7 +25,7 @@ export type Volume = Weight & {
 	/**
 	 * String representing the object’s type. Always `/quantity/weight` for this object.
 	 */
-	_object: Type.QUANTITY_VOLUME_TYPE
+	_object: Type.Volume
 
 	/**
 	 * Specifies the unit of measure for this quantity:  either `cbm` (cubic meters) or `cbft` (cubic feet)
@@ -34,10 +34,8 @@ export type Volume = Weight & {
 }
 
 export const toQuantity = (o: ApiObject): Either<ApiError, Quantity> => {
-	if (o._object === Type.QUANTITY_WEIGHT_TYPE)
-		return passThrough<Weight>(o as Weight)
-	if (o._object === Type.QUANTITY_VOLUME_TYPE)
-		return passThrough<Volume>(o as Volume)
+	if (o._object === Type.Weight) return passThrough<Weight>(o as Weight)
+	if (o._object === Type.Volume) return passThrough<Volume>(o as Volume)
 	return left(createError(`Unknown quantity: ${o._object}!`))
 }
 

@@ -9,7 +9,7 @@ export type ApiObjectRef = {
 	/**
 	 * String representing the object’s type. Always `/api/refs/object` for this object.
 	 */
-	_object: Type.OBJECT_REF_TYPE
+	_object: Type.ObjectRef
 
 	/**
 	 * The `_object` value of the object that the link points to.

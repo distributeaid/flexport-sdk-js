@@ -15,7 +15,7 @@ export type Page<A extends ApiObject> = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/api/collections/paginated` for this object.
 	 */
-	_object: Type.PAGE_TYPE
+	_object: Type.Page
 	/**
 	 * link to the previous page
 	 */
@@ -50,7 +50,7 @@ export const toPage = <A extends ApiObject>(
 		next: linkCollection(
 			pageResponse.next
 				? {
-						_object: Type.COLLECTION_REF_TYPE,
+						_object: Type.CollectionRef,
 						link: pageResponse.next,
 						ref_type: itemType as string,
 				  }
@@ -59,7 +59,7 @@ export const toPage = <A extends ApiObject>(
 		prev: linkCollection(
 			pageResponse.prev
 				? {
-						_object: Type.COLLECTION_REF_TYPE,
+						_object: Type.CollectionRef,
 						link: pageResponse.prev,
 						ref_type: itemType as string,
 				  }

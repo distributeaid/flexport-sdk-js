@@ -9,7 +9,7 @@ export type ApiError = {
 	/**
 	 * String representing the object’s type. Always `/api/error` for this object.
 	 */
-	_object: Type.API_ERROR_TYPE
+	_object: Type.ApiError
 	/**
 	 * The HTTP status code (client or server error) made available for consumption from the body of the response
 	 */
@@ -25,7 +25,7 @@ export type ApiError = {
 }
 
 export const createError = (message: string): ApiError => ({
-	_object: Type.API_ERROR_TYPE,
+	_object: Type.ApiError,
 	status: 500,
 	code: 'INTEGRATION_ERROR',
 	message,

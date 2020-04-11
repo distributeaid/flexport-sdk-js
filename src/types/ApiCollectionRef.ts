@@ -9,7 +9,7 @@ export type ApiCollectionRef = {
 	/**
 	 * String representing the object’s type. Always `/api/refs/collection` for this object.
 	 */
-	_object: Type.COLLECTION_REF_TYPE
+	_object: Type.CollectionRef
 
 	/**
 	 * The `_object` value of each individual element of the list that `link` points to.

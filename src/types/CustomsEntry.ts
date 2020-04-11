@@ -5,5 +5,5 @@ export type CustomsEntry = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/customs_entry` for this object.
 	 */
-	_object: Type.CUSTOMS_ENTRY_TYPE
+	_object: Type.CustomsEntry
 }

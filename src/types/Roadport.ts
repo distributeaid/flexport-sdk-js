@@ -6,7 +6,7 @@ export type Roadport = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/trucking/port` for this object.
 	 */
-	_object: Type.ROADPORT_TYPE
+	_object: Type.Roadport
 
 	/**
 	 * Port code used by US Customs and Border Protection (US CBP).

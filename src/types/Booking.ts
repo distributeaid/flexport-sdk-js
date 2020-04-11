@@ -5,5 +5,5 @@ export type Booking = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/booking` for this object.
 	 */
-	_object: Type.BOOKING_TYPE
+	_object: Type.Booking
 }

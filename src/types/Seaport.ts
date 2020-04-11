@@ -6,7 +6,7 @@ export type Seaport = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/ocean/port` for this object.
 	 */
-	_object: Type.SEAPORT_TYPE
+	_object: Type.Seaport
 
 	/**
 	 * Port code used by US Customs and Border Protection (US CBP).

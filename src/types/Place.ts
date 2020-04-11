@@ -14,7 +14,7 @@ export type Place = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/place` for this object.
 	 */
-	_object: Type.PLACE_TYPE
+	_object: Type.Place
 
 	/**
 	 * Name for this place.
@@ -41,13 +41,13 @@ export const toPlace = (
 	const details: Either<ApiError, PortDetail>[] = apiResponseObject.details.map(
 		(o: ApiObject) => {
 			switch (o._object) {
-				case Type.AIRPORT_TYPE:
+				case Type.Airport:
 					return toAirport(o)
-				case Type.SEAPORT_TYPE:
+				case Type.Seaport:
 					return toSeaport(o)
-				case Type.ROADPORT_TYPE:
+				case Type.Roadport:
 					return toRoadport(o)
-				case Type.RAILPORT_TYPE:
+				case Type.Railport:
 					return toRailport(o)
 				default:
 					return left(`Unknown Place detail: ${o._object}!`)

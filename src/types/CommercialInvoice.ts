@@ -5,5 +5,5 @@ export type CommercialInvoice = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/commercial_invoice` for this object.
 	 */
-	_object: Type.COMMERCIAL_INVOICE_TYPE
+	_object: Type.CommercialInvoice
 }
