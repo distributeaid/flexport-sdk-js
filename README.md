@@ -61,7 +61,7 @@ pipe(
   TE.map(shipments => {
     console.dir(shipments, { depth: 9 });
   })
-)().catch(handleError);
+)();
 ```
 
 ## Architecture decision records (ADRs)
