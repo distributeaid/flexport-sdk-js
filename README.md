@@ -46,7 +46,7 @@ pipe(
   TE.chain(TE.fromOption(() => createError("Shipment has no legs!"))),
   TE.chain(client.resolveCollectionRef<ShipmentLeg>()), // Resolve the link to the collection
   TE.map(legs => {
-    console.dir(leg, { depth: 9 });
+    console.dir(legs, { depth: 9 });
   })
 )();
 ```
