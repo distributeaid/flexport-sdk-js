@@ -16,7 +16,7 @@ export type Address = ApiObject & {
 	/**
 	 * Address line 2 (Apartment/Suite/Unit/Building).
 	 */
-	street_address2: string
+	street_address2?: string
 
 	/**
 	 * City/Town.
@@ -46,7 +46,7 @@ export type Address = ApiObject & {
 	/**
 	 * If port, then UN/LOCODE (United Nations Code for Trade and Transport Locations).
 	 */
-	unlocode: string
+	unlocode?: string
 
 	/**
 	 * Timezone for this address

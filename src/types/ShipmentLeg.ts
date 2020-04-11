@@ -24,7 +24,7 @@ export type ShipmentLeg = ApiObject & {
 	/**
 	 * Actual date when shipment arrives at the destination ShipmentNode of the shipment leg.
 	 */
-	actual_arrival_date: Date
+	actual_arrival_date?: Date
 
 	/**
 	 * Estimated date when shipment departs from the origin ShipmentNode of the shipment leg.
@@ -34,7 +34,7 @@ export type ShipmentLeg = ApiObject & {
 	/**
 	 * Actual date when shipment departs from the origin ShipmentNode of the shipment leg.
 	 */
-	actual_departure_date: Date
+	actual_departure_date?: Date
 
 	/**
 	 * Origin node of the shipment leg
