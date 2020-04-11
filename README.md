@@ -51,6 +51,19 @@ pipe(
 )();
 ```
 
+### Paginate a collection
+
+```typescript
+import { paginate } from "../paginate";
+
+pipe(
+  paginate(client.listAllShipments(), client),
+  TE.map(shipments => {
+    console.dir(shipments, { depth: 9 });
+  })
+)().catch(handleError);
+```
+
 ## Architecture decision records (ADRs)
 
 see [./adr](./adr).
