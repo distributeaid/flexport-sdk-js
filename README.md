@@ -7,7 +7,7 @@
 JavaScript client SDK client for [Flexport](https://flexport.com/)'s
 [API v2](https://apibeta.flexport.com/)
 
-> _Note:_ This library is **not feature complete**, until then 1.x version will
+> _Note:_ This library is **not feature complete**, until then 1.x releases may
 > contain breaking changes.
 
 ## Installation
