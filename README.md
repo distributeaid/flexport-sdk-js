@@ -7,6 +7,9 @@
 JavaScript client SDK client for [Flexport](https://flexport.com/)'s
 [API v2](https://apibeta.flexport.com/)
 
+> _Note:_ This library is **not feature complete**, until then 1.x version will
+> contain breaking changes.
+
 ## Installation
 
     npm i --save @distributeaid/flexport-sdk
