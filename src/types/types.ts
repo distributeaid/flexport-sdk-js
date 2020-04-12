@@ -22,4 +22,7 @@ export enum Type {
 	Terminal = '/shipment_node/terminal',
 	Event = '/event',
 	ShipmentEvent = '/shipment_event_data',
+	Invoice = '/invoice',
+	Container = '/ocean/shipment_container',
+	ContainerLeg = '/ocean/shipment_container_leg',
 }
