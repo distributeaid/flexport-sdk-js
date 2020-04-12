@@ -4,6 +4,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { emptyPageMock } from './testdata/mocks'
 import { isRight, Right } from 'fp-ts/lib/Either'
+import * as TE from 'fp-ts/lib/TaskEither'
 import { Shipment, Type } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
 
@@ -27,7 +28,10 @@ describe('paginate', () => {
 			apiKey: 'some-api-key',
 			fetchImplementation,
 		})
-		const shipments = await pipe(paginate(client.listAllShipments(), client))()
+		const shipments = await pipe(
+			client.listAllShipments(),
+			TE.chain(paginate(client)),
+		)()
 
 		expect(fetchImplementation).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments',

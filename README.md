@@ -57,7 +57,8 @@ pipe(
 import { paginate } from "../paginate";
 
 pipe(
-  paginate(client.listAllShipments(), client),
+  client.listAllShipments(),
+  TE.chain(paginate(client)),
   TE.map(shipments => {
     console.dir(shipments, { depth: 9 });
   })

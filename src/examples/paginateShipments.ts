@@ -7,7 +7,8 @@ import { paginate } from '../paginate'
 const client = createClient({ apiKey: process.env.FLEXPORT_API_KEY || '' })
 
 pipe(
-	paginate(client.listAllShipments(), client),
+	client.listAllShipments(),
+	TE.chain(paginate(client)),
 	TE.map(shipments => {
 		shipments.forEach(shipment => {
 			console.log(
