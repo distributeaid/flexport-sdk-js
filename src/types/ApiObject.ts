@@ -13,5 +13,5 @@ export type ApiObject = {
 	 * @see https://apibeta.flexport.com/reference-link/versioning
 	 */
 	version: 2
-	[key: string]: any | null
+	[key: string]: any
 }

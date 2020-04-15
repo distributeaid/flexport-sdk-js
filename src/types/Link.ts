@@ -29,22 +29,22 @@ export type ResolvableObject = {
 	id: string | number
 }
 
-const isLinkedCollectionRef = (o?: { _object: string }) =>
-	o?._object === Type.CollectionRef
+const isLinkedCollectionRef = (o: { _object: string }) =>
+	o._object === Type.CollectionRef
 
-export const linkCollection = (c: ApiCollectionRef | null) =>
-	c !== null && isLinkedCollectionRef(c)
+export const linkCollection = (c: ApiCollectionRef) =>
+	isLinkedCollectionRef(c)
 		? some({
 				link: c.link,
 				refType: c.ref_type as Type,
 		  } as ResolvableCollection)
 		: none
 
-const isLinkedObjectRef = (o?: { _object: string }) =>
+const isLinkedObjectRef = (o: { _object: string }) =>
 	o?._object === Type.ObjectRef
 
-export const linkObject = (c: ApiObjectRef | null) =>
-	c !== null && isLinkedObjectRef(c)
+export const linkObject = (c: ApiObjectRef) =>
+	isLinkedObjectRef(c)
 		? some({
 				link: c.link,
 				refType: c.ref_type as Type,

@@ -11,6 +11,7 @@ import {
 	Type,
 } from '../types'
 import { Either, left, right } from 'fp-ts/lib/Either'
+import { nullToUndefined } from './nullToUndefined'
 
 const transformers = {
 	[Type.Shipment]: toShipment,
@@ -23,7 +24,7 @@ const transformers = {
 
 export const passThrough = <O extends ApiObject>(
 	apiResponseObject: O,
-): Either<never, O> => right(apiResponseObject)
+): Either<never, O> => right(nullToUndefined(apiResponseObject))
 
 const getTransformer = (_object: string) => {
 	if (transformers[_object]) return transformers[_object]
@@ -32,12 +33,12 @@ const getTransformer = (_object: string) => {
 }
 
 export const transform = <A>(o: ApiObject): Either<ApiError, A> =>
-	getTransformer(o._object)(o) as Either<ApiError, A>
+	getTransformer(o._object)(nullToUndefined(o)) as Either<ApiError, A>
 
 const transformPage = <A extends ApiObject>(
 	o: PageApiObject,
 	type: Type,
-): Either<ApiError, Page<A>> => toPage<A>(o, type)
+): Either<ApiError, Page<A>> => toPage<A>(nullToUndefined(o), type)
 
 export const transformResponse = <A extends ApiObject>() => (
 	response: ApiResponseObject,

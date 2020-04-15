@@ -11,7 +11,7 @@ export type Address = ApiObject & {
 	/**
 	 * Address line 1 (Street address/PO Box).
 	 */
-	street_address: string
+	street_address?: string
 
 	/**
 	 * Address line 2 (Apartment/Suite/Unit/Building).
@@ -41,7 +41,7 @@ export type Address = ApiObject & {
 	/**
 	 * ZIP or postal code.
 	 */
-	zip: string
+	zip?: string
 
 	/**
 	 * If port, then UN/LOCODE (United Nations Code for Trade and Transport Locations).
