@@ -19,7 +19,7 @@ const TypesById = Object.entries(ApiTypes).reduce(
 	{} as { [key: string]: string },
 )
 
-type Item = {
+export type Item = {
 	$ref?: string
 	oneOf?: Item[]
 	type?: 'string' | 'integer' | 'boolean' | 'array' | 'object'
@@ -35,7 +35,7 @@ type Item = {
 	}
 }
 
-const makePropertyDefinition = (def: Item) => {
+export const makePropertyDefinition = (def: Item) => {
 	const deps: string[] = []
 	let t
 	if (def.$ref) {
