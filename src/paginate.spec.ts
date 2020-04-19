@@ -5,8 +5,9 @@ import * as path from 'path'
 import { emptyPageMock } from './testdata/mocks'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
-import { Shipment, Type } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
+import { Shipment } from './generated'
+import { Type } from './generated/Type'
 
 const shipmentsPage1 = JSON.parse(
 	fs

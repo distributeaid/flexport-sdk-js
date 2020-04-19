@@ -1,25 +1,19 @@
-import {
-	toShipment,
-	ApiObject,
-	ApiResponseObject,
-	ApiError,
-	createError,
-	toPage,
-	Page,
-	PageApiObject,
-	toShipmentLeg,
-	Type,
-} from '../types'
+import { ApiObject, ApiResponseObject, toPage, Page } from '../types'
 import { Either, left, right } from 'fp-ts/lib/Either'
 import { nullToUndefined } from './nullToUndefined'
+import { liftShipment } from '../lifters/Shipment'
+import { liftShipmentLeg } from '../lifters/ShipmentLeg'
+import { ErrorInfo, createError } from '../types/ErrorInfo'
+import { Type } from '../generated'
+import { ApiPageObject } from '../types/ApiPageObject'
 
 const transformers = {
-	[Type.Shipment]: toShipment,
-	[Type.ShipmentLeg]: toShipmentLeg,
+	[Type.Shipment]: liftShipment,
+	[Type.ShipmentLeg]: liftShipmentLeg,
 } as {
 	[key: string]: <O extends ApiObject>(
 		apiResponseObject: O,
-	) => Either<ApiError, unknown>
+	) => Either<ErrorInfo, unknown>
 }
 
 export const passThrough = <O extends ApiObject>(
@@ -32,21 +26,24 @@ const getTransformer = (_object: string) => {
 	return passThrough
 }
 
-export const transform = <A>(o: ApiObject): Either<ApiError, A> =>
-	getTransformer(o._object)(nullToUndefined(o)) as Either<ApiError, A>
+export const transform = <A>(o: ApiObject): Either<ErrorInfo, A> =>
+	getTransformer(o._object)(nullToUndefined(o)) as Either<ErrorInfo, A>
 
 const transformPage = <A extends ApiObject>(
-	o: PageApiObject,
+	o: ApiPageObject<A>,
 	type: Type,
-): Either<ApiError, Page<A>> => toPage<A>(nullToUndefined(o), type)
+): Either<ErrorInfo, Page<A>> => toPage<A>(nullToUndefined(o), type)
 
 export const transformResponse = <A extends ApiObject>() => (
 	response: ApiResponseObject,
-): Either<ApiError, A> => {
-	if (response._object !== Type.ApiResponse) {
-		return left(createError(`Must pass an ${Type.ApiResponse}!`))
+): Either<ErrorInfo, A> => {
+	if (response._object !== Type.Response) {
+		return left(createError(`Must pass an ${Type.Response}!`))
 	}
-	if (response.error) return left(response.error)
+	if (response.error)
+		return left(
+			createError(`${response.error.message} (${response.error.code})`),
+		)
 	try {
 		return transform<A>(response.data)
 	} catch (error) {
@@ -58,13 +55,13 @@ export const transformResponse = <A extends ApiObject>() => (
 
 export const transformPaginatedResponse = <A extends ApiObject>(
 	refType: Type,
-) => (response: ApiResponseObject): Either<ApiError, Page<A>> => {
-	if (response._object !== Type.ApiResponse) {
-		return left(createError(`Must pass an ${Type.ApiResponse}!`))
+) => (response: ApiResponseObject): Either<ErrorInfo, Page<A>> => {
+	if (response._object !== Type.Response) {
+		return left(createError(`Must pass an ${Type.Response}!`))
 	}
 	if (response.data._object !== Type.Page) {
 		return left(
-			createError(`Must pass an ${Type.ApiResponse} with a ${Type.Page}!`),
+			createError(`Must pass an ${Type.Response} with a ${Type.Page}!`),
 		)
 	}
 	try {

@@ -1,10 +1,11 @@
 import { ApiObject } from './ApiObject'
 import { Either, right, isLeft, isRight } from 'fp-ts/lib/Either'
-import { ApiError } from './ApiError'
 import { linkCollection, ResolvableCollection } from './Link'
 import { transform } from '../transformer/transform'
 import { Option, none } from 'fp-ts/lib/Option'
-import { Type } from './types'
+import { Type } from '../generated/Type'
+import { ErrorInfo } from './ErrorInfo'
+import { ApiPageObject } from './ApiPageObject'
 
 /**
  * All list endpoints return paginated responses. The response object contains elements of the current page, and links to the previous and next pages.
@@ -34,17 +35,15 @@ export type Page<A extends ApiObject> = ApiObject & {
 	items: A[]
 }
 
-export type PageApiObject = ApiObject & { data: ApiObject[] }
-
 export const toPage = <A extends ApiObject>(
-	pageResponse: PageApiObject,
+	pageResponse: ApiPageObject<A>,
 	itemType: Type,
-): Either<ApiError, Page<A>> => {
+): Either<ErrorInfo, Page<A>> => {
 	const { data, ...rest } = pageResponse
-	const transformedItems = data?.map(item => transform<A>(item)) ?? []
-	const itemError = transformedItems.find(item => isLeft(item))
-	if (itemError) return itemError as Either<ApiError, never>
-	const items = transformedItems.map(i => isRight(i) && i.right) as A[]
+	const transformedItems = data?.map((item) => transform<A>(item)) ?? []
+	const itemError = transformedItems.find((item) => isLeft(item))
+	if (itemError) return itemError as Either<ErrorInfo, never>
+	const items = transformedItems.map((i) => isRight(i) && i.right) as A[]
 	return right({
 		...(rest as Page<A>),
 		next:

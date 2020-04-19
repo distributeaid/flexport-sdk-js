@@ -1,8 +1,9 @@
 import * as TE from 'fp-ts/lib/TaskEither'
-import { ApiError, ApiObject, Page } from './types'
+import { ApiObject, Page } from './types'
 import { Client } from './createClient'
 import { isSome } from 'fp-ts/lib/Option'
 import { pipe } from 'fp-ts/lib/pipeable'
+import { ErrorInfo } from './types/ErrorInfo'
 
 /**
  * Iteratively follows paginated results.
@@ -11,7 +12,7 @@ import { pipe } from 'fp-ts/lib/pipeable'
 export const paginate = <A extends ApiObject>(
 	apiClient: Client,
 	fetchedItems = [] as A[],
-) => ({ next, items }: Page<A>): TE.TaskEither<ApiError, A[]> => {
+) => ({ next, items }: Page<A>): TE.TaskEither<ErrorInfo, A[]> => {
 	const allItems = [...items, ...fetchedItems]
 	if (isSome(next)) {
 		return pipe(

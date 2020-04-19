@@ -1,11 +1,12 @@
-import { transformPaginatedResponse, transformResponse } from './transform'
 import {
+	transformPaginatedResponse,
+	transformResponse,
 	Shipment,
 	Page,
 	ShipmentLeg,
 	Type,
 	ResolvableCollection,
-} from '../types'
+} from '../'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -85,10 +86,10 @@ describe('transformer', () => {
 		expect(leg.estimated_arrival_date).toBeInstanceOf(Date)
 		expect(leg.actual_departure_date).toBeInstanceOf(Date)
 		expect(leg.estimated_departure_date).toBeInstanceOf(Date)
-		expect(leg.origin.place.address.street_address).toEqual(
+		expect(leg.origin?.place?.address?.street_address).toEqual(
 			'1641 Settlers Lane',
 		)
-		expect(leg.origin.tags).toContain('port_of_loading')
+		expect(leg.origin?.tags).toContain('port_of_loading')
 		expect(leg.transportation_mode).toEqual('ocean')
 		expect(leg.carrier_name).toEqual('Liberty Carrier')
 	})

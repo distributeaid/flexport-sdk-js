@@ -1,8 +1,10 @@
 import { createClient } from './createClient'
 import { emptyPageMock, shipmentMock } from './testdata/mocks'
-import { linkCollection, linkObject, Type, ApiError } from './types'
+import { linkCollection, linkObject } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
+import { Type } from './generated/Type'
+import { ErrorInfo } from './types/ErrorInfo'
 
 describe('API Client', () => {
 	it('can be instantiated', () => {
@@ -44,7 +46,7 @@ describe('API Client', () => {
 		})
 		await pipe(
 			TE.right(documentsLink),
-			TE.chain(TE.fromOption(() => (undefined as unknown) as ApiError)),
+			TE.chain(TE.fromOption(() => (undefined as unknown) as ErrorInfo)),
 			TE.chain(client.resolveCollectionRef()),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
@@ -76,7 +78,7 @@ describe('API Client', () => {
 		})
 		await pipe(
 			TE.right(shipmentLink),
-			TE.chain(TE.fromOption(() => (undefined as unknown) as ApiError)),
+			TE.chain(TE.fromOption(() => (undefined as unknown) as ErrorInfo)),
 			TE.chain(client.resolveObjectRef()),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(

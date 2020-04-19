@@ -1,7 +1,7 @@
 import { none, some } from 'fp-ts/lib/Option'
-import { Type } from './types'
-import { ApiCollectionRef } from './ApiCollectionRef'
 import { ApiObjectRef } from './ApiObjectRef'
+import { ApiCollectionRef } from './ApiCollectionRef'
+import { Type } from '../generated/Type'
 
 export type ResolvableCollection = {
 	/**
@@ -32,8 +32,8 @@ export type ResolvableObject = {
 const isLinkedCollectionRef = (o: { _object: string }) =>
 	o._object === Type.CollectionRef
 
-export const linkCollection = (c: ApiCollectionRef) =>
-	isLinkedCollectionRef(c)
+export const linkCollection = (c?: ApiCollectionRef) =>
+	c && isLinkedCollectionRef(c)
 		? some({
 				link: c.link,
 				refType: c.ref_type as Type,
@@ -41,10 +41,10 @@ export const linkCollection = (c: ApiCollectionRef) =>
 		: none
 
 const isLinkedObjectRef = (o: { _object: string }) =>
-	o?._object === Type.ObjectRef
+	o._object === Type.ObjectRef
 
-export const linkObject = (c: ApiObjectRef) =>
-	isLinkedObjectRef(c)
+export const linkObject = (c?: ApiObjectRef) =>
+	c && isLinkedObjectRef(c)
 		? some({
 				link: c.link,
 				refType: c.ref_type as Type,

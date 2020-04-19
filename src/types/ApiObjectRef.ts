@@ -1,4 +1,4 @@
-import { Type } from './types'
+import { Type } from '../generated/Type'
 
 /**
  * ObjectRefs are expandable
@@ -24,5 +24,5 @@ export type ApiObjectRef = {
 	/**
 	 * The `id` value of the object that the link points to.
 	 */
-	id: string | number
+	id: number
 }

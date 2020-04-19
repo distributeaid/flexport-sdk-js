@@ -34,7 +34,7 @@ import { pipe } from "fp-ts/lib/pipeable";
 
 pipe(
   client.listAllShipments(),
-  TE.map(shipments => {
+  TE.map((shipments) => {
     console.dir(shipments, { depth: 9 });
   })
 )();
@@ -48,7 +48,7 @@ pipe(
   TE.map(({ legs }) => legs), // Extract legs link, Option<ResolvableCollection>
   TE.chain(TE.fromOption(() => createError("Shipment has no legs!"))),
   TE.chain(client.resolveCollectionRef<ShipmentLeg>()), // Resolve the link to the collection
-  TE.map(legs => {
+  TE.map((legs) => {
     console.dir(legs, { depth: 9 });
   })
 )();
@@ -62,11 +62,26 @@ import { paginate } from "../paginate";
 pipe(
   client.listAllShipments(),
   TE.chain(paginate(client)),
-  TE.map(shipments => {
+  TE.map((shipments) => {
     console.dir(shipments, { depth: 9 });
   })
 )();
 ```
+
+## Generation of base types
+
+The base types in [`./src/generated`](./src/generated) are generated using
+[`./src/generator/parseOpenAPI.ts`](./src/generator/parseOpenAPI.ts), which
+parses the [Open API 3 definition file](./api-docs/v2.yaml)
+([source](https://api.flexport.com/docs/v2/flexport)). However this API
+documentation contains errors, which are corrected in the schema through
+[a file containing corrections](./api-docs/corrections.yaml), before the base
+types are generated.
+
+## _Lifting_ of base types
+
+[_Lifters_](./src/lifters) lift the Flexport API responses into the SDK domain,
+by augmenting them with higher level properties.
 
 ## Architecture decision records (ADRs)
 

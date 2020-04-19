@@ -1,6 +1,5 @@
 import { ApiResponseObject } from './types/ApiResponseObject'
 import { ApiObject } from './types/ApiObject'
-import { Shipment } from './types/Shipment'
 import * as fetchPonyfill from 'fetch-ponyfill'
 import { Page } from './types/Page'
 import { headers } from './headers'
@@ -8,34 +7,31 @@ import {
 	transformPaginatedResponse,
 	transformResponse,
 } from './transformer/transform'
-import {
-	ApiError,
-	createError,
-	ResolvableObject,
-	ResolvableCollection,
-	Type,
-} from './types'
+import { ResolvableObject, ResolvableCollection } from './types'
 import { Either } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
+import { createError, ErrorInfo } from './types/ErrorInfo'
+import { LiftedShipment } from './lifters/Shipment'
+import { Type } from './generated'
 
 const { fetch, Response } = fetchPonyfill()
 
 export type Client = {
-	getShipment: (id: string | number) => TE.TaskEither<ApiError, Shipment>
-	listAllShipments: () => TE.TaskEither<ApiError, Page<Shipment>>
+	getShipment: (id: string | number) => TE.TaskEither<ErrorInfo, LiftedShipment>
+	listAllShipments: () => TE.TaskEither<ErrorInfo, Page<LiftedShipment>>
 	resolveCollectionRef: <A extends ApiObject>() => (
 		link: ResolvableCollection,
-	) => TE.TaskEither<ApiError, Page<A>>
+	) => TE.TaskEither<ErrorInfo, Page<A>>
 	resolveObjectRef: <A extends ApiObject>() => (
 		link: ResolvableObject,
-	) => TE.TaskEither<ApiError, A>
+	) => TE.TaskEither<ErrorInfo, A>
 }
 
 const fetchJSON = (fn: () => Promise<typeof Response>) =>
-	TE.tryCatch<ApiError, ApiResponseObject>(
-		async () => fn().then(async res => res.json()),
-		reason => createError((reason as Error).message),
+	TE.tryCatch<ErrorInfo, ApiResponseObject>(
+		async () => fn().then(async (res) => res.json()),
+		(reason) => createError((reason as Error).message),
 	)
 
 const get = <A extends ApiObject>({
@@ -46,7 +42,7 @@ const get = <A extends ApiObject>({
 }: {
 	url: string
 	headers: object
-	responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>
+	responseTransformer: (r: ApiResponseObject) => Either<ErrorInfo, A>
 	fetchImplementation?: typeof fetch
 }) =>
 	pipe(
@@ -56,7 +52,7 @@ const get = <A extends ApiObject>({
 				headers,
 			}),
 		),
-		TE.map(r => responseTransformer(r)),
+		TE.map((r) => responseTransformer(r)),
 		TE.map(TE.fromEither),
 		TE.flatten,
 	)
@@ -72,7 +68,7 @@ export const createClient = ({
 }): Client => {
 	const authorizedGet = <A extends ApiObject>(
 		resource: string,
-		responseTransformer: (r: ApiResponseObject) => Either<ApiError, A>,
+		responseTransformer: (r: ApiResponseObject) => Either<ErrorInfo, A>,
 	) => {
 		const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
 		const url = resource.startsWith('http') ? resource : `${e}/${resource}`
@@ -85,11 +81,11 @@ export const createClient = ({
 	}
 	return {
 		getShipment: (id: string | number) =>
-			authorizedGet(`shipments/${id}`, transformResponse<Shipment>()),
+			authorizedGet(`shipments/${id}`, transformResponse<LiftedShipment>()),
 		listAllShipments: () =>
 			authorizedGet(
 				'shipments',
-				transformPaginatedResponse<Shipment>(Type.Shipment),
+				transformPaginatedResponse<LiftedShipment>(Type.Shipment),
 			),
 		resolveCollectionRef: <A extends ApiObject>() => (
 			link: ResolvableCollection,

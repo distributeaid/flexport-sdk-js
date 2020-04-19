@@ -1,0 +1,50 @@
+components:
+  schemas:
+    Shipment:
+      properties:
+        _object:
+          example: /shipment
+        booking:
+          description: The booking associated with this shipment
+          $ref: "#/components/schemas/BookingRef"
+        archived_at:
+          description: Date when the shipment was archived, if applicable.
+          type: string
+          format: date-time
+    BookingRef:
+      required:
+        - ref_type
+        - link
+        - id
+    ShipmentRef:
+      required:
+        - ref_type
+        - link
+        - id
+    DocumentCollectionRef:
+      required:
+        - ref_type
+        - link
+    CommercialInvoiceCollectionRef:
+      required:
+        - ref_type
+        - link
+    CustomsEntryCollectionRef:
+      required:
+        - ref_type
+        - link
+    LegCollectionRef:
+      required:
+        - ref_type
+        - link
+    ShipmentLeg:
+      required:
+        - origin
+        - destination
+    ShipmentNode:
+      required:
+        - place
+    Place:
+      required:
+        - name
+        - address

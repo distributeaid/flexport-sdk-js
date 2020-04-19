@@ -80,6 +80,7 @@
     "remoteTags": true
   },
   "dependencies": {
+    "deepmerge": "^4.2.2",
     "fetch-ponyfill": "^6.1.0",
     "fp-ts": "^2.5.4"
   },

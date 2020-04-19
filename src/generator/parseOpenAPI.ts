@@ -2,11 +2,32 @@ import * as yaml from 'js-yaml'
 import { promises as fs } from 'fs'
 import * as path from 'path'
 import * as ts from 'typescript'
+import * as merge from 'deepmerge'
 
-const parseOpenAPI = async (filename: string) => {
-	const data = await fs.readFile(filename, 'utf8')
-	const doc = yaml.safeLoad(data)
-	return doc
+const hasFix = ['Shipment']
+
+const ApiTypes = {
+	CollectionRef: '/api/refs/collection',
+	ObjectRef: '/api/refs/object',
+	Error: '/api/error',
+	Page: '/api/collections/paginated',
+	Response: '/api/response',
+} as const
+
+const TypesById = Object.entries(ApiTypes).reduce(
+	(t, [k, v]) => ({ ...t, [v]: k }),
+	{} as { [key: string]: string },
+)
+
+const parseOpenAPI = async (
+	filename: string,
+	correctionsFilename: string,
+): Promise<{ [key: string]: any }> => {
+	const apiDefinition = yaml.safeLoad(await fs.readFile(filename, 'utf8'))
+	const corrections = yaml.safeLoad(
+		await fs.readFile(correctionsFilename, 'utf8'),
+	)
+	return merge(apiDefinition, corrections)
 }
 
 type Item = {
@@ -25,14 +46,11 @@ type Item = {
 	}
 }
 
-/**
- * FIXME: Implement oneOf
- */
 const makePropertyDefinition = (def: Item) => {
 	const deps: string[] = []
 	let t
 	if (def.$ref) {
-		const dep = `${def.$ref.replace(/#\/components\/schemas\//, '')}Base`
+		const dep = def.$ref.replace(/#\/components\/schemas\//, '')
 		deps.push(dep)
 		t = ts.createTypeReferenceNode(dep, [])
 	} else if (def.enum) {
@@ -60,7 +78,7 @@ const makePropertyDefinition = (def: Item) => {
 	}
 }
 
-const createObjectType = (schema: Item) => {
+const createObjectType = (objectName: string, schema: Item) => {
 	const deps: string[] = []
 	const t = ts.createTypeLiteralNode(
 		Object.entries(schema.properties || []).map(([name, def]) => {
@@ -81,11 +99,13 @@ const createObjectType = (schema: Item) => {
 					[ts.createToken(ts.SyntaxKind.ReadonlyKeyword)],
 					name,
 					undefined,
-					ts.createLiteralTypeNode(
-						ts.createStringLiteral(def.example as string),
+					ts.createTypeReferenceNode(
+						`Type.${TypesById[def.example as string] || objectName}`,
+						[],
 					),
 					undefined,
 				)
+				deps.push('Type')
 			}
 			const comment = []
 			if (def.description) comment.push(def.description)
@@ -127,13 +147,13 @@ const createObjectType = (schema: Item) => {
 
 const makeType = (name: string, schema: Item) => {
 	const def = schema.properties
-		? createObjectType(schema)
+		? createObjectType(name, schema)
 		: makePropertyDefinition(schema)
 
 	const t = ts.createTypeAliasDeclaration(
 		undefined,
 		[ts.createToken(ts.SyntaxKind.ExportKeyword)],
-		`${name}Base`,
+		name,
 		undefined,
 		def.type,
 	)
@@ -145,6 +165,11 @@ const makeType = (name: string, schema: Item) => {
 		'Auto-generated type. Do not change.',
 		'@see https://api.flexport.com/docs/v2/flexport',
 	)
+	if (hasFix.includes(name)) {
+		comment.push(
+			`@deprecated Use ${name} (The OpenAPI definition for this class contains known bugs, which have been  in the type ${name}).`,
+		)
+	}
 	ts.addSyntheticLeadingComment(
 		t,
 		ts.SyntaxKind.MultiLineCommentTrivia,
@@ -184,23 +209,63 @@ const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
 const printNode = (node: ts.Node) =>
 	printer.printNode(ts.EmitHint.Unspecified, node, resultFile)
 
-parseOpenAPI('/tmp/flexport.yaml')
+const makeIndex = (type: string) =>
+	ts.createExportDeclaration(
+		undefined,
+		undefined,
+		(ts.createExportSpecifier(undefined, '*') as unknown) as ts.NamedExports,
+		ts.createLiteral(`./${type}`),
+	)
+
+const makeTypes = (types: Map<string, string>) =>
+	ts.createEnumDeclaration(
+		undefined,
+		[ts.createToken(ts.SyntaxKind.ExportKeyword)],
+		ts.createIdentifier('Type'),
+		[...types.entries()].map(([type, _object]) =>
+			ts.createEnumMember(type, ts.createStringLiteral(_object)),
+		),
+	)
+
+parseOpenAPI(
+	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
+	path.join(process.cwd(), 'api-docs', 'corrections.yaml'),
+)
 	.then(async (f) => {
 		// Generate Types
-
-		return Promise.all(
-			Object.entries(f.components.schemas).map(async ([name, schema]) => {
-				const { type, deps } = makeType(name, schema as any)
-				const nodes = [
-					...deps.map((dep) => printNode(makeImport(dep))),
-					printNode(type),
-				]
-				return fs.writeFile(
-					path.join(process.cwd(), 'src', 'generated', `${name}Base.ts`),
-					nodes.join('\n'),
-					'utf8',
-				)
-			}),
+		const typeIdentifiers: Map<string, string> = new Map()
+		Object.entries(ApiTypes).forEach(([k, v]) => typeIdentifiers.set(k, v))
+		const types: string[] = []
+		await Promise.all(
+			Object.entries(f.components.schemas as { [key: string]: any }).map(
+				async ([name, schema]) => {
+					const { type, deps } = makeType(name, schema)
+					const nodes = [
+						...deps.map((dep) => printNode(makeImport(dep))),
+						printNode(type),
+					]
+					const _object = schema?.properties?._object?.example
+					if (_object) typeIdentifiers.set(name, _object)
+					types.push(name)
+					return fs.writeFile(
+						path.join(process.cwd(), 'src', 'generated', `${name}.ts`),
+						nodes.join('\n'),
+						'utf8',
+					)
+				},
+			),
+		)
+		// Write Type.ts
+		await fs.writeFile(
+			path.join(process.cwd(), 'src', 'generated', 'Type.ts'),
+			printNode(makeTypes(typeIdentifiers)),
+			'utf8',
+		)
+		// Write index.ts
+		await fs.writeFile(
+			path.join(process.cwd(), 'src', 'generated', 'index.ts'),
+			[...types, 'Type'].map(makeIndex).map(printNode).join('\n'),
+			'utf8',
 		)
 	})
 	.catch((err) => {
