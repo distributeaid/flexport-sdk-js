@@ -17,7 +17,6 @@ import { BookingRef } from './BookingRef'
 /**
  * Auto-generated type. Do not change.
  * @see https://api.flexport.com/docs/v2/flexport
- * @deprecated Use Shipment (The OpenAPI definition for this class contains known bugs, which have been  in the type Shipment).
  */
 export type Shipment = {
 	readonly metadata?: Metadata
