@@ -7,7 +7,7 @@ import { Type } from '../generated'
  *
  * @see https://apibeta.flexport.com/reference/response-layout
  */
-export type ApiResponseObject = ApiObject & {
+export type ApiResponseObject<A> = ApiObject & {
 	/**
 	 * String representing the object’s type. Always `/api/response` for this object.
 	 */
@@ -32,5 +32,5 @@ export type ApiResponseObject = ApiObject & {
 	 * The resource data requested for a successful response.
 	 * Undefined on error.
 	 */
-	data?: any
+	data?: A
 }

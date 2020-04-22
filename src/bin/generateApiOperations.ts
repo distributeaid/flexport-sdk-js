@@ -3,20 +3,39 @@ import * as path from 'path'
 import { printNode } from '../generator/printNode'
 import * as ts from 'typescript'
 import { promises as fs } from 'fs'
-import { Item, createPropertyDefinition } from '../generator/factories'
+import {
+	Item,
+	createPropertyDefinition,
+	createObjectType,
+} from '../generator/factories'
+import { Type } from '../generated/Type'
+
+type Responses = {
+	[key: string]: {
+		description: string
+		content: {
+			[key: string]: {
+				schema: Item
+			}
+		}
+	}
+}
+
+type Parameters = {
+	name: string
+	description: string
+	in: string
+	required?: boolean
+	schema: Item
+}[]
 
 type Operation = {
 	operationId: string
 	summary: string
 	description?: string
 	tags?: string[]
-	parameters?: {
-		name: string
-		description: string
-		in: string
-		required?: boolean
-		schema: Item
-	}[]
+	parameters?: Parameters
+	responses: Responses
 }
 
 type ApiMethodInfo = {
@@ -24,13 +43,8 @@ type ApiMethodInfo = {
 	description?: string
 	method: string
 	path: string
-	parameters?: {
-		name: string
-		description: string
-		in: string
-		required?: boolean
-		schema: Item
-	}[]
+	parameters?: Parameters
+	responses: Responses
 }
 
 parseOpenAPI(
@@ -52,6 +66,7 @@ parseOpenAPI(
 							method,
 							path,
 							parameters: def.parameters,
+							responses: def.responses,
 						},
 					}),
 					{},
@@ -63,7 +78,7 @@ parseOpenAPI(
 		const deps: string[] = []
 
 		const clientMethods = ts.createObjectLiteral(
-			Object.entries(operations).map(([key, def]) => {
+			Object.entries(operations).map(([operationId, def]) => {
 				const params = []
 				if (def.parameters) {
 					params.push(
@@ -157,17 +172,85 @@ parseOpenAPI(
 					)
 				}
 
+				const returns = Object.entries(def.responses)
+					.map(([httpStatusCode, { content }]) =>
+						Object.entries(content).map(([contentType, { schema }]) => {
+							// Response is binary
+							if (schema.type === 'string' && schema.format === 'binary') {
+								return {
+									type: ts.createTypeReferenceNode('string', []),
+									deps: [],
+								}
+							}
+							// Response is paginated
+							if (
+								schema.properties?.data?.properties?._object?.example ===
+								Type.Page
+							) {
+								const ref =
+									schema.properties?.data?.properties?.data?.items?.$ref
+								let dep
+								let t: ts.TypeNode = ts.createKeywordTypeNode(
+									ts.SyntaxKind.UnknownKeyword,
+								)
+								if (ref) {
+									dep = ref.replace(/#\/components\/schemas\//, '')
+									t = ts.createTypeReferenceNode(dep, [])
+								}
+								return {
+									type: ts.createTypeReferenceNode(`ApiPageObject`, [t]),
+									deps: dep ? [dep] : [],
+								}
+							}
+							// Regular page response
+							if (schema.properties?._object.example === Type.Response) {
+								const ref = schema.properties?.data?.$ref
+								let dep
+								let t: ts.TypeNode = ts.createKeywordTypeNode(
+									ts.SyntaxKind.UnknownKeyword,
+								)
+								if (ref) {
+									dep = ref.replace(/#\/components\/schemas\//, '')
+									t = ts.createTypeReferenceNode(dep, [])
+								}
+								return {
+									type: t,
+									deps: dep ? [dep] : [],
+								}
+							}
+							// Object is returned (e.g. on updates)
+							if (schema.$ref) {
+								const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
+								const t = ts.createTypeReferenceNode(dep, [])
+								return {
+									type: t,
+									deps: dep ? [dep] : [],
+								}
+							}
+							return createObjectType(
+								`${operationId}HTTP${httpStatusCode}${contentType}Response`,
+								schema,
+							)
+						}),
+					)
+					.flat()
+
+				deps.push(...returns.map(({ deps }) => deps).flat())
+				const returnTypes = returns.map(({ type }) => type).flat()
+
 				const m = ts.createPropertyAssignment(
-					key,
+					operationId,
 					ts.createArrowFunction(
 						undefined,
 						undefined,
 						params,
 						undefined,
 						undefined,
-						ts.createCall(ts.createIdentifier('apiClient'), undefined, [
-							ts.createObjectLiteral(apiClientArgumens),
-						]),
+						ts.createCall(
+							ts.createIdentifier('apiClient'),
+							[ts.createUnionTypeNode(returnTypes)],
+							[ts.createObjectLiteral(apiClientArgumens)],
+						),
 					),
 				)
 				const comment = []
@@ -177,6 +260,12 @@ parseOpenAPI(
 					comment.push('')
 					comment.push(def.description.trim())
 				}
+				comment.push(
+					Object.entries(def.responses).map(
+						([httpStatusCode, { description }]) =>
+							`On status code ${httpStatusCode}: ${description}`,
+					),
+				)
 
 				ts.addSyntheticLeadingComment(
 					m,
@@ -245,6 +334,20 @@ parseOpenAPI(
 					]),
 				),
 				ts.createLiteral('../FlexportApiClient'),
+			),
+			ts.createImportDeclaration(
+				undefined,
+				undefined,
+				ts.createImportClause(
+					undefined,
+					ts.createNamedImports([
+						ts.createImportSpecifier(
+							undefined,
+							ts.createIdentifier('ApiPageObject'),
+						),
+					]),
+				),
+				ts.createLiteral('../types/ApiPageObject'),
 			),
 			...[...new Set(deps)].map((dep) =>
 				ts.createImportDeclaration(

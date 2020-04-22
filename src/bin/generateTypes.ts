@@ -8,19 +8,7 @@ import {
 	makeTypes,
 	makeIndex,
 } from '../generator/factories'
-
-const ApiTypes = {
-	CollectionRef: '/api/refs/collection',
-	ObjectRef: '/api/refs/object',
-	Error: '/api/error',
-	Page: '/api/collections/paginated',
-	Response: '/api/response',
-} as const
-
-const TypesById = Object.entries(ApiTypes).reduce(
-	(t, [k, v]) => ({ ...t, [v]: k }),
-	{} as { [key: string]: string },
-)
+import { ApiTypes } from '../generator/knowTypes'
 
 parseOpenAPI(
 	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
@@ -34,7 +22,7 @@ parseOpenAPI(
 		await Promise.all(
 			Object.entries(f.components.schemas as { [key: string]: any }).map(
 				async ([name, schema]) => {
-					const { type, deps } = makeType(name, schema, TypesById)
+					const { type, deps } = makeType(name, schema)
 					const nodes = [
 						...deps.map((dep) => printNode(makeImport(dep))),
 						printNode(type),

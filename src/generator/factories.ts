@@ -1,4 +1,5 @@
 import * as ts from 'typescript'
+import { TypesById } from './knowTypes'
 
 export type Item = {
 	$ref?: string
@@ -48,11 +49,7 @@ export const createPropertyDefinition = (def: Item) => {
 	}
 }
 
-export const createObjectType = (
-	objectName: string,
-	schema: Item,
-	TypesById: { [key: string]: string },
-) => {
+export const createObjectType = (objectName: string, schema: Item) => {
 	const deps: string[] = []
 	const t = ts.createTypeLiteralNode(
 		Object.entries(schema.properties || []).map(([name, def]) => {
@@ -119,13 +116,9 @@ export const createObjectType = (
 	}
 }
 
-export const makeType = (
-	name: string,
-	schema: Item,
-	TypesById: { [key: string]: string },
-) => {
+export const makeType = (name: string, schema: Item) => {
 	const def = schema.properties
-		? createObjectType(name, schema, TypesById)
+		? createObjectType(name, schema)
 		: createPropertyDefinition(schema)
 
 	const t = ts.createTypeAliasDeclaration(
