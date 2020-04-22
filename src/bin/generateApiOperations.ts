@@ -309,7 +309,7 @@ parseOpenAPI(
 
 		const comment = []
 		comment.push(
-			'Auto-generated type. Do not change.',
+			'Auto-generated code. Do not change.',
 			'@see https://api.flexport.com/docs/v2/flexport',
 		)
 		ts.addSyntheticLeadingComment(
