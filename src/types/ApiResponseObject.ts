@@ -32,5 +32,5 @@ export type ApiResponseObject<A> = ApiObject & {
 	 * The resource data requested for a successful response.
 	 * Undefined on error.
 	 */
-	data?: A
+	data: A
 }

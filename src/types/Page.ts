@@ -12,7 +12,7 @@ import { ApiPageObject } from './ApiPageObject'
  *
  * @see https://apibeta.flexport.com/reference/pagination
  */
-export type Page<A extends ApiObject> = ApiObject & {
+export type Page<A extends ApiObject> = {
 	/**
 	 * String representing the object’s type. Always `/api/collections/paginated` for this object.
 	 */
@@ -39,26 +39,27 @@ export const toPage = <A extends ApiObject>(
 	pageResponse: ApiPageObject<A>,
 	itemType: Type,
 ): Either<ErrorInfo, Page<A>> => {
-	const { data, ...rest } = pageResponse
+	const { data, next, prev } = pageResponse
 	const transformedItems = data?.map((item) => transform<A>(item)) ?? []
 	const itemError = transformedItems.find((item) => isLeft(item))
 	if (itemError) return itemError as Either<ErrorInfo, never>
 	const items = transformedItems.map((i) => isRight(i) && i.right) as A[]
 	return right({
-		...(rest as Page<A>),
+		_object: Type.Page,
+		total_count: pageResponse.total_count,
 		next:
-			(pageResponse.next &&
+			(next &&
 				linkCollection({
 					_object: Type.CollectionRef,
-					link: pageResponse.next,
+					link: next,
 					ref_type: itemType as string,
 				})) ||
 			none,
 		prev:
-			(pageResponse.prev &&
+			(prev &&
 				linkCollection({
 					_object: Type.CollectionRef,
-					link: pageResponse.prev,
+					link: prev,
 					ref_type: itemType as string,
 				})) ||
 			none,

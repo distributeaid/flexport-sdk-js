@@ -28,13 +28,13 @@ export type Client = {
 	) => TE.TaskEither<ErrorInfo, A>
 }
 
-const fetchJSON = (fn: () => Promise<typeof Response>) =>
-	TE.tryCatch<ErrorInfo, ApiResponseObject>(
+const fetchJSON = <A extends ApiObject>(fn: () => Promise<typeof Response>) =>
+	TE.tryCatch<ErrorInfo, ApiResponseObject<A>>(
 		async () => fn().then(async (res) => res.json()),
 		(reason) => createError((reason as Error).message),
 	)
 
-const get = <A extends ApiObject>({
+const get = <A extends ApiObject, L>({
 	headers,
 	fetchImplementation,
 	responseTransformer,
@@ -42,11 +42,11 @@ const get = <A extends ApiObject>({
 }: {
 	url: string
 	headers: object
-	responseTransformer: (r: ApiResponseObject) => Either<ErrorInfo, A>
+	responseTransformer: (r: ApiResponseObject<A>) => Either<ErrorInfo, L>
 	fetchImplementation?: typeof fetch
 }) =>
 	pipe(
-		fetchJSON(() =>
+		fetchJSON<A>(() =>
 			(fetchImplementation || fetch)(url, {
 				method: 'GET',
 				headers,
@@ -66,9 +66,9 @@ export const createClient = ({
 	endpoint?: string
 	fetchImplementation?: typeof fetch
 }): Client => {
-	const authorizedGet = <A extends ApiObject>(
+	const authorizedGet = <A extends ApiObject, L>(
 		resource: string,
-		responseTransformer: (r: ApiResponseObject) => Either<ErrorInfo, A>,
+		responseTransformer: (r: ApiResponseObject<A>) => Either<ErrorInfo, L>,
 	) => {
 		const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
 		const url = resource.startsWith('http') ? resource : `${e}/${resource}`

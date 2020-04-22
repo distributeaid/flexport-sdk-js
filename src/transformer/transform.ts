@@ -35,7 +35,7 @@ const transformPage = <A extends ApiObject>(
 ): Either<ErrorInfo, Page<A>> => toPage<A>(nullToUndefined(o), type)
 
 export const transformResponse = <A extends ApiObject>() => (
-	response: ApiResponseObject,
+	response: ApiResponseObject<A>,
 ): Either<ErrorInfo, A> => {
 	if (response._object !== Type.Response) {
 		return left(createError(`Must pass an ${Type.Response}!`))
@@ -55,10 +55,16 @@ export const transformResponse = <A extends ApiObject>() => (
 
 export const transformPaginatedResponse = <A extends ApiObject>(
 	refType: Type,
-) => (response: ApiResponseObject): Either<ErrorInfo, Page<A>> => {
+) => (
+	response: ApiResponseObject<ApiPageObject<A>>,
+): Either<ErrorInfo, Page<A>> => {
 	if (response._object !== Type.Response) {
 		return left(createError(`Must pass an ${Type.Response}!`))
 	}
+	if (response.error)
+		return left(
+			createError(`${response.error.message} (${response.error.code})`),
+		)
 	if (response.data._object !== Type.Page) {
 		return left(
 			createError(`Must pass an ${Type.Response} with a ${Type.Page}!`),

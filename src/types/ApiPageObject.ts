@@ -20,6 +20,10 @@ export type ApiPageObject<A> = ApiObject & {
 	 */
 	next?: string
 	/**
+	 * total number of elements for this query
+	 */
+	total_count: number
+	/**
 	 * The resource data requested for a successful response.
 	 * Undefined on error.
 	 */
