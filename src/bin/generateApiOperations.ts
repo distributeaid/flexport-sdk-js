@@ -77,205 +77,184 @@ parseOpenAPI(
 
 		const deps: string[] = []
 
-		const clientMethods = ts.createObjectLiteral(
-			Object.entries(operations).map(([operationId, def]) => {
-				const params = []
-				if (def.parameters) {
-					params.push(
-						ts.createParameter(
-							undefined,
-							undefined,
-							undefined,
-							'params',
-							undefined,
-							ts.createTypeLiteralNode(
-								def.parameters?.map((param) => {
-									const { type, deps: d } = createPropertyDefinition(
-										param.schema,
-									)
-									deps.push(...d)
-									return ts.createPropertySignature(
-										[],
-										ts.createComputedPropertyName(
-											ts.createStringLiteral(param.name),
-										),
-										param.required
-											? undefined
-											: ts.createToken(ts.SyntaxKind.QuestionToken),
-										type,
-										undefined,
-									)
-								}),
-							),
-							undefined,
-						),
-					)
-				}
-
-				const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
-				const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
-				const paramProperties = []
-				if (pathParams?.length) {
-					paramProperties.push(
-						ts.createPropertyAssignment(
-							'path',
-							ts.createObjectLiteral(
-								pathParams.map((param) =>
-									ts.createPropertyAssignment(
-										ts.createComputedPropertyName(
-											ts.createStringLiteral(param.name),
-										),
-										ts.createElementAccess(
-											ts.createIdentifier('params'),
-											ts.createStringLiteral(param.name),
-										),
+		const functions = Object.entries(operations).map(([operationId, def]) => {
+			const params = []
+			if (def.parameters) {
+				params.push(
+					ts.createParameter(
+						undefined,
+						undefined,
+						undefined,
+						'params',
+						undefined,
+						ts.createTypeLiteralNode(
+							def.parameters?.map((param) => {
+								const { type, deps: d } = createPropertyDefinition(param.schema)
+								deps.push(...d)
+								return ts.createPropertySignature(
+									[],
+									ts.createComputedPropertyName(
+										ts.createStringLiteral(param.name),
 									),
-								),
-							),
+									param.required
+										? undefined
+										: ts.createToken(ts.SyntaxKind.QuestionToken),
+									type,
+									undefined,
+								)
+							}),
 						),
-					)
-				}
-				if (queryParams?.length) {
-					paramProperties.push(
-						ts.createPropertyAssignment(
-							'query',
-							ts.createObjectLiteral(
-								queryParams.map((param) =>
-									ts.createPropertyAssignment(
-										ts.createComputedPropertyName(
-											ts.createStringLiteral(param.name),
-										),
-										ts.createElementAccess(
-											ts.createIdentifier('params'),
-											ts.createStringLiteral(param.name),
-										),
-									),
-								),
-							),
-						),
-					)
-				}
+						undefined,
+					),
+				)
+			}
 
-				const apiClientArgumens = [
+			const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
+			const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
+			const paramProperties = []
+			if (pathParams?.length) {
+				paramProperties.push(
 					ts.createPropertyAssignment(
-						'method',
-						ts.createStringLiteral(def.method.toUpperCase()),
-					),
-					ts.createPropertyAssignment('path', ts.createStringLiteral(def.path)),
-				]
-				if (queryParams?.length || pathParams?.length) {
-					apiClientArgumens.push(
-						ts.createPropertyAssignment(
-							'params',
-							ts.createObjectLiteral(paramProperties),
+						'path',
+						ts.createObjectLiteral(
+							pathParams.map((param) =>
+								ts.createPropertyAssignment(
+									ts.createComputedPropertyName(
+										ts.createStringLiteral(param.name),
+									),
+									ts.createElementAccess(
+										ts.createIdentifier('params'),
+										ts.createStringLiteral(param.name),
+									),
+								),
+							),
 						),
-					)
-				}
+					),
+				)
+			}
+			if (queryParams?.length) {
+				paramProperties.push(
+					ts.createPropertyAssignment(
+						'query',
+						ts.createObjectLiteral(
+							queryParams.map((param) =>
+								ts.createPropertyAssignment(
+									ts.createComputedPropertyName(
+										ts.createStringLiteral(param.name),
+									),
+									ts.createElementAccess(
+										ts.createIdentifier('params'),
+										ts.createStringLiteral(param.name),
+									),
+								),
+							),
+						),
+					),
+				)
+			}
 
-				const returns = Object.entries(def.responses)
-					.map(([httpStatusCode, { content }]) =>
-						Object.entries(content).map(([contentType, { schema }]) => {
-							// Response is binary
-							if (schema.type === 'string' && schema.format === 'binary') {
-								return {
-									type: ts.createTypeReferenceNode('string', []),
-									deps: [],
-								}
+			const apiClientArgumens = [
+				ts.createPropertyAssignment(
+					'method',
+					ts.createStringLiteral(def.method.toUpperCase()),
+				),
+				ts.createPropertyAssignment('path', ts.createStringLiteral(def.path)),
+			]
+			if (queryParams?.length || pathParams?.length) {
+				apiClientArgumens.push(
+					ts.createPropertyAssignment(
+						'params',
+						ts.createObjectLiteral(paramProperties),
+					),
+				)
+			}
+
+			const returns = Object.entries(def.responses)
+				.map(([httpStatusCode, { content }]) =>
+					Object.entries(content).map(([contentType, { schema }]) => {
+						// Response is binary
+						if (schema.type === 'string' && schema.format === 'binary') {
+							return {
+								type: ts.createTypeReferenceNode('string', []),
+								deps: [],
 							}
-							// Response is paginated
-							if (
-								schema.properties?.data?.properties?._object?.example ===
-								Type.Page
-							) {
-								const ref =
-									schema.properties?.data?.properties?.data?.items?.$ref
-								let dep
-								let t: ts.TypeNode = ts.createKeywordTypeNode(
-									ts.SyntaxKind.UnknownKeyword,
-								)
-								if (ref) {
-									dep = ref.replace(/#\/components\/schemas\//, '')
-									t = ts.createTypeReferenceNode(dep, [])
-								}
-								return {
-									type: ts.createTypeReferenceNode(`ApiPageObject`, [t]),
-									deps: dep ? [dep] : [],
-								}
-							}
-							// Regular page response
-							if (schema.properties?._object.example === Type.Response) {
-								const ref = schema.properties?.data?.$ref
-								let dep
-								let t: ts.TypeNode = ts.createKeywordTypeNode(
-									ts.SyntaxKind.UnknownKeyword,
-								)
-								if (ref) {
-									dep = ref.replace(/#\/components\/schemas\//, '')
-									t = ts.createTypeReferenceNode(dep, [])
-								}
-								return {
-									type: t,
-									deps: dep ? [dep] : [],
-								}
-							}
-							// Object is returned (e.g. on updates)
-							if (schema.$ref) {
-								const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
-								const t = ts.createTypeReferenceNode(dep, [])
-								return {
-									type: t,
-									deps: dep ? [dep] : [],
-								}
-							}
-							return createObjectType(
-								`${operationId}HTTP${httpStatusCode}${contentType}Response`,
-								schema,
+						}
+						// Response is paginated
+						if (
+							schema.properties?.data?.properties?._object?.example ===
+							Type.Page
+						) {
+							const ref = schema.properties?.data?.properties?.data?.items?.$ref
+							let dep
+							let t: ts.TypeNode = ts.createKeywordTypeNode(
+								ts.SyntaxKind.UnknownKeyword,
 							)
-						}),
-					)
-					.flat()
-
-				deps.push(...returns.map(({ deps }) => deps).flat())
-				const returnTypes = returns.map(({ type }) => type).flat()
-
-				const m = ts.createPropertyAssignment(
-					operationId,
-					ts.createArrowFunction(
-						undefined,
-						undefined,
-						params,
-						undefined,
-						undefined,
-						ts.createCall(
-							ts.createIdentifier('apiClient'),
-							[ts.createUnionTypeNode(returnTypes)],
-							[ts.createObjectLiteral(apiClientArgumens)],
-						),
-					),
+							if (ref) {
+								dep = ref.replace(/#\/components\/schemas\//, '')
+								t = ts.createTypeReferenceNode(dep, [])
+							}
+							return {
+								type: ts.createTypeReferenceNode(`ApiPageObject`, [t]),
+								deps: dep ? [dep] : [],
+							}
+						}
+						// Regular page response
+						if (schema.properties?._object.example === Type.Response) {
+							const ref = schema.properties?.data?.$ref
+							let dep
+							let t: ts.TypeNode = ts.createKeywordTypeNode(
+								ts.SyntaxKind.UnknownKeyword,
+							)
+							if (ref) {
+								dep = ref.replace(/#\/components\/schemas\//, '')
+								t = ts.createTypeReferenceNode(dep, [])
+							}
+							return {
+								type: t,
+								deps: dep ? [dep] : [],
+							}
+						}
+						// Object is returned (e.g. on updates)
+						if (schema.$ref) {
+							const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
+							const t = ts.createTypeReferenceNode(dep, [])
+							return {
+								type: t,
+								deps: dep ? [dep] : [],
+							}
+						}
+						return createObjectType(
+							`${operationId}HTTP${httpStatusCode}${contentType}Response`,
+							schema,
+						)
+					}),
 				)
-				const comment = []
-				comment.push(def.summary)
-				comment.push(`${def.method.toUpperCase()} ${def.path}`)
-				if (def.description) {
-					comment.push('')
-					comment.push(def.description.trim())
-				}
-				comment.push(
-					Object.entries(def.responses).map(
-						([httpStatusCode, { description }]) =>
-							`- ${httpStatusCode}: ${description}`,
-					),
-				)
+				.flat()
 
-				ts.addSyntheticLeadingComment(
-					m,
-					ts.SyntaxKind.MultiLineCommentTrivia,
-					`*\n * ${comment.join('\n * ')} \n `,
-					true,
-				)
-				return m
-			}),
-		)
+			deps.push(...returns.map(({ deps }) => deps).flat())
+			const returnTypes = returns.map(({ type }) => type).flat()
+
+			const m = ts.createArrowFunction(
+				undefined,
+				undefined,
+				params,
+				undefined,
+				undefined,
+				ts.createCall(
+					ts.createIdentifier('apiClient'),
+					[ts.createUnionTypeNode(returnTypes)],
+					[ts.createObjectLiteral(apiClientArgumens)],
+				),
+			)
+
+			return ts.createVariableStatement(
+				undefined,
+				ts.createVariableDeclarationList(
+					[ts.createVariableDeclaration(operationId, undefined, m)],
+					ts.NodeFlags.Const,
+				),
+			)
+		})
 
 		const client = ts.createVariableStatement(
 			[ts.createToken(ts.SyntaxKind.ExportKeyword)],
@@ -299,7 +278,43 @@ parseOpenAPI(
 							],
 							undefined,
 							undefined,
-							clientMethods,
+							ts.createBlock(
+								[
+									...functions,
+									ts.createReturn(
+										ts.createObjectLiteral(
+											Object.entries(operations).map(([operationId, def]) => {
+												const p = ts.createShorthandPropertyAssignment(
+													operationId,
+												)
+												const comment = []
+												comment.push(def.summary)
+												if (def.description) {
+													comment.push('')
+													comment.push(def.description.trim())
+												}
+												comment.push('')
+												comment.push('Returns:')
+												comment.push(
+													Object.entries(def.responses).map(
+														([httpStatusCode, { description }]) =>
+															`- for status code ${httpStatusCode}: ${description}`,
+													),
+												)
+												ts.addSyntheticLeadingComment(
+													p,
+													ts.SyntaxKind.MultiLineCommentTrivia,
+													`*\n * ${comment.join('\n * ')} \n `,
+													true,
+												)
+												return p
+											}),
+											true,
+										),
+									),
+								],
+								true,
+							),
 						),
 					),
 				],

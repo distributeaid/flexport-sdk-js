@@ -23,28 +23,13 @@ import { TransportationMode } from './TransportationMode'
 import { ShipmentStatus } from './ShipmentStatus'
 import { Shipment } from './Shipment'
 /**
- * Auto-generated type. Do not change.
+ * Auto-generated code. Do not change.
  * @see https://api.flexport.com/docs/v2/flexport
  */
-export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
-	/**
-	 * Create and return a booking amendment - a request to change an existing booking.
-	 * POST /booking_amendments
-	 * - 200: The created booking amendment
-	 */
-	booking_amendment_create: () =>
-		apiClient<BookingAmendment>({
-			method: 'POST',
-			path: '/booking_amendments',
-		})
-	/**
-	 * List all booking line items
-	 * GET /booking_line_items
-	 *
-	 * Returns a list of booking line items
-	 * - 200: collection of booking line items
-	 */,
-	booking_line_item_index: (params: {
+export const flexportApiV2 = (apiClient: FlexportApiClient) => {
+	const booking_amendment_create = () =>
+		apiClient<BookingAmendment>({ method: 'POST', path: '/booking_amendments' })
+	const booking_line_item_index = (params: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'cargo_ready_date' | 'created_at'
@@ -64,36 +49,15 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Create a booking line item
-	 * POST /booking_line_items
-	 *
-	 * Creates and returns a booking line item
-	 * - 200: The created booking line item
-	 */,
-	booking_line_item_create: () =>
+	const booking_line_item_create = () =>
 		apiClient<BookingLineItem>({ method: 'POST', path: '/booking_line_items' })
-	/**
-	 * Retrieves the details of a single booking line item.
-	 * GET /booking_line_items/:id
-	 *
-	 * Returns a list of booking line items
-	 * - 200: A collection of booking line items
-	 */,
-	booking_line_item_show: (params: { ['id']: number }) =>
+	const booking_line_item_show = (params: { ['id']: number }) =>
 		apiClient<BookingLineItem>({
 			method: 'GET',
 			path: '/booking_line_items/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List all bookings
-	 * GET /bookings
-	 *
-	 * Returns a list of bookings.
-	 * - 200: collection of bookings
-	 */,
-	bookings_index: (params: {
+	const bookings_index = (params: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'cargo_ready_date' | 'created_at'
@@ -142,34 +106,15 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Create and return a booking
-	 * POST /bookings
-	 * - 200: The created booking
-	 */,
-	booking_create: () =>
+	const booking_create = () =>
 		apiClient<Booking>({ method: 'POST', path: '/bookings' })
-	/**
-	 * Retrieve a booking
-	 * GET /bookings/:id
-	 *
-	 * Retrieves the details of a single booking.
-	 * - 200: Success
-	 */,
-	booking_show: (params: { ['id']: number }) =>
+	const booking_show = (params: { ['id']: number }) =>
 		apiClient<Booking>({
 			method: 'GET',
 			path: '/bookings/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List commercial invoices
-	 * GET /commercial_invoices
-	 *
-	 * Returns a list of commercial invoices.
-	 * - 200: Success
-	 */,
-	commercial_invoices_index: (params: {
+	const commercial_invoices_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: string
@@ -187,27 +132,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a commercial invoice
-	 * GET /commercial_invoices/:id
-	 *
-	 * Retrieves the details of a single commercial invoice.
-	 * - 200: Success
-	 */,
-	commercial_invoices_show: (params: { ['id']: string }) =>
+	const commercial_invoices_show = (params: { ['id']: string }) =>
 		apiClient<CommercialInvoice>({
 			method: 'GET',
 			path: '/commercial_invoices/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List customs entry objects
-	 * GET /customs_entries
-	 *
-	 * Returns a list of customs entries.
-	 * - 200: collection of customs entries
-	 */,
-	customs_entry_index: (params: {
+	const customs_entry_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: string
@@ -223,27 +154,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a customs entry
-	 * GET /customs_entries/:id
-	 *
-	 * Retrieves the details of a single customs entry.
-	 * - 200: Success
-	 */,
-	customs_entries_show: (params: { ['id']: string }) =>
+	const customs_entries_show = (params: { ['id']: string }) =>
 		apiClient<CustomsEntry>({
 			method: 'GET',
 			path: '/customs_entries/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List document objects
-	 * GET /documents
-	 *
-	 * Returns a list of all documents associated with shipments.
-	 * - 200: collection of documents
-	 */,
-	documents_index: (params: {
+	const documents_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: string
@@ -271,27 +188,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a document
-	 * GET /documents/{id}
-	 *
-	 * Retrieves the details of a single document.
-	 * - 200: Success
-	 */,
-	documents_show: (params: { ['id']: string }) =>
+	const documents_show = (params: { ['id']: string }) =>
 		apiClient<Document>({
 			method: 'GET',
 			path: '/documents/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Download a document
-	 * GET /documents/{id}/download
-	 *
-	 * Retrieves the contents of a specified file. Returns the file as a stream of bytes.
-	 * - 200: Success
-	 */,
-	documents_download: (params: { ['id']: string }) =>
+	const documents_download = (params: { ['id']: string }) =>
 		apiClient<
 			| string
 			| string
@@ -310,14 +213,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 			path: '/documents/{id}/download',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List all webhook events
-	 * GET /events
-	 *
-	 * Returns a list of all events delivered to any webhook registered by this client
-	 * - 200: Success
-	 */,
-	events_index: (params: {
+	const events_index = (params: {
 		['f.occurred_at.gte']?: string
 		['f.occurred_at.lte']?: string
 		['f.data.shipment.id']?: number
@@ -335,23 +231,9 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a single webhook event
-	 * GET /events/:id
-	 *
-	 * Returns the webhook event with ID ":id"
-	 * - 200: Success
-	 */,
-	events_show: () =>
+	const events_show = () =>
 		apiClient<WebhookEvent>({ method: 'GET', path: '/events/:id' })
-	/**
-	 * List all invoices
-	 * GET /invoices
-	 *
-	 * Returns a list of invoices.
-	 * - 200: collection of invoices
-	 */,
-	invoice_index: (params: {
+	const invoice_index = (params: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'due_date'
@@ -390,27 +272,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve an invoice
-	 * GET /invoices/:id
-	 *
-	 * Retrieves the details of a single invoice
-	 * - 200: Success
-	 */,
-	invoices_show: (params: { ['id']: string }) =>
+	const invoices_show = (params: { ['id']: string }) =>
 		apiClient<Invoice>({
 			method: 'GET',
 			path: '/invoices/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List company objects
-	 * GET /network/companies
-	 *
-	 * Returns a list of companies in the network.
-	 * - 200: collection of companies
-	 */,
-	network_company_index: (params: {
+	const network_company_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.ref']?: string
@@ -429,45 +297,21 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Create a new company object
-	 * POST /network/companies
-	 * - 200: The created company
-	 */,
-	network_company_create: () =>
+	const network_company_create = () =>
 		apiClient<Company>({ method: 'POST', path: '/network/companies' })
-	/**
-	 * Retrieve a company
-	 * GET /network/companies/{id}
-	 *
-	 * Retrieves the details of a single company.
-	 * - 200: Success
-	 */,
-	network_company_show: (params: { ['id']: string }) =>
+	const network_company_show = (params: { ['id']: string }) =>
 		apiClient<Company>({
 			method: 'GET',
 			path: '/network/companies/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Update an existing company
-	 * PATCH /network/companies/{id}
-	 * - 200: The updated company
-	 */,
-	network_company_update: (params: { ['id']: string }) =>
+	const network_company_update = (params: { ['id']: string }) =>
 		apiClient<Company>({
 			method: 'PATCH',
 			path: '/network/companies/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List of company entity objects
-	 * GET /network/company_entities
-	 *
-	 * Returns a list of the company entity objects in the network.
-	 * - 200: collection of company entities
-	 */,
-	company_entity_index: (params: {
+	const company_entity_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.ref']?: string
@@ -487,48 +331,24 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Create and return a new company entity
-	 * POST /network/company_entities
-	 * - 200: The created company entity
-	 */,
-	network_company_entity_create: () =>
+	const network_company_entity_create = () =>
 		apiClient<CompanyEntity>({
 			method: 'POST',
 			path: '/network/company_entities',
 		})
-	/**
-	 * Retrieve a company entity
-	 * GET /network/company_entities/{id}
-	 *
-	 * Retrieves the details of a single company entity
-	 * - 200: Success
-	 */,
-	network_company_entity_show: (params: { ['id']: string }) =>
+	const network_company_entity_show = (params: { ['id']: string }) =>
 		apiClient<CompanyEntity>({
 			method: 'GET',
 			path: '/network/company_entities/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Update a company entity
-	 * PATCH /network/company_entities/{id}
-	 * - 200: Success
-	 */,
-	network_company_entity_update: (params: { ['id']: string }) =>
+	const network_company_entity_update = (params: { ['id']: string }) =>
 		apiClient<CompanyEntity>({
 			method: 'PATCH',
 			path: '/network/company_entities/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List contact objects
-	 * GET /network/contacts
-	 *
-	 * Returns a list of contacts in the network.
-	 * - 200: collection of contacts
-	 */,
-	network_contact_index: (params: {
+	const network_contact_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.company_ref']?: string
@@ -548,45 +368,21 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Create a new contact object
-	 * POST /network/contacts
-	 * - 200: The created contact
-	 */,
-	network_contact_create: () =>
+	const network_contact_create = () =>
 		apiClient<Contact>({ method: 'POST', path: '/network/contacts' })
-	/**
-	 * Retrieve a contact
-	 * GET /network/contacts/{id}
-	 *
-	 * Retrieves the details of a single contact.
-	 * - 200: Success
-	 */,
-	network_contact_show: (params: { ['id']: string }) =>
+	const network_contact_show = (params: { ['id']: string }) =>
 		apiClient<Contact>({
 			method: 'GET',
 			path: '/network/contacts/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Update an existing contact
-	 * PATCH /network/contacts/{id}
-	 * - 200: The updated contact
-	 */,
-	network_contact_update: (params: { ['id']: string }) =>
+	const network_contact_update = (params: { ['id']: string }) =>
 		apiClient<Contact>({
 			method: 'PATCH',
 			path: '/network/contacts/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List of location objects
-	 * GET /network/locations
-	 *
-	 * Returns a list of location objects in the network.
-	 * - 200: collection of locations
-	 */,
-	location_index: (params: {
+	const location_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.ref']?: string
@@ -611,54 +407,23 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Create and return a new location
-	 * POST /network/locations
-	 * - 200: The created location
-	 */,
-	network_location_create: () =>
+	const network_location_create = () =>
 		apiClient<Location>({ method: 'POST', path: '/network/locations' })
-	/**
-	 * Retrieve a location by id
-	 * GET /network/locations/{id}
-	 *
-	 * Retrieves the details of a single location
-	 * - 200: Success
-	 */,
-	network_location_show: (params: { ['id']: string }) =>
+	const network_location_show = (params: { ['id']: string }) =>
 		apiClient<Location>({
 			method: 'GET',
 			path: '/network/locations/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Update a network location
-	 * PATCH /network/locations/{id}
-	 * - 200: Success
-	 */,
-	location_update: (params: { ['id']: string }) =>
+	const location_update = (params: { ['id']: string }) =>
 		apiClient<Location>({
 			method: 'PATCH',
 			path: '/network/locations/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Retrieve your company
-	 * GET /network/me/companies
-	 *
-	 * Retrieves the details of your own organization.
-	 * - 200: Success
-	 */,
-	network_company_me: () =>
+	const network_company_me = () =>
 		apiClient<Company>({ method: 'GET', path: '/network/me/companies' })
-	/**
-	 * List all containers.
-	 * GET /ocean/shipment_container_legs
-	 *
-	 * Returns a list of containers. The containers are sorted descending by creation date.
-	 * - 200: Success
-	 */,
-	ocean_shipment_legs_index: (params: {
+	const ocean_shipment_legs_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.leg.id']?: number
@@ -679,26 +444,12 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a shipment leg
-	 * GET /ocean/shipment_container_legs/:id
-	 *
-	 * Returns a list of containers. The containers are sorted descending by creation date.
-	 * - 200: Success
-	 */,
-	ocean_shipment_legs_show: () =>
+	const ocean_shipment_legs_show = () =>
 		apiClient<OceanShipmentContainerLeg>({
 			method: 'GET',
 			path: '/ocean/shipment_container_legs/:id',
 		})
-	/**
-	 * List all containers.
-	 * GET /ocean/shipment_containers
-	 *
-	 * Returns a list of containers. The containers are sorted descending by creation date.
-	 * - 200: Success
-	 */,
-	container_list: (params: {
+	const container_list = (params: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: number
@@ -719,25 +470,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a container.
-	 * GET /ocean/shipment_containers/:id
-	 *
-	 * Retrieves the details of a single container.
-	 * - 200: Success
-	 */,
-	container_show: (params: { ['id']: string }) =>
+	const container_show = (params: { ['id']: string }) =>
 		apiClient<ShipmentContainer>({
 			method: 'GET',
 			path: '/ocean/shipment_containers/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List of ports
-	 * GET /ports
-	 * - 200: collection of ports
-	 */,
-	ports_index: (params: {
+	const ports_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.port_type']?: 'airport' | 'railport' | 'roadport' | 'seaport'
@@ -755,14 +494,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * List all products for a client
-	 * GET /products
-	 *
-	 * Returns a list of all products belonging to this client
-	 * - 200: Success
-	 */,
-	product_index: (params: {
+	const product_index = (params: {
 		['f.sku']?: string
 		['f.archived_at.exists']?: boolean
 		['f.product_properties.TYPE']?: string
@@ -778,49 +510,21 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Create a product
-	 * POST /products
-	 *
-	 * Create a new product for this client using the request payload
-	 * - 200: Created
-	 */,
-	product_create: () =>
+	const product_create = () =>
 		apiClient<Product>({ method: 'POST', path: '/products' })
-	/**
-	 * Retrieve a single product
-	 * GET /products/{id}
-	 *
-	 * Returns the client's product with this ID
-	 * - 200: Success
-	 */,
-	product_show: (params: { ['id']: string }) =>
+	const product_show = (params: { ['id']: string }) =>
 		apiClient<Product>({
 			method: 'GET',
 			path: '/products/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Update a product
-	 * PATCH /products/{id}
-	 *
-	 * Update this product to represent the request payload
-	 * - 200: Updated
-	 */,
-	product_update: (params: { ['id']: string }) =>
+	const product_update = (params: { ['id']: string }) =>
 		apiClient<Product>({
 			method: 'PATCH',
 			path: '/products/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List all purchase order line items
-	 * GET /purchase_order_line_items
-	 *
-	 * Returns a list of purchase order line items
-	 * - 200: collection of purchase order line items
-	 */,
-	purchase_order_line_item_index: (params: {
+	const purchase_order_line_item_index = (params: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'cargo_ready_date' | 'created_at'
@@ -844,27 +548,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a purchase order line item
-	 * GET /purchase_order_line_items/:id
-	 *
-	 * Returns the details of a purchase order line item
-	 * - 200: collection of purchase order line items
-	 */,
-	purchase_order_line_item_show: (params: { ['id']: number }) =>
+	const purchase_order_line_item_show = (params: { ['id']: number }) =>
 		apiClient<PurchaseOrderLineItem>({
 			method: 'GET',
 			path: '/purchase_order_line_items/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List all purchase orders
-	 * GET /purchase_orders
-	 *
-	 * Returns a list of purchase orders
-	 * - 200: collection of purchase orders
-	 */,
-	purchase_order_index: (params: {
+	const purchase_order_index = (params: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'id'
@@ -896,27 +586,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a purchase order
-	 * GET /purchase_orders/:id
-	 *
-	 * Retrieves the details of a single purchase order.
-	 * - 200: Success
-	 */,
-	purchase_order_show: (params: { ['id']: number }) =>
+	const purchase_order_show = (params: { ['id']: number }) =>
 		apiClient<PurchaseOrder>({
 			method: 'GET',
 			path: '/purchase_orders/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * List all shipment route legs
-	 * GET /shipment_legs
-	 *
-	 * Returns a list of shipment route legs. The legs are sorted descending by creation date.
-	 * - 200: Success
-	 */,
-	shipment_leg_index: (params: {
+	const shipment_leg_index = (params: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: number
@@ -934,21 +610,9 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a shipment route leg
-	 * GET /shipment_legs/:id
-	 * - 200: Success
-	 */,
-	shipment_leg_show: () =>
+	const shipment_leg_show = () =>
 		apiClient<ShipmentLeg>({ method: 'GET', path: '/shipment_legs/:id' })
-	/**
-	 * List all shipments
-	 * GET /shipments
-	 *
-	 * Returns a list of shipments.
-	 * - 200: collection of shipments
-	 */,
-	shipment_index: (params: {
+	const shipment_index = (params: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'id' | 'transportation_mode' | 'status' | 'updated_at'
@@ -991,28 +655,469 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => ({
 				},
 			},
 		})
-	/**
-	 * Retrieve a shipment
-	 * GET /shipments/:id
-	 *
-	 * Retrieves the details of a single shipment.
-	 * - 200: Success
-	 */,
-	shipment_show: (params: { ['id']: string }) =>
+	const shipment_show = (params: { ['id']: string }) =>
 		apiClient<Shipment>({
 			method: 'GET',
 			path: '/shipments/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	/**
-	 * Update an existing shipment
-	 * PATCH /shipments/:id
-	 * - 200: The updated shipment
-	 */,
-	shipment_update: (params: { ['id']: number }) =>
+	const shipment_update = (params: { ['id']: number }) =>
 		apiClient<Shipment>({
 			method: 'PATCH',
 			path: '/shipments/:id',
 			params: { path: { ['id']: params['id'] } },
-		}),
-})
+		})
+	return {
+		/**
+		 * Create and return a booking amendment - a request to change an existing booking.
+		 *
+		 * Returns:
+		 * - for status code 200: The created booking amendment
+		 */
+		booking_amendment_create,
+		/**
+		 * List all booking line items
+		 *
+		 * Returns a list of booking line items
+		 *
+		 * Returns:
+		 * - for status code 200: collection of booking line items
+		 */
+		booking_line_item_index,
+		/**
+		 * Create a booking line item
+		 *
+		 * Creates and returns a booking line item
+		 *
+		 * Returns:
+		 * - for status code 200: The created booking line item
+		 */
+		booking_line_item_create,
+		/**
+		 * Retrieves the details of a single booking line item.
+		 *
+		 * Returns a list of booking line items
+		 *
+		 * Returns:
+		 * - for status code 200: A collection of booking line items
+		 */
+		booking_line_item_show,
+		/**
+		 * List all bookings
+		 *
+		 * Returns a list of bookings.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of bookings
+		 */
+		bookings_index,
+		/**
+		 * Create and return a booking
+		 *
+		 * Returns:
+		 * - for status code 200: The created booking
+		 */
+		booking_create,
+		/**
+		 * Retrieve a booking
+		 *
+		 * Retrieves the details of a single booking.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		booking_show,
+		/**
+		 * List commercial invoices
+		 *
+		 * Returns a list of commercial invoices.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		commercial_invoices_index,
+		/**
+		 * Retrieve a commercial invoice
+		 *
+		 * Retrieves the details of a single commercial invoice.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		commercial_invoices_show,
+		/**
+		 * List customs entry objects
+		 *
+		 * Returns a list of customs entries.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of customs entries
+		 */
+		customs_entry_index,
+		/**
+		 * Retrieve a customs entry
+		 *
+		 * Retrieves the details of a single customs entry.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		customs_entries_show,
+		/**
+		 * List document objects
+		 *
+		 * Returns a list of all documents associated with shipments.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of documents
+		 */
+		documents_index,
+		/**
+		 * Retrieve a document
+		 *
+		 * Retrieves the details of a single document.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		documents_show,
+		/**
+		 * Download a document
+		 *
+		 * Retrieves the contents of a specified file. Returns the file as a stream of bytes.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		documents_download,
+		/**
+		 * List all webhook events
+		 *
+		 * Returns a list of all events delivered to any webhook registered by this client
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		events_index,
+		/**
+		 * Retrieve a single webhook event
+		 *
+		 * Returns the webhook event with ID ":id"
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		events_show,
+		/**
+		 * List all invoices
+		 *
+		 * Returns a list of invoices.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of invoices
+		 */
+		invoice_index,
+		/**
+		 * Retrieve an invoice
+		 *
+		 * Retrieves the details of a single invoice
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		invoices_show,
+		/**
+		 * List company objects
+		 *
+		 * Returns a list of companies in the network.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of companies
+		 */
+		network_company_index,
+		/**
+		 * Create a new company object
+		 *
+		 * Returns:
+		 * - for status code 200: The created company
+		 */
+		network_company_create,
+		/**
+		 * Retrieve a company
+		 *
+		 * Retrieves the details of a single company.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		network_company_show,
+		/**
+		 * Update an existing company
+		 *
+		 * Returns:
+		 * - for status code 200: The updated company
+		 */
+		network_company_update,
+		/**
+		 * List of company entity objects
+		 *
+		 * Returns a list of the company entity objects in the network.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of company entities
+		 */
+		company_entity_index,
+		/**
+		 * Create and return a new company entity
+		 *
+		 * Returns:
+		 * - for status code 200: The created company entity
+		 */
+		network_company_entity_create,
+		/**
+		 * Retrieve a company entity
+		 *
+		 * Retrieves the details of a single company entity
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		network_company_entity_show,
+		/**
+		 * Update a company entity
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		network_company_entity_update,
+		/**
+		 * List contact objects
+		 *
+		 * Returns a list of contacts in the network.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of contacts
+		 */
+		network_contact_index,
+		/**
+		 * Create a new contact object
+		 *
+		 * Returns:
+		 * - for status code 200: The created contact
+		 */
+		network_contact_create,
+		/**
+		 * Retrieve a contact
+		 *
+		 * Retrieves the details of a single contact.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		network_contact_show,
+		/**
+		 * Update an existing contact
+		 *
+		 * Returns:
+		 * - for status code 200: The updated contact
+		 */
+		network_contact_update,
+		/**
+		 * List of location objects
+		 *
+		 * Returns a list of location objects in the network.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of locations
+		 */
+		location_index,
+		/**
+		 * Create and return a new location
+		 *
+		 * Returns:
+		 * - for status code 200: The created location
+		 */
+		network_location_create,
+		/**
+		 * Retrieve a location by id
+		 *
+		 * Retrieves the details of a single location
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		network_location_show,
+		/**
+		 * Update a network location
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		location_update,
+		/**
+		 * Retrieve your company
+		 *
+		 * Retrieves the details of your own organization.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		network_company_me,
+		/**
+		 * List all containers.
+		 *
+		 * Returns a list of containers. The containers are sorted descending by creation date.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		ocean_shipment_legs_index,
+		/**
+		 * Retrieve a shipment leg
+		 *
+		 * Returns a list of containers. The containers are sorted descending by creation date.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		ocean_shipment_legs_show,
+		/**
+		 * List all containers.
+		 *
+		 * Returns a list of containers. The containers are sorted descending by creation date.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		container_list,
+		/**
+		 * Retrieve a container.
+		 *
+		 * Retrieves the details of a single container.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		container_show,
+		/**
+		 * List of ports
+		 *
+		 * Returns:
+		 * - for status code 200: collection of ports
+		 */
+		ports_index,
+		/**
+		 * List all products for a client
+		 *
+		 * Returns a list of all products belonging to this client
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		product_index,
+		/**
+		 * Create a product
+		 *
+		 * Create a new product for this client using the request payload
+		 *
+		 * Returns:
+		 * - for status code 200: Created
+		 */
+		product_create,
+		/**
+		 * Retrieve a single product
+		 *
+		 * Returns the client's product with this ID
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		product_show,
+		/**
+		 * Update a product
+		 *
+		 * Update this product to represent the request payload
+		 *
+		 * Returns:
+		 * - for status code 200: Updated
+		 */
+		product_update,
+		/**
+		 * List all purchase order line items
+		 *
+		 * Returns a list of purchase order line items
+		 *
+		 * Returns:
+		 * - for status code 200: collection of purchase order line items
+		 */
+		purchase_order_line_item_index,
+		/**
+		 * Retrieve a purchase order line item
+		 *
+		 * Returns the details of a purchase order line item
+		 *
+		 * Returns:
+		 * - for status code 200: collection of purchase order line items
+		 */
+		purchase_order_line_item_show,
+		/**
+		 * List all purchase orders
+		 *
+		 * Returns a list of purchase orders
+		 *
+		 * Returns:
+		 * - for status code 200: collection of purchase orders
+		 */
+		purchase_order_index,
+		/**
+		 * Retrieve a purchase order
+		 *
+		 * Retrieves the details of a single purchase order.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		purchase_order_show,
+		/**
+		 * List all shipment route legs
+		 *
+		 * Returns a list of shipment route legs. The legs are sorted descending by creation date.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		shipment_leg_index,
+		/**
+		 * Retrieve a shipment route leg
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		shipment_leg_show,
+		/**
+		 * List all shipments
+		 *
+		 * Returns a list of shipments.
+		 *
+		 * Returns:
+		 * - for status code 200: collection of shipments
+		 */
+		shipment_index,
+		/**
+		 * Retrieve a shipment
+		 *
+		 * Retrieves the details of a single shipment.
+		 *
+		 * Returns:
+		 * - for status code 200: Success
+		 */
+		shipment_show,
+		/**
+		 * Update an existing shipment
+		 *
+		 * Returns:
+		 * - for status code 200: The updated shipment
+		 */
+		shipment_update,
+	}
+}
