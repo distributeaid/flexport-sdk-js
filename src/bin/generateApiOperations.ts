@@ -263,7 +263,7 @@ parseOpenAPI(
 				comment.push(
 					Object.entries(def.responses).map(
 						([httpStatusCode, { description }]) =>
-							`On status code ${httpStatusCode}: ${description}`,
+							`- ${httpStatusCode}: ${description}`,
 					),
 				)
 
