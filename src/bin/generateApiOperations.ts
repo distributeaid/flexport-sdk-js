@@ -79,6 +79,7 @@ parseOpenAPI(
 
 		const functions = Object.entries(operations).map(([operationId, def]) => {
 			const params = []
+			const paramsRequired = def.parameters?.find(({ required }) => required)
 			if (def.parameters) {
 				params.push(
 					ts.createParameter(
@@ -86,7 +87,9 @@ parseOpenAPI(
 						undefined,
 						undefined,
 						'params',
-						undefined,
+						paramsRequired
+							? undefined
+							: ts.createToken(ts.SyntaxKind.QuestionToken),
 						ts.createTypeLiteralNode(
 							def.parameters?.map((param) => {
 								const { type, deps: d } = createPropertyDefinition(param.schema)
@@ -122,8 +125,11 @@ parseOpenAPI(
 									ts.createComputedPropertyName(
 										ts.createStringLiteral(param.name),
 									),
-									ts.createElementAccess(
+									ts.createElementAccessChain(
 										ts.createIdentifier('params'),
+										paramsRequired
+											? undefined
+											: ts.createToken(ts.SyntaxKind.QuestionDotToken),
 										ts.createStringLiteral(param.name),
 									),
 								),
@@ -142,8 +148,11 @@ parseOpenAPI(
 									ts.createComputedPropertyName(
 										ts.createStringLiteral(param.name),
 									),
-									ts.createElementAccess(
+									ts.createElementAccessChain(
 										ts.createIdentifier('params'),
+										paramsRequired
+											? undefined
+											: ts.createToken(ts.SyntaxKind.QuestionDotToken),
 										ts.createStringLiteral(param.name),
 									),
 								),

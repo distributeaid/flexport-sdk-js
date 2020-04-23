@@ -29,7 +29,7 @@ import { Shipment } from './Shipment'
 export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 	const booking_amendment_create = () =>
 		apiClient<BookingAmendment>({ method: 'POST', path: '/booking_amendments' })
-	const booking_line_item_index = (params: {
+	const booking_line_item_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'cargo_ready_date' | 'created_at'
@@ -41,11 +41,11 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/booking_line_items',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['sort']: params['sort'],
-					['direction']: params['direction'],
-					['f.purchase_order.id']: params['f.purchase_order.id'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['sort']: params?.['sort'],
+					['direction']: params?.['direction'],
+					['f.purchase_order.id']: params?.['f.purchase_order.id'],
 				},
 			},
 		})
@@ -57,7 +57,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/booking_line_items/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const bookings_index = (params: {
+	const bookings_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'cargo_ready_date' | 'created_at'
@@ -83,26 +83,26 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/bookings',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['sort']: params['sort'],
-					['direction']: params['direction'],
-					['f.status']: params['f.status'],
-					['f.shipment.id']: params['f.shipment.id'],
-					['f.consignee_entity_ref']: params['f.consignee_entity_ref'],
-					['f.shipper_entity_ref']: params['f.shipper_entity_ref'],
-					['f.cargo_ready_date']: params['f.cargo_ready_date'],
-					['f.cargo_ready_date.gt']: params['f.cargo_ready_date.gt'],
-					['f.cargo_ready_date.gte']: params['f.cargo_ready_date.gte'],
-					['f.cargo_ready_date.lt']: params['f.cargo_ready_date.lt'],
-					['f.cargo_ready_date.lte']: params['f.cargo_ready_date.lte'],
-					['f.created_at']: params['f.created_at'],
-					['f.created_at.gt']: params['f.created_at.gt'],
-					['f.created_at.gte']: params['f.created_at.gte'],
-					['f.created_at.lt']: params['f.created_at.lt'],
-					['f.created_at.lte']: params['f.created_at.lte'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['sort']: params?.['sort'],
+					['direction']: params?.['direction'],
+					['f.status']: params?.['f.status'],
+					['f.shipment.id']: params?.['f.shipment.id'],
+					['f.consignee_entity_ref']: params?.['f.consignee_entity_ref'],
+					['f.shipper_entity_ref']: params?.['f.shipper_entity_ref'],
+					['f.cargo_ready_date']: params?.['f.cargo_ready_date'],
+					['f.cargo_ready_date.gt']: params?.['f.cargo_ready_date.gt'],
+					['f.cargo_ready_date.gte']: params?.['f.cargo_ready_date.gte'],
+					['f.cargo_ready_date.lt']: params?.['f.cargo_ready_date.lt'],
+					['f.cargo_ready_date.lte']: params?.['f.cargo_ready_date.lte'],
+					['f.created_at']: params?.['f.created_at'],
+					['f.created_at.gt']: params?.['f.created_at.gt'],
+					['f.created_at.gte']: params?.['f.created_at.gte'],
+					['f.created_at.lt']: params?.['f.created_at.lt'],
+					['f.created_at.lte']: params?.['f.created_at.lte'],
 					['f.metadata.YOUR_METADATA_KEY']:
-						params['f.metadata.YOUR_METADATA_KEY'],
+						params?.['f.metadata.YOUR_METADATA_KEY'],
 				},
 			},
 		})
@@ -114,7 +114,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/bookings/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const commercial_invoices_index = (params: {
+	const commercial_invoices_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: string
@@ -125,10 +125,10 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/commercial_invoices',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.shipment.id']: params['f.shipment.id'],
-					['f.invoice_number']: params['f.invoice_number'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.shipment.id']: params?.['f.shipment.id'],
+					['f.invoice_number']: params?.['f.invoice_number'],
 				},
 			},
 		})
@@ -138,7 +138,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/commercial_invoices/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const customs_entry_index = (params: {
+	const customs_entry_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: string
@@ -148,9 +148,9 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/customs_entries',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.shipment.id']: params['f.shipment.id'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.shipment.id']: params?.['f.shipment.id'],
 				},
 			},
 		})
@@ -160,7 +160,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/customs_entries/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const documents_index = (params: {
+	const documents_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: string
@@ -176,15 +176,15 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/documents',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.shipment.id']: params['f.shipment.id'],
-					['f.document_type']: params['f.document_type'],
-					['f.archived_at.exists']: params['f.archived_at.exists'],
-					['f.uploaded_at.gt']: params['f.uploaded_at.gt'],
-					['f.uploaded_at.lt']: params['f.uploaded_at.lt'],
-					['f.uploaded_at.gte']: params['f.uploaded_at.gte'],
-					['f.uploaded_at.lte']: params['f.uploaded_at.lte'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.shipment.id']: params?.['f.shipment.id'],
+					['f.document_type']: params?.['f.document_type'],
+					['f.archived_at.exists']: params?.['f.archived_at.exists'],
+					['f.uploaded_at.gt']: params?.['f.uploaded_at.gt'],
+					['f.uploaded_at.lt']: params?.['f.uploaded_at.lt'],
+					['f.uploaded_at.gte']: params?.['f.uploaded_at.gte'],
+					['f.uploaded_at.lte']: params?.['f.uploaded_at.lte'],
 				},
 			},
 		})
@@ -213,7 +213,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/documents/{id}/download',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const events_index = (params: {
+	const events_index = (params?: {
 		['f.occurred_at.gte']?: string
 		['f.occurred_at.lte']?: string
 		['f.data.shipment.id']?: number
@@ -224,16 +224,16 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/events',
 			params: {
 				query: {
-					['f.occurred_at.gte']: params['f.occurred_at.gte'],
-					['f.occurred_at.lte']: params['f.occurred_at.lte'],
-					['f.data.shipment.id']: params['f.data.shipment.id'],
-					['f.data.resource._object']: params['f.data.resource._object'],
+					['f.occurred_at.gte']: params?.['f.occurred_at.gte'],
+					['f.occurred_at.lte']: params?.['f.occurred_at.lte'],
+					['f.data.shipment.id']: params?.['f.data.shipment.id'],
+					['f.data.resource._object']: params?.['f.data.resource._object'],
 				},
 			},
 		})
 	const events_show = () =>
 		apiClient<WebhookEvent>({ method: 'GET', path: '/events/:id' })
-	const invoice_index = (params: {
+	const invoice_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'due_date'
@@ -254,21 +254,21 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/invoices',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['sort']: params['sort'],
-					['direction']: params['direction'],
-					['f.status']: params['f.status'],
-					['f.shipment.id']: params['f.shipment.id'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['sort']: params?.['sort'],
+					['direction']: params?.['direction'],
+					['f.status']: params?.['f.status'],
+					['f.shipment.id']: params?.['f.shipment.id'],
 					['f.billed_directly_to_client']:
-						params['f.billed_directly_to_client'],
-					['f.entity.id']: params['f.entity.id'],
-					['f.entity.ref']: params['f.entity.ref'],
-					['f.name']: params['f.name'],
-					['f.issued_at.gt']: params['f.issued_at.gt'],
-					['f.issued_at.lt']: params['f.issued_at.lt'],
-					['f.client_id']: params['f.client_id'],
-					['f.shipment_id']: params['f.shipment_id'],
+						params?.['f.billed_directly_to_client'],
+					['f.entity.id']: params?.['f.entity.id'],
+					['f.entity.ref']: params?.['f.entity.ref'],
+					['f.name']: params?.['f.name'],
+					['f.issued_at.gt']: params?.['f.issued_at.gt'],
+					['f.issued_at.lt']: params?.['f.issued_at.lt'],
+					['f.client_id']: params?.['f.client_id'],
+					['f.shipment_id']: params?.['f.shipment_id'],
 				},
 			},
 		})
@@ -278,7 +278,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/invoices/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const network_company_index = (params: {
+	const network_company_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.ref']?: string
@@ -289,11 +289,11 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/network/companies',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.ref']: params['f.ref'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.ref']: params?.['f.ref'],
 					['f.metadata.YOUR_METADATA_KEY']:
-						params['f.metadata.YOUR_METADATA_KEY'],
+						params?.['f.metadata.YOUR_METADATA_KEY'],
 				},
 			},
 		})
@@ -311,7 +311,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/network/companies/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const company_entity_index = (params: {
+	const company_entity_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.ref']?: string
@@ -323,11 +323,11 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/network/company_entities',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.ref']: params['f.ref'],
-					['f.company_id']: params['f.company_id'],
-					['f.company_ref']: params['f.company_ref'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.ref']: params?.['f.ref'],
+					['f.company_id']: params?.['f.company_id'],
+					['f.company_ref']: params?.['f.company_ref'],
 				},
 			},
 		})
@@ -348,7 +348,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/network/company_entities/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const network_contact_index = (params: {
+	const network_contact_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.company_ref']?: string
@@ -360,11 +360,11 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/network/contacts',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.company_ref']: params['f.company_ref'],
-					['f.company.id']: params['f.company.id'],
-					['f.location.id']: params['f.location.id'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.company_ref']: params?.['f.company_ref'],
+					['f.company.id']: params?.['f.company.id'],
+					['f.location.id']: params?.['f.location.id'],
 				},
 			},
 		})
@@ -382,7 +382,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/network/contacts/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const location_index = (params: {
+	const location_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.ref']?: string
@@ -396,14 +396,14 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/network/locations',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.ref']: params['f.ref'],
-					['f.company_ref']: params['f.company_ref'],
-					['f.company.id']: params['f.company.id'],
-					['f.contact.id']: params['f.contact.id'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.ref']: params?.['f.ref'],
+					['f.company_ref']: params?.['f.company_ref'],
+					['f.company.id']: params?.['f.company.id'],
+					['f.contact.id']: params?.['f.contact.id'],
 					['f.metadata.YOUR_METADATA_KEY']:
-						params['f.metadata.YOUR_METADATA_KEY'],
+						params?.['f.metadata.YOUR_METADATA_KEY'],
 				},
 			},
 		})
@@ -423,7 +423,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		})
 	const network_company_me = () =>
 		apiClient<Company>({ method: 'GET', path: '/network/me/companies' })
-	const ocean_shipment_legs_index = (params: {
+	const ocean_shipment_legs_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.leg.id']?: number
@@ -435,12 +435,12 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/ocean/shipment_container_legs',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.leg.id']: params['f.leg.id'],
-					['f.shipment_container.id']: params['f.shipment_container.id'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.leg.id']: params?.['f.leg.id'],
+					['f.shipment_container.id']: params?.['f.shipment_container.id'],
 					['f.shipment_container.container_number']:
-						params['f.shipment_container.container_number'],
+						params?.['f.shipment_container.container_number'],
 				},
 			},
 		})
@@ -449,7 +449,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			method: 'GET',
 			path: '/ocean/shipment_container_legs/:id',
 		})
-	const container_list = (params: {
+	const container_list = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: number
@@ -461,12 +461,12 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/ocean/shipment_containers',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.shipment.id']: params['f.shipment.id'],
-					['f.container_number']: params['f.container_number'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.shipment.id']: params?.['f.shipment.id'],
+					['f.container_number']: params?.['f.container_number'],
 					['f.metadata.YOUR_METADATA_KEY']:
-						params['f.metadata.YOUR_METADATA_KEY'],
+						params?.['f.metadata.YOUR_METADATA_KEY'],
 				},
 			},
 		})
@@ -476,7 +476,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/ocean/shipment_containers/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const ports_index = (params: {
+	const ports_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.port_type']?: 'airport' | 'railport' | 'roadport' | 'seaport'
@@ -487,14 +487,14 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/ports',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.port_type']: params['f.port_type'],
-					['f.unlocode']: params['f.unlocode'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.port_type']: params?.['f.port_type'],
+					['f.unlocode']: params?.['f.unlocode'],
 				},
 			},
 		})
-	const product_index = (params: {
+	const product_index = (params?: {
 		['f.sku']?: string
 		['f.archived_at.exists']?: boolean
 		['f.product_properties.TYPE']?: string
@@ -504,9 +504,9 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/products',
 			params: {
 				query: {
-					['f.sku']: params['f.sku'],
-					['f.archived_at.exists']: params['f.archived_at.exists'],
-					['f.product_properties.TYPE']: params['f.product_properties.TYPE'],
+					['f.sku']: params?.['f.sku'],
+					['f.archived_at.exists']: params?.['f.archived_at.exists'],
+					['f.product_properties.TYPE']: params?.['f.product_properties.TYPE'],
 				},
 			},
 		})
@@ -524,7 +524,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/products/{id}',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const purchase_order_line_item_index = (params: {
+	const purchase_order_line_item_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'cargo_ready_date' | 'created_at'
@@ -538,13 +538,13 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/purchase_order_line_items',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['sort']: params['sort'],
-					['direction']: params['direction'],
-					['f.purchase_order.id']: params['f.purchase_order.id'],
-					['f.line_item_number']: params['f.line_item_number'],
-					['f.item_key']: params['f.item_key'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['sort']: params?.['sort'],
+					['direction']: params?.['direction'],
+					['f.purchase_order.id']: params?.['f.purchase_order.id'],
+					['f.line_item_number']: params?.['f.line_item_number'],
+					['f.item_key']: params?.['f.item_key'],
 				},
 			},
 		})
@@ -554,7 +554,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/purchase_order_line_items/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const purchase_order_index = (params: {
+	const purchase_order_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'id'
@@ -572,17 +572,17 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/purchase_orders',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['sort']: params['sort'],
-					['direction']: params['direction'],
-					['f.archived_at.exists']: params['f.archived_at.exists'],
-					['f.status']: params['f.status'],
-					['f.buyer_ref']: params['f.buyer_ref'],
-					['f.seller_ref']: params['f.seller_ref'],
-					['f.role']: params['f.role'],
-					['f.shipment.id']: params['f.shipment.id'],
-					['f.name']: params['f.name'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['sort']: params?.['sort'],
+					['direction']: params?.['direction'],
+					['f.archived_at.exists']: params?.['f.archived_at.exists'],
+					['f.status']: params?.['f.status'],
+					['f.buyer_ref']: params?.['f.buyer_ref'],
+					['f.seller_ref']: params?.['f.seller_ref'],
+					['f.role']: params?.['f.role'],
+					['f.shipment.id']: params?.['f.shipment.id'],
+					['f.name']: params?.['f.name'],
 				},
 			},
 		})
@@ -592,7 +592,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/purchase_orders/:id',
 			params: { path: { ['id']: params['id'] } },
 		})
-	const shipment_leg_index = (params: {
+	const shipment_leg_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['f.shipment.id']?: number
@@ -603,16 +603,16 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/shipment_legs',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['f.shipment.id']: params['f.shipment.id'],
-					['f.transportation_mode']: params['f.transportation_mode'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['f.shipment.id']: params?.['f.shipment.id'],
+					['f.transportation_mode']: params?.['f.transportation_mode'],
 				},
 			},
 		})
 	const shipment_leg_show = () =>
 		apiClient<ShipmentLeg>({ method: 'GET', path: '/shipment_legs/:id' })
-	const shipment_index = (params: {
+	const shipment_index = (params?: {
 		['page']?: number
 		['per']?: number
 		['sort']?: 'id' | 'transportation_mode' | 'status' | 'updated_at'
@@ -635,23 +635,23 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			path: '/shipments',
 			params: {
 				query: {
-					['page']: params['page'],
-					['per']: params['per'],
-					['sort']: params['sort'],
-					['direction']: params['direction'],
-					['f.transportation_mode']: params['f.transportation_mode'],
-					['f.status']: params['f.status'],
-					['f.statuses.any']: params['f.statuses.any'],
-					['f.container_number']: params['f.container_number'],
-					['f.purchase_order']: params['f.purchase_order'],
-					['f.sku']: params['f.sku'],
-					['f.updated_at.gt']: params['f.updated_at.gt'],
-					['f.updated_at.lt']: params['f.updated_at.lt'],
-					['f.master_bill_number']: params['f.master_bill_number'],
-					['f.house_bill_number']: params['f.house_bill_number'],
-					['f.consignee_external_ref']: params['f.consignee_external_ref'],
+					['page']: params?.['page'],
+					['per']: params?.['per'],
+					['sort']: params?.['sort'],
+					['direction']: params?.['direction'],
+					['f.transportation_mode']: params?.['f.transportation_mode'],
+					['f.status']: params?.['f.status'],
+					['f.statuses.any']: params?.['f.statuses.any'],
+					['f.container_number']: params?.['f.container_number'],
+					['f.purchase_order']: params?.['f.purchase_order'],
+					['f.sku']: params?.['f.sku'],
+					['f.updated_at.gt']: params?.['f.updated_at.gt'],
+					['f.updated_at.lt']: params?.['f.updated_at.lt'],
+					['f.master_bill_number']: params?.['f.master_bill_number'],
+					['f.house_bill_number']: params?.['f.house_bill_number'],
+					['f.consignee_external_ref']: params?.['f.consignee_external_ref'],
 					['f.metadata.YOUR_METADATA_KEY']:
-						params['f.metadata.YOUR_METADATA_KEY'],
+						params?.['f.metadata.YOUR_METADATA_KEY'],
 				},
 			},
 		})

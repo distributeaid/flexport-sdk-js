@@ -34,7 +34,9 @@ export const v2Client = ({
 			method,
 			headers: headers({ apiKey }),
 			query: params?.query,
-		}).then(async (res: any) => res.json())
+		})
+			.then(async (res: any) => res.json())
+			.then((res: any) => res.data)
 	}
 	return flexportApiV2(clientImplementation)
 }
