@@ -39,7 +39,7 @@ export const makeLifter = (name: string, schema: Item) => {
 		'Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.',
 	]
 	if (schema.description) {
-		comment.push(schema.description) // FIXME: remove line
+		comment.push(schema.description) // FIXME: remove line and make actual use of schema
 	}
 	ts.addSyntheticLeadingComment(
 		lifter,
