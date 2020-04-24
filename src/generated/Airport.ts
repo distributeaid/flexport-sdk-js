@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type Airport = {
 	/**
 	 * Type of the object
@@ -28,4 +27,10 @@ export type Airport = {
 	 * @example "KLAX"
 	 */
 	readonly icao_code?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftAirport = (original: Airport) => {
+	return original
 }

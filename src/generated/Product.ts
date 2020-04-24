@@ -1,11 +1,10 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { ProductProperty } from './ProductProperty'
 import { HsCode } from './HsCode'
 import { ProductClassification } from './ProductClassification'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type Product = {
 	/**
 	 * Type of the object
@@ -69,4 +68,10 @@ export type Product = {
 	 * JSON-schema: array
 	 */
 	readonly classifications?: ProductClassification[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftProduct = (original: Product) => {
+	return original
 }

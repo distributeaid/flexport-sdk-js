@@ -1,10 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { ContainerCounts } from './ContainerCounts'
 import { Cargo } from './Cargo'
 import { Metadata } from './Metadata'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CreateBookingAmendment = {
 	/**
 	 * Identifier of the existing booking to be modified
@@ -56,4 +55,12 @@ export type CreateBookingAmendment = {
 	readonly new_cargo_ready_date?: string
 	readonly new_cargo?: Cargo
 	readonly new_metadata?: Metadata
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreateBookingAmendment = (
+	original: CreateBookingAmendment,
+) => {
+	return original
 }

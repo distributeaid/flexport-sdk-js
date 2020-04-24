@@ -1,9 +1,8 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { ContainerCounts } from './ContainerCounts'
 import { CreateBookingHsCode } from './CreateBookingHsCode'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CreateOceanBooking = {
 	/**
 	 * Always required. Whether the booking is for an LCL shipment. If false, the booking is FCL. If true, the booking is LCL.
@@ -77,4 +76,10 @@ export type CreateOceanBooking = {
 	 * @example "USLAX"
 	 */
 	readonly destination_port_loc_code?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreateOceanBooking = (original: CreateOceanBooking) => {
+	return original
 }

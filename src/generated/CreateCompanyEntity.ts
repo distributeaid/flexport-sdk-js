@@ -1,9 +1,8 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { AddressForRequestBody } from './AddressForRequestBody'
 import { WriteVatNumber } from './WriteVatNumber'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CreateCompanyEntity = {
 	/**
 	 * Always required. Legal name of the new company entity
@@ -44,4 +43,10 @@ export type CreateCompanyEntity = {
 	 * JSON-schema: array
 	 */
 	readonly vat_numbers?: WriteVatNumber[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreateCompanyEntity = (original: CreateCompanyEntity) => {
+	return original
 }

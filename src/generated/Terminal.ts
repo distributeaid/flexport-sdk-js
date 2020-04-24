@@ -1,9 +1,10 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Address } from './Address'
 /**
  * Name and address of a specific terminal within a port or airport.  Possibly null
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
  */
 export type Terminal = {
 	/**
@@ -18,4 +19,10 @@ export type Terminal = {
 	 */
 	readonly name?: string
 	readonly address?: Address
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftTerminal = (original: Terminal) => {
+	return original
 }

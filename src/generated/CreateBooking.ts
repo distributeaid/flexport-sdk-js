@@ -1,12 +1,11 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { CreateOceanBooking } from './CreateOceanBooking'
 import { CreateAirBooking } from './CreateAirBooking'
 import { CreateTruckingBooking } from './CreateTruckingBooking'
 import { Cargo } from './Cargo'
 import { Metadata } from './Metadata'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CreateBooking = {
 	/**
 	 * Always required. Name of the booking.
@@ -81,4 +80,10 @@ export type CreateBooking = {
 	 */
 	readonly special_instructions?: string
 	readonly metadata?: Metadata
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreateBooking = (original: CreateBooking) => {
+	return original
 }

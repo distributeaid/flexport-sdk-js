@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type CommercialInvoiceCollectionRef = {
 	readonly _object: Type.CollectionRef
 	/**
@@ -15,4 +14,12 @@ export type CommercialInvoiceCollectionRef = {
 	 * @example "https://api.flexport.com/commercial_invoices?f.shipment.id=2983"
 	 */
 	readonly link: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCommercialInvoiceCollectionRef = (
+	original: CommercialInvoiceCollectionRef,
+) => {
+	return original
 }

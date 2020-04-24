@@ -1,13 +1,12 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Address } from './Address'
 import { Airport } from './Airport'
 import { Railport } from './Railport'
 import { Roadport } from './Roadport'
 import { Seaport } from './Seaport'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type Place = {
 	/**
 	 * Type of the object
@@ -25,4 +24,10 @@ export type Place = {
 	 * JSON-schema: array
 	 */
 	readonly details?: (Airport | Railport | Roadport | Seaport)[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftPlace = (original: Place) => {
+	return original
 }

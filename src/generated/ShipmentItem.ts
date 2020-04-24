@@ -1,11 +1,10 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Weight } from './Weight'
 import { Volume } from './Volume'
 import { Product } from './Product'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type ShipmentItem = {
 	/**
 	 * Type of the object
@@ -29,4 +28,10 @@ export type ShipmentItem = {
 	 */
 	readonly purchase_order_number?: string
 	readonly product?: Product
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShipmentItem = (original: ShipmentItem) => {
+	return original
 }

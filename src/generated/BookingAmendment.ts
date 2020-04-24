@@ -1,13 +1,12 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { ContainerCounts } from './ContainerCounts'
 import { Address } from './Address'
 import { Place } from './Place'
 import { Cargo } from './Cargo'
 import { Metadata } from './Metadata'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type BookingAmendment = {
 	/**
 	 * Type of the object
@@ -79,4 +78,10 @@ export type BookingAmendment = {
 	 *
 	 */
 	readonly new_metadata?: Metadata
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftBookingAmendment = (original: BookingAmendment) => {
+	return original
 }

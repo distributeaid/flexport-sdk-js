@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type VatNumber = {
 	/**
 	 * Type of the object
@@ -20,4 +19,10 @@ export type VatNumber = {
 	 * @example "GB 123456789"
 	 */
 	readonly number?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftVatNumber = (original: VatNumber) => {
+	return original
 }

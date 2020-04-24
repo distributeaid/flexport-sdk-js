@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type Money = {
 	/**
 	 * Type of the object. Always /money for this object.
@@ -18,4 +17,10 @@ export type Money = {
 	 * @example "USD"
 	 */
 	readonly currency_code?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftMoney = (original: Money) => {
+	return original
 }

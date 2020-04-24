@@ -1,9 +1,8 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { WriteProductProperty } from './WriteProductProperty'
 import { WriteProductClassification } from './WriteProductClassification'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type WriteProduct = {
 	/**
 	 * Always required. Name of product
@@ -45,4 +44,10 @@ export type WriteProduct = {
 	 * JSON-schema: array
 	 */
 	readonly classifications?: WriteProductClassification[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftWriteProduct = (original: WriteProduct) => {
+	return original
 }

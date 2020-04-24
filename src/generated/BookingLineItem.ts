@@ -1,10 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { BookingRef } from './BookingRef'
 import { PurchaseOrderLineItemRef } from './PurchaseOrderLineItemRef'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type BookingLineItem = {
 	/**
 	 * Type of the object
@@ -25,4 +24,10 @@ export type BookingLineItem = {
 	 * JSON-schema: integer
 	 */
 	readonly units?: number
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftBookingLineItem = (original: BookingLineItem) => {
+	return original
 }

@@ -1,9 +1,8 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { ShipmentRef } from './ShipmentRef'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CustomsEntry = {
 	/**
 	 * Type of the object. Always /customs_entry for this object.
@@ -33,4 +32,10 @@ export type CustomsEntry = {
 	 */
 	readonly release_date?: string
 	readonly shipment?: ShipmentRef
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCustomsEntry = (original: CustomsEntry) => {
+	return original
 }

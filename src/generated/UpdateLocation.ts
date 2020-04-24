@@ -1,8 +1,7 @@
-import { AddressForRequestBody } from './AddressForRequestBody'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { AddressForRequestBody } from './AddressForRequestBody'
 export type UpdateLocation = {
 	/**
 	 * New name of the location
@@ -33,4 +32,10 @@ export type UpdateLocation = {
 	 * @example {"color":["blue","green"]}
 	 */
 	readonly metadata?: object
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftUpdateLocation = (original: UpdateLocation) => {
+	return original
 }

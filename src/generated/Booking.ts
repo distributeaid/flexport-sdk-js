@@ -1,3 +1,6 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { ShipmentRef } from './ShipmentRef'
 import { CompanyEntity } from './CompanyEntity'
@@ -9,10 +12,6 @@ import { Address } from './Address'
 import { Cargo } from './Cargo'
 import { BookingLineItemCollectionRef } from './BookingLineItemCollectionRef'
 import { Metadata } from './Metadata'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type Booking = {
 	/**
 	 * Unique identifier for the booking
@@ -78,4 +77,10 @@ export type Booking = {
 	 */
 	readonly created_at?: string
 	readonly metadata?: Metadata
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftBooking = (original: Booking) => {
+	return original
 }

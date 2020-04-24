@@ -1,3 +1,6 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Address } from './Address'
 import { Money } from './Money'
@@ -5,10 +8,6 @@ import { Weight } from './Weight'
 import { Volume } from './Volume'
 import { CommercialInvoiceLineItem } from './CommercialInvoiceLineItem'
 import { ShipmentRef } from './ShipmentRef'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CommercialInvoice = {
 	/**
 	 * Type of the object. Always /commercial_invoice for this object.
@@ -45,4 +44,10 @@ export type CommercialInvoice = {
 	 */
 	readonly line_items?: CommercialInvoiceLineItem[]
 	readonly shipment?: ShipmentRef
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCommercialInvoice = (original: CommercialInvoice) => {
+	return original
 }

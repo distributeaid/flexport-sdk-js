@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type Length = {
 	/**
 	 * String representing the object’s type. Always `/quantity/length` for this object.
@@ -22,4 +21,10 @@ export type Length = {
 	 * @example "cm"
 	 */
 	readonly unit?: 'cm' | 'in'
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftLength = (original: Length) => {
+	return original
 }

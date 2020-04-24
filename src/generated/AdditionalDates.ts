@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type AdditionalDates = {
 	/**
@@ -52,4 +51,10 @@ export type AdditionalDates = {
 	 * @example "1970-01-01T10:05:08+01:00"
 	 */
 	readonly delivery_completed?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftAdditionalDates = (original: AdditionalDates) => {
+	return original
 }

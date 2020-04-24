@@ -1,3 +1,6 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Company } from './Company'
 import { TransportationMode } from './TransportationMode'
@@ -5,10 +8,6 @@ import { Place } from './Place'
 import { Address } from './Address'
 import { PurchaseOrderLineItemCollectionRef } from './PurchaseOrderLineItemCollectionRef'
 import { Metadata } from './Metadata'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type PurchaseOrder = {
 	/**
 	 * A unique identifier for the purchase order
@@ -88,4 +87,10 @@ export type PurchaseOrder = {
 	readonly updated_at?: string
 	readonly line_items?: PurchaseOrderLineItemCollectionRef
 	readonly metadata?: Metadata
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftPurchaseOrder = (original: PurchaseOrder) => {
+	return original
 }

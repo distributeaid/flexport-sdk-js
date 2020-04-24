@@ -1,11 +1,10 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { ContainerCounts } from './ContainerCounts'
 import { Place } from './Place'
 import { BookingHsCode } from './BookingHsCode'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type OceanBookingDetail = {
 	/**
 	 * Type of the object
@@ -49,4 +48,10 @@ export type OceanBookingDetail = {
 	 * JSON-schema: array
 	 */
 	readonly product_descriptions?: BookingHsCode[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftOceanBookingDetail = (original: OceanBookingDetail) => {
+	return original
 }

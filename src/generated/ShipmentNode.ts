@@ -1,10 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Place } from './Place'
 import { Terminal } from './Terminal'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type ShipmentNode = {
 	/**
 	 * Type of the object
@@ -16,4 +15,10 @@ export type ShipmentNode = {
 	readonly tags?: string[]
 	readonly place: Place
 	readonly terminal?: Terminal
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShipmentNode = (original: ShipmentNode) => {
+	return original
 }

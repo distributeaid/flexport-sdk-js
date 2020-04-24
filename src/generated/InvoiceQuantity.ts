@@ -1,8 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 /**
  * Describes the number of units used to calculate the price of a line item
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
  */
 export type InvoiceQuantity = {
 	/**
@@ -23,4 +24,10 @@ export type InvoiceQuantity = {
 	 * @example "'kg', 'bill of lading', 'USD'"
 	 */
 	readonly qualifier?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftInvoiceQuantity = (original: InvoiceQuantity) => {
+	return original
 }

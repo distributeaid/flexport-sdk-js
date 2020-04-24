@@ -1,9 +1,8 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Money } from './Money'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CreditMemo = {
 	/**
 	 * The type of the object
@@ -28,4 +27,10 @@ export type CreditMemo = {
 	 * @example "2019-07-12T20:40:11.572Z"
 	 */
 	readonly credited_at?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreditMemo = (original: CreditMemo) => {
+	return original
 }

@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type UpdateShipment = {
 	/**
@@ -10,4 +9,10 @@ export type UpdateShipment = {
 	 * @example {"purchase_order":["12345"]}
 	 */
 	readonly metadata?: object
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftUpdateShipment = (original: UpdateShipment) => {
+	return original
 }

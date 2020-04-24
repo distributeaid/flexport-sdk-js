@@ -1,3 +1,6 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { FlexportApiClient } from '../FlexportApiClient'
 import { ApiPageObject } from '../types/ApiPageObject'
 import { BookingAmendment } from './BookingAmendment'
@@ -22,10 +25,6 @@ import { ShipmentLeg } from './ShipmentLeg'
 import { TransportationMode } from './TransportationMode'
 import { ShipmentStatus } from './ShipmentStatus'
 import { Shipment } from './Shipment'
-/**
- * Auto-generated code. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 	const booking_amendment_create = () =>
 		apiClient<BookingAmendment>({ method: 'POST', path: '/booking_amendments' })

@@ -1,9 +1,8 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { HsCode } from './HsCode'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type BookingHsCode = {
 	/**
 	 * String representing the object’s type. Always `/product_descriptions` for this object.
@@ -31,4 +30,10 @@ export type BookingHsCode = {
 	 */
 	readonly description_for_export_customs_locale?: string
 	readonly hs_code?: HsCode
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftBookingHsCode = (original: BookingHsCode) => {
+	return original
 }

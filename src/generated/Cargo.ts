@@ -1,11 +1,12 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Volume } from './Volume'
 import { Weight } from './Weight'
 import { ShippingUnit } from './ShippingUnit'
 /**
  * With cargo you have two options, detailed or simple. These are both expressed directly on the cargo object. For detailed cargo, `shipping_units` is required, and `weight` and `volume` is required in the `cargo` object or the `shipping_units` object. For simple cargo, `shipping_units` is required, but only one should be specified, and `weight` and `volume` are required in the `cargo` object.
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
  */
 export type Cargo = {
 	/**
@@ -66,4 +67,10 @@ export type Cargo = {
 		| 'contained_in_equipment'
 		| 'contained_in_battery_powered_vehicles'
 	)[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCargo = (original: Cargo) => {
+	return original
 }

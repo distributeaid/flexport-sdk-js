@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type AddressForRequestBody = {
 	/**
@@ -38,4 +37,10 @@ export type AddressForRequestBody = {
 	 * @example "USAL2"
 	 */
 	readonly unlocode?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftAddressForRequestBody = (original: AddressForRequestBody) => {
+	return original
 }

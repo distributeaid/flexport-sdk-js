@@ -1,10 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Location } from './Location'
 import { Company } from './Company'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type Contact = {
 	/**
 	 * Type of the object. Always /network/contact for this object.
@@ -33,4 +32,10 @@ export type Contact = {
 	 */
 	readonly locations?: Location[]
 	readonly company?: Company
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftContact = (original: Contact) => {
+	return original
 }

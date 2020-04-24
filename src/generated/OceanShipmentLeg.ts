@@ -1,9 +1,8 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { ContainerLegCollectionRef } from './ContainerLegCollectionRef'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type OceanShipmentLeg = {
 	readonly _object: Type.OceanShipmentLeg
 	/**
@@ -27,4 +26,10 @@ export type OceanShipmentLeg = {
 	 */
 	readonly voyage_number?: string
 	readonly container_legs?: ContainerLegCollectionRef
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftOceanShipmentLeg = (original: OceanShipmentLeg) => {
+	return original
 }

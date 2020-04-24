@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type Roadport = {
 	/**
 	 * Type of the object
@@ -13,4 +12,10 @@ export type Roadport = {
 	 * @example "3901"
 	 */
 	readonly port_code?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftRoadport = (original: Roadport) => {
+	return original
 }

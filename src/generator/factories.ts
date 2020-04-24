@@ -132,16 +132,13 @@ export const makeType = (name: string, schema: Item) => {
 	if (schema.description) comment.push(schema.description.trim())
 	if (schema.example)
 		comment.push('', `@example ${JSON.stringify(schema.example)}`, '')
-	comment.push(
-		'Auto-generated type. Do not change.',
-		'@see https://api.flexport.com/docs/v2/flexport',
-	)
-	ts.addSyntheticLeadingComment(
-		t,
-		ts.SyntaxKind.MultiLineCommentTrivia,
-		`*\n * ${comment.join('\n * ')} \n `,
-		true,
-	)
+	if (comment.length)
+		ts.addSyntheticLeadingComment(
+			t,
+			ts.SyntaxKind.MultiLineCommentTrivia,
+			`*\n * ${comment.join('\n * ')} \n `,
+			true,
+		)
 	return {
 		type: t,
 		deps: [...new Set(def.deps)],
@@ -157,8 +154,6 @@ export const makeImport = (name: string) =>
 			ts.createNamedImports([
 				ts.createImportSpecifier(undefined, ts.createIdentifier(name)),
 			]),
-			undefined,
-			// ts.createNamespaceImport(ts.createIdentifier('salami'))
 		),
 		ts.createLiteral(`./${name}`),
 	)

@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type CreateBookingLineItem = {
 	/**
@@ -24,4 +23,10 @@ export type CreateBookingLineItem = {
 	 * @example 234
 	 */
 	readonly units: number
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreateBookingLineItem = (original: CreateBookingLineItem) => {
+	return original
 }

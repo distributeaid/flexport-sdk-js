@@ -1,10 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { FileMetadata } from './FileMetadata'
 import { ShipmentRef } from './ShipmentRef'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type Document = {
 	/**
 	 * Type of the object. Always /document for this object.
@@ -36,4 +35,10 @@ export type Document = {
 	readonly archived_at?: string
 	readonly file_metadata?: FileMetadata
 	readonly shipment?: ShipmentRef
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftDocument = (original: Document) => {
+	return original
 }

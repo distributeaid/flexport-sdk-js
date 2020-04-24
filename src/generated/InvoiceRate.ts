@@ -1,8 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 /**
  * Describes the rate per unit used to calculate the price of a line item
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
  */
 export type InvoiceRate = {
 	/**
@@ -23,4 +24,10 @@ export type InvoiceRate = {
 	 * @example "'USD', '% Drayage Base'"
 	 */
 	readonly qualifier?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftInvoiceRate = (original: InvoiceRate) => {
+	return original
 }

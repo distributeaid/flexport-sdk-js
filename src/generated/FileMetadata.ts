@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type FileMetadata = {
 	/**
 	 * Type of the object. Always /file_metadata for this object.
@@ -21,4 +20,10 @@ export type FileMetadata = {
 	 * JSON-schema: string (string)
 	 */
 	readonly uploaded_at?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftFileMetadata = (original: FileMetadata) => {
+	return original
 }

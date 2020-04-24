@@ -1,11 +1,10 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Money } from './Money'
 import { InvoiceRate } from './InvoiceRate'
 import { InvoiceQuantity } from './InvoiceQuantity'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type InvoiceItem = {
 	/**
 	 * Type of the object.
@@ -40,4 +39,10 @@ export type InvoiceItem = {
 	readonly amount?: Money
 	readonly rate?: InvoiceRate
 	readonly quantity?: InvoiceQuantity
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftInvoiceItem = (original: InvoiceItem) => {
+	return original
 }

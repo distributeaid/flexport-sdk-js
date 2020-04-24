@@ -1,9 +1,10 @@
 /**
+ * Auto-generated file. Do not change.
+ */
+/**
  *
  * @example "in_transit_to_arrival_port"
  *
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
  */
 export type ShipmentStatus =
 	| 'seller_location'
@@ -13,3 +14,9 @@ export type ShipmentStatus =
 	| 'arrival_port'
 	| 'in_transit_to_final_destination'
 	| 'final_destination'
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShipmentStatus = (original: ShipmentStatus) => {
+	return original
+}

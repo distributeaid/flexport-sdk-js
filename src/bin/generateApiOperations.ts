@@ -3,49 +3,12 @@ import * as path from 'path'
 import { printNode } from '../generator/printNode'
 import * as ts from 'typescript'
 import { promises as fs } from 'fs'
+import { createPropertyDefinition } from '../generator/factories'
 import {
-	Item,
-	createPropertyDefinition,
-	createObjectType,
-} from '../generator/factories'
-import { Type } from '../generated/Type'
-
-type Responses = {
-	[key: string]: {
-		description: string
-		content: {
-			[key: string]: {
-				schema: Item
-			}
-		}
-	}
-}
-
-type Parameters = {
-	name: string
-	description: string
-	in: string
-	required?: boolean
-	schema: Item
-}[]
-
-type Operation = {
-	operationId: string
-	summary: string
-	description?: string
-	tags?: string[]
-	parameters?: Parameters
-	responses: Responses
-}
-
-type ApiMethodInfo = {
-	summary: string
-	description?: string
-	method: string
-	path: string
-	parameters?: Parameters
-	responses: Responses
-}
+	ApiMethodInfo,
+	OpenAPIv3Operation,
+	createReturns,
+} from '../generator/apiClientFactories'
 
 parseOpenAPI(
 	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
@@ -53,7 +16,7 @@ parseOpenAPI(
 )
 	.then(async (f) => {
 		const operations = Object.entries(
-			f.paths as { [key: string]: { [key: string]: Operation } },
+			f.paths as { [key: string]: { [key: string]: OpenAPIv3Operation } },
 		).reduce(
 			(ops, [path, operations]) => ({
 				...ops,
@@ -178,70 +141,9 @@ parseOpenAPI(
 				)
 			}
 
-			const returns = Object.entries(def.responses)
-				.map(([httpStatusCode, { content }]) =>
-					Object.entries(content).map(([contentType, { schema }]) => {
-						// Response is binary
-						if (schema.type === 'string' && schema.format === 'binary') {
-							return {
-								type: ts.createTypeReferenceNode('string', []),
-								deps: [],
-							}
-						}
-						// Response is paginated
-						if (
-							schema.properties?.data?.properties?._object?.example ===
-							Type.Page
-						) {
-							const ref = schema.properties?.data?.properties?.data?.items?.$ref
-							let dep
-							let t: ts.TypeNode = ts.createKeywordTypeNode(
-								ts.SyntaxKind.UnknownKeyword,
-							)
-							if (ref) {
-								dep = ref.replace(/#\/components\/schemas\//, '')
-								t = ts.createTypeReferenceNode(dep, [])
-							}
-							return {
-								type: ts.createTypeReferenceNode(`ApiPageObject`, [t]),
-								deps: dep ? [dep] : [],
-							}
-						}
-						// Regular page response
-						if (schema.properties?._object.example === Type.Response) {
-							const ref = schema.properties?.data?.$ref
-							let dep
-							let t: ts.TypeNode = ts.createKeywordTypeNode(
-								ts.SyntaxKind.UnknownKeyword,
-							)
-							if (ref) {
-								dep = ref.replace(/#\/components\/schemas\//, '')
-								t = ts.createTypeReferenceNode(dep, [])
-							}
-							return {
-								type: t,
-								deps: dep ? [dep] : [],
-							}
-						}
-						// Object is returned (e.g. on updates)
-						if (schema.$ref) {
-							const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
-							const t = ts.createTypeReferenceNode(dep, [])
-							return {
-								type: t,
-								deps: dep ? [dep] : [],
-							}
-						}
-						return createObjectType(
-							`${operationId}HTTP${httpStatusCode}${contentType}Response`,
-							schema,
-						)
-					}),
-				)
-				.flat()
-
-			deps.push(...returns.map(({ deps }) => deps).flat())
-			const returnTypes = returns.map(({ type }) => type).flat()
+			// Generate the returned types of the operation
+			const { types: returns, deps: returnDeps } = createReturns(def)
+			deps.push(...returnDeps)
 
 			const m = ts.createArrowFunction(
 				undefined,
@@ -251,7 +153,7 @@ parseOpenAPI(
 				undefined,
 				ts.createCall(
 					ts.createIdentifier('apiClient'),
-					[ts.createUnionTypeNode(returnTypes)],
+					[ts.createUnionTypeNode(returns)],
 					[ts.createObjectLiteral(apiClientArgumens)],
 				),
 			)
@@ -331,19 +233,7 @@ parseOpenAPI(
 			),
 		)
 
-		const comment = []
-		comment.push(
-			'Auto-generated code. Do not change.',
-			'@see https://api.flexport.com/docs/v2/flexport',
-		)
-		ts.addSyntheticLeadingComment(
-			client,
-			ts.SyntaxKind.MultiLineCommentTrivia,
-			`*\n * ${comment.join('\n * ')} \n `,
-			true,
-		)
-
-		// Write index.ts
+		// Write apiClient
 		const c = [
 			ts.createImportDeclaration(
 				undefined,
@@ -390,9 +280,13 @@ parseOpenAPI(
 		]
 			.map(printNode)
 			.join('\n')
+
+		const comment = []
+		comment.push('Auto-generated file. Do not change.')
+
 		await fs.writeFile(
 			path.join(process.cwd(), 'src', 'generated', 'apiClient.ts'),
-			c,
+			[`/**\n * ${comment.join('\n * ')} \n */`, c].join('\n'),
 			'utf8',
 		)
 	})

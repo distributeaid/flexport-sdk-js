@@ -1,10 +1,9 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Address } from './Address'
 import { VatNumber } from './VatNumber'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type CompanyEntity = {
 	/**
 	 * Type of the object
@@ -30,4 +29,10 @@ export type CompanyEntity = {
 	 * JSON-schema: array
 	 */
 	readonly vat_numbers?: VatNumber[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCompanyEntity = (original: CompanyEntity) => {
+	return original
 }

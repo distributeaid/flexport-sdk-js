@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type CreateContact = {
 	/**
@@ -31,4 +30,10 @@ export type CreateContact = {
 	 * @example "2UXaj4xcHoW8nwh9UVOMpw"
 	 */
 	readonly company_id?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreateContact = (original: CreateContact) => {
+	return original
 }

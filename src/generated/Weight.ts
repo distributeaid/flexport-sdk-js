@@ -1,8 +1,7 @@
-import { Type } from './Type'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { Type } from './Type'
 export type Weight = {
 	/**
 	 * String representing the object’s type. Always `/quantity/weight` for this object.
@@ -21,4 +20,10 @@ export type Weight = {
 	 * JSON-schema: string
 	 */
 	readonly unit?: 'kg' | 'lbs'
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftWeight = (original: Weight) => {
+	return original
 }

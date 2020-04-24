@@ -1,3 +1,6 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Metadata } from './Metadata'
 import { Type } from './Type'
 import { TransportationMode } from './TransportationMode'
@@ -14,10 +17,6 @@ import { CustomsEntryCollectionRef } from './CustomsEntryCollectionRef'
 import { CommercialInvoiceCollectionRef } from './CommercialInvoiceCollectionRef'
 import { DocumentCollectionRef } from './DocumentCollectionRef'
 import { BookingRef } from './BookingRef'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type Shipment = {
 	readonly metadata?: Metadata
 	/**
@@ -202,4 +201,10 @@ export type Shipment = {
 	 * @example "1970-01-01T10:05:08+01:00"
 	 */
 	readonly archived_at?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShipment = (original: Shipment) => {
+	return original
 }

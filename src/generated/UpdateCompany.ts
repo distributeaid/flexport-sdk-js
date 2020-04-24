@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type UpdateCompany = {
 	/**
@@ -17,4 +16,10 @@ export type UpdateCompany = {
 	 * @example "zoomit_ref"
 	 */
 	readonly ref?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftUpdateCompany = (original: UpdateCompany) => {
+	return original
 }

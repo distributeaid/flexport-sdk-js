@@ -1,11 +1,12 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Volume } from './Volume'
 import { Weight } from './Weight'
 import { Length } from './Length'
 /**
  * For detailed cargo, `shipping_units` is required. For simple cargo, `shipping_units` is required, but only one should be specified.
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
  */
 export type ShippingUnit = {
 	/**
@@ -45,4 +46,10 @@ export type ShippingUnit = {
 	 * @example "pallet"
 	 */
 	readonly unit_type?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShippingUnit = (original: ShippingUnit) => {
+	return original
 }

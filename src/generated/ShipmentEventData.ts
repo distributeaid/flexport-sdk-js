@@ -1,13 +1,12 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Shipment } from './Shipment'
 import { ShipmentLeg } from './ShipmentLeg'
 import { OceanShipmentContainerLeg } from './OceanShipmentContainerLeg'
 import { ShipmentNode } from './ShipmentNode'
 import { ShipmentContainer } from './ShipmentContainer'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type ShipmentEventData = {
 	/**
 	 * Type of the object
@@ -26,4 +25,10 @@ export type ShipmentEventData = {
 	 * JSON-schema: array
 	 */
 	readonly containers?: ShipmentContainer[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShipmentEventData = (original: ShipmentEventData) => {
+	return original
 }

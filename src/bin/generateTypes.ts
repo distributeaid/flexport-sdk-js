@@ -9,6 +9,7 @@ import {
 	makeIndex,
 } from '../generator/factories'
 import { ApiTypes } from '../generator/knowTypes'
+import { makeLifter } from '../generator/lifterFactories'
 
 parseOpenAPI(
 	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
@@ -23,9 +24,16 @@ parseOpenAPI(
 			Object.entries(f.components.schemas as { [key: string]: any }).map(
 				async ([name, schema]) => {
 					const { type, deps } = makeType(name, schema)
+					const { lifter, deps: lifterDeps } = makeLifter(name, schema)
+					const comment = []
+					comment.push('Auto-generated file. Do not change.')
 					const nodes = [
-						...deps.map((dep) => printNode(makeImport(dep))),
+						`/**\n * ${comment.join('\n * ')} \n */`,
+						...[...new Set([...deps, ...lifterDeps])].map((dep) =>
+							printNode(makeImport(dep)),
+						),
 						printNode(type),
+						printNode(lifter),
 					]
 					const _object = schema?.properties?._object?.example
 					if (_object) typeIdentifiers.set(name, _object)

@@ -1,3 +1,6 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { ShipmentRef } from './ShipmentRef'
 import { AdditionalDates } from './AdditionalDates'
@@ -7,10 +10,6 @@ import { AirShipmentLeg } from './AirShipmentLeg'
 import { OceanShipmentLeg } from './OceanShipmentLeg'
 import { TruckingShipmentLeg } from './TruckingShipmentLeg'
 import { RailShipmentLeg } from './RailShipmentLeg'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type ShipmentLeg = {
 	/**
 	 * Type of the object
@@ -62,4 +61,10 @@ export type ShipmentLeg = {
 	 * @example "1970-01-01"
 	 */
 	readonly cargo_ready_date?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShipmentLeg = (original: ShipmentLeg) => {
+	return original
 }

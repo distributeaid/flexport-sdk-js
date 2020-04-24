@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type WriteVatNumber = {
 	/**
@@ -17,4 +16,10 @@ export type WriteVatNumber = {
 	 * @example "GB 123456789"
 	 */
 	readonly number: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftWriteVatNumber = (original: WriteVatNumber) => {
+	return original
 }

@@ -1,8 +1,7 @@
-import { CreateBookingHsCode } from './CreateBookingHsCode'
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
+import { CreateBookingHsCode } from './CreateBookingHsCode'
 export type CreateAirBooking = {
 	/**
 	 * JSON-schema: string
@@ -90,4 +89,10 @@ export type CreateAirBooking = {
 	 * JSON-schema: string
 	 */
 	readonly destination_port_icao_code?: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCreateAirBooking = (original: CreateAirBooking) => {
+	return original
 }

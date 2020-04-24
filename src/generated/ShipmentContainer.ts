@@ -1,12 +1,11 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Metadata } from './Metadata'
 import { ShipmentRef } from './ShipmentRef'
 import { ContainerLegCollectionRef } from './ContainerLegCollectionRef'
 import { ShipmentItem } from './ShipmentItem'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type ShipmentContainer = {
 	/**
 	 * Type of the object
@@ -125,4 +124,10 @@ export type ShipmentContainer = {
 	 * JSON-schema: array
 	 */
 	readonly items?: ShipmentItem[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftShipmentContainer = (original: ShipmentContainer) => {
+	return original
 }

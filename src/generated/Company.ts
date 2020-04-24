@@ -1,12 +1,11 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { Metadata } from './Metadata'
 import { CompanyEntity } from './CompanyEntity'
 import { Location } from './Location'
 import { Contact } from './Contact'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type Company = {
 	/**
 	 * Type of the object. Always /network/company for this object.
@@ -43,4 +42,10 @@ export type Company = {
 	 * JSON-schema: array
 	 */
 	readonly contacts?: Contact[]
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftCompany = (original: Company) => {
+	return original
 }

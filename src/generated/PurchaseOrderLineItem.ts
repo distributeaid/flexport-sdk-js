@@ -1,3 +1,6 @@
+/**
+ * Auto-generated file. Do not change.
+ */
 import { Type } from './Type'
 import { PurchaseOrderRef } from './PurchaseOrderRef'
 import { Product } from './Product'
@@ -8,10 +11,6 @@ import { Place } from './Place'
 import { Address } from './Address'
 import { HsCode } from './HsCode'
 import { Metadata } from './Metadata'
-/**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
- */
 export type PurchaseOrderLineItem = {
 	/**
 	 * Type of the object
@@ -126,4 +125,10 @@ export type PurchaseOrderLineItem = {
 	 */
 	readonly hs_codes?: HsCode[]
 	readonly metadata?: Metadata
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftPurchaseOrderLineItem = (original: PurchaseOrderLineItem) => {
+	return original
 }

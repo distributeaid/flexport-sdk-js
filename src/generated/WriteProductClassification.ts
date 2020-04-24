@@ -1,6 +1,5 @@
 /**
- * Auto-generated type. Do not change.
- * @see https://api.flexport.com/docs/v2/flexport
+ * Auto-generated file. Do not change.
  */
 export type WriteProductClassification = {
 	/**
@@ -16,4 +15,12 @@ export type WriteProductClassification = {
 	 * @example "US"
 	 */
 	readonly region: string
+}
+/**
+ * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
+ */
+export const liftWriteProductClassification = (
+	original: WriteProductClassification,
+) => {
+	return original
 }
