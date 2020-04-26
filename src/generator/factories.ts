@@ -78,8 +78,14 @@ export const createObjectType = (objectName: string, schema: Item) => {
 				)
 				deps.push('Type')
 			}
+			
 			const comment = []
-			if (def.description) comment.push(def.description)
+			if (def.description) {
+				comment.push(def.description)
+				if (/DEPRECATED/.test(def.description)) {
+					comment.push('@deprecated Do not use! This field is deprecated.')
+				}
+			}
 			if (!isObjectProperty) {
 				if (def.description) comment.push('')
 				if (def.type)
@@ -145,8 +151,16 @@ export const makeType = (name: string, schema: Item) => {
 	}
 }
 
-export const makeImport = (name: string) =>
-	ts.createImportDeclaration(
+const knownModules = {
+	'ResolvableCollection',
+		ResolvableObject,
+		linkCollection,
+		linkObject,
+	} from '../types/Link'
+}
+
+export const makeImport = (name: string) => {
+	return ts.createImportDeclaration(
 		undefined,
 		undefined,
 		ts.createImportClause(
@@ -157,6 +171,7 @@ export const makeImport = (name: string) =>
 		),
 		ts.createLiteral(`./${name}`),
 	)
+}
 
 export const makeIndex = (type: string) =>
 	ts.createExportDeclaration(
