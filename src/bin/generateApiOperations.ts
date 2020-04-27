@@ -10,6 +10,8 @@ import {
 	createReturns,
 } from '../generator/apiClientFactories'
 
+const knownModules = {} as { [key: string]: string }
+
 parseOpenAPI(
 	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
 	path.join(process.cwd(), 'api-docs', 'corrections.yaml'),
@@ -38,7 +40,7 @@ parseOpenAPI(
 			{} as { [key: string]: ApiMethodInfo },
 		)
 
-		const deps: string[] = []
+		const deps: (string | { [key: string]: string })[] = []
 
 		const functions = Object.entries(operations).map(([operationId, def]) => {
 			const params = []
@@ -145,7 +147,7 @@ parseOpenAPI(
 			}
 
 			// Generate the returned types of the operation
-			const { types: returns, deps: returnDeps } = createReturns(
+			const { types: returns, deps: returnDeps, lifters } = createReturns(
 				def,
 				f.components.schemas,
 			)
@@ -157,10 +159,28 @@ parseOpenAPI(
 				params,
 				undefined,
 				undefined,
-				ts.createCall(
-					ts.createIdentifier('apiClient'),
-					[ts.createUnionTypeNode(returns)],
-					[ts.createObjectLiteral(apiClientArgumens)],
+				ts.createBlock(
+					[
+						ts.createVariableStatement(
+							undefined,
+							ts.createVariableDeclarationList(
+								[
+									ts.createVariableDeclaration(
+										'response',
+										undefined,
+										ts.createCall(
+											ts.createIdentifier('apiClient'),
+											[ts.createUnionTypeNode(returns)],
+											[ts.createObjectLiteral(apiClientArgumens)],
+										),
+									),
+								],
+								ts.NodeFlags.Const,
+							),
+						),
+						...lifters.map((lifter) => ts.createReturn(lifter)),
+					],
+					true,
 				),
 			)
 
@@ -240,6 +260,20 @@ parseOpenAPI(
 		)
 
 		// Write apiClient
+		const uniqueDeps = deps.reduce((uniqueDeps, dep) => {
+			if (typeof dep === 'object') {
+				return {
+					...(uniqueDeps as { [key: string]: string }),
+					...(dep as object),
+				}
+			} else {
+				return {
+					...(uniqueDeps as { [key: string]: string }),
+					[dep]: dep,
+				}
+			}
+		}, {} as { [key: string]: string })
+
 		const c = [
 			ts.createImportDeclaration(
 				undefined,
@@ -269,17 +303,17 @@ parseOpenAPI(
 				),
 				ts.createLiteral('../types/ApiPageObject'),
 			),
-			...[...new Set(deps)].map((dep) =>
+			...Object.entries(uniqueDeps).map(([exp, mod]) =>
 				ts.createImportDeclaration(
 					undefined,
 					undefined,
 					ts.createImportClause(
 						undefined,
 						ts.createNamedImports([
-							ts.createImportSpecifier(undefined, ts.createIdentifier(dep)),
+							ts.createImportSpecifier(undefined, ts.createIdentifier(exp)),
 						]),
 					),
-					ts.createLiteral(`./${dep}`),
+					ts.createLiteral(knownModules[mod] || `./${mod}`),
 				),
 			),
 			client,

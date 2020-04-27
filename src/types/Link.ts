@@ -2,12 +2,21 @@ import { none, some } from 'fp-ts/lib/Option'
 import { ApiObjectRef } from './ApiObjectRef'
 import { ApiCollectionRef } from './ApiCollectionRef'
 import { Type } from '../generated/Type'
+import { ApiPageObject } from './ApiPageObject'
+import { ApiObject } from './ApiObject'
 
 export type ResolvableCollection = {
 	/**
 	 * The type of each individual element of the list that `link` points to.
 	 */
 	refType: Type
+	/**
+	 * API end point that points to a list of resources
+	 */
+	link: string
+}
+
+export type ResolvablePage = {
 	/**
 	 * API end point that points to a list of resources
 	 */
@@ -49,4 +58,18 @@ export const linkObject = (c?: ApiObjectRef) =>
 				link: c.link,
 				refType: c.ref_type as Type,
 		  } as ResolvableObject)
+		: none
+
+const isLinkedPage = (o: { _object: string }) => o._object === Type.Page
+
+export const linkPage = <A extends ApiObject>(
+	dir: 'next' | 'prev',
+	c?: ApiPageObject<A>,
+) =>
+	c &&
+	isLinkedPage(c) &&
+	((dir === 'prev' && c.prev) || (dir === 'next' && c.next))
+		? some({
+				link: dir === 'prev' ? c.prev : c.next,
+		  } as ResolvablePage)
 		: none

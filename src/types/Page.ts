@@ -1,11 +1,11 @@
 import { ApiObject } from './ApiObject'
 import { Either, right } from 'fp-ts/lib/Either'
-import { linkCollection, ResolvableCollection } from './Link'
-import { transform } from '../transformer/transform'
-import { Option, none } from 'fp-ts/lib/Option'
+import { linkPage, ResolvablePage } from './Link'
+import { Option } from 'fp-ts/lib/Option'
 import { Type } from '../generated/Type'
 import { ErrorInfo } from './ErrorInfo'
 import { ApiPageObject } from './ApiPageObject'
+import { TypedApiObject } from './TypedApiObject'
 
 /**
  * All list endpoints return paginated responses. The response object contains elements of the current page, and links to the previous and next pages.
@@ -20,11 +20,11 @@ export type Page<A extends ApiObject> = {
 	/**
 	 * link to the previous page
 	 */
-	prev: Option<ResolvableCollection>
+	prev: Option<ResolvablePage>
 	/**
 	 * link to the next page
 	 */
-	next: Option<ResolvableCollection>
+	next: Option<ResolvablePage>
 	/**
 	 * total number of elements for this query
 	 */
@@ -35,31 +35,17 @@ export type Page<A extends ApiObject> = {
 	items: A[]
 }
 
-export const toPage = <A extends ApiObject>(
+export const toPage = <A extends ApiObject, O extends TypedApiObject>(
 	pageResponse: ApiPageObject<A>,
-	itemType: Type,
-): Either<ErrorInfo, Page<A>> => {
-	const { data, next, prev } = pageResponse
-	const items = data?.map((item) => transform<A>(item)) ?? []
+	transform: (apiResponseObject: A) => O,
+): Either<ErrorInfo, Page<O>> => {
+	const { data } = pageResponse
+	const items = data?.map((item) => transform(item)) ?? []
 	return right({
 		_object: Type.Page,
 		total_count: pageResponse.total_count,
-		next:
-			(next &&
-				linkCollection({
-					_object: Type.CollectionRef,
-					link: next,
-					ref_type: itemType as string,
-				})) ||
-			none,
-		prev:
-			(prev &&
-				linkCollection({
-					_object: Type.CollectionRef,
-					link: prev,
-					ref_type: itemType as string,
-				})) ||
-			none,
+		next: linkPage<A>('next', pageResponse),
+		prev: linkPage<A>('prev', pageResponse),
 		items,
 	})
 }
