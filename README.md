@@ -80,8 +80,8 @@ types are generated.
 
 ## _Lifting_ of base types
 
-[_Lifters_](./src/lifters) lift the Flexport API responses into the SDK domain,
-by augmenting them with higher level properties.
+The lifters in the same files _lift_ the Flexport API responses into the SDK
+domain, by augmenting them with higher level properties.
 
 ## Architecture decision records (ADRs)
 

@@ -45,7 +45,11 @@ export const isPageResponse = (schema: Item) =>
 export const isResponse = (schema: Item) =>
 	schema.properties?._object?.example === Type.Response
 
-export const createReturn = (schema: Item, objectName: string) => {
+export const createReturn = (
+	schema: Item,
+	objectName: string,
+	schemas: { [key: string]: Item },
+) => {
 	// Response is binary
 	if (schema.type === 'string' && schema.format === 'binary') {
 		return {
@@ -91,16 +95,20 @@ export const createReturn = (schema: Item, objectName: string) => {
 		}
 	}
 	// It's a regular object
-	return createObjectType(objectName, schema)
+	return createObjectType(objectName, schema, schemas)
 }
 
-export const createReturns = (def: ApiMethodInfo) => {
+export const createReturns = (
+	def: ApiMethodInfo,
+	schemas: { [key: string]: Item },
+) => {
 	const r = Object.entries(def.responses)
 		.map(([httpStatusCode, { content }]) =>
 			Object.entries(content).map(([contentType, { schema }]) =>
 				createReturn(
 					schema,
 					`${def.operationId}HTTP${httpStatusCode}${contentType}Response`,
+					schemas,
 				),
 			),
 		)

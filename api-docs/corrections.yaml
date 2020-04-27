@@ -11,40 +11,74 @@ components:
           description: Date when the shipment was archived, if applicable.
           type: string
           format: date-time
+      required:
+        - metadata
+        - _object
+        - id
+        - name
+        - transportation_mode
+        - freight_type
+        - incoterm
+        - pieces
+        - created_date
+        - status
+        - priority
+        - shippers
+        - consignees
+        - buyers
+        - sellers
+        - importers_of_record
+        - items
+        - legs
+        - customs_entries
+        - commercial_invoices
+        - documents
     BookingRef:
       required:
+        - _object
         - ref_type
         - link
         - id
     ShipmentRef:
       required:
+        - _object
         - ref_type
         - link
         - id
     DocumentCollectionRef:
       required:
+        - _object
         - ref_type
         - link
     CommercialInvoiceCollectionRef:
       required:
+        - _object
         - ref_type
         - link
     CustomsEntryCollectionRef:
       required:
+        - _object
         - ref_type
         - link
     LegCollectionRef:
       required:
+        - _object
         - ref_type
         - link
     ShipmentLeg:
       required:
+        - _object
+        - id
         - origin
         - destination
+        - shipment
+        - transportation_mode
     ShipmentNode:
       required:
+        - _object
         - place
     Place:
       required:
+        - _object
         - name
         - address

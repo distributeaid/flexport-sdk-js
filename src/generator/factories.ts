@@ -17,24 +17,38 @@ export type Item = {
 	}
 }
 
-export const createPropertyDefinition = (def: Item) => {
+export const createPropertyDefinition = (
+	def: Item,
+	schemas: { [key: string]: Item },
+) => {
 	const deps: string[] = []
 	let t
 	if (def.$ref) {
 		const dep = def.$ref.replace(/#\/components\/schemas\//, '')
-		deps.push(dep)
-		t = ts.createTypeReferenceNode(dep, [])
+		if (schemas[dep]?.properties?._object?.example === '/api/refs/object') {
+			deps.push('ApiObjectRef')
+			t = ts.createTypeReferenceNode('ApiObjectRef', [])
+		} else if (
+			schemas[dep]?.properties?._object?.example === '/api/refs/collection'
+		) {
+			deps.push('ApiCollectionRef')
+			t = ts.createTypeReferenceNode('ApiCollectionRef', [])
+		} else {
+			deps.push(dep)
+			t = ts.createTypeReferenceNode(dep, [])
+		}
 	} else if (def.enum) {
 		t = ts.createUnionTypeNode(
 			def.enum.map((s) => ts.createLiteralTypeNode(ts.createStringLiteral(s))),
 		)
 	} else if (def.oneOf) {
-		const defs = def.oneOf.map((t) => createPropertyDefinition(t))
+		const defs = def.oneOf.map((t) => createPropertyDefinition(t, schemas))
 		deps.push(...defs.map(({ deps }) => deps).flat())
 		t = ts.createUnionTypeNode(defs.map(({ type }) => type))
 	} else if (def.type === 'array') {
 		const { type: itemType, deps: itemDeps } = createPropertyDefinition(
 			def.items as Item,
+			schemas,
 		)
 		deps.push(...itemDeps)
 		t = ts.createArrayTypeNode(itemType)
@@ -49,11 +63,15 @@ export const createPropertyDefinition = (def: Item) => {
 	}
 }
 
-export const createObjectType = (objectName: string, schema: Item) => {
+export const createObjectType = (
+	objectName: string,
+	schema: Item,
+	schemas: { [key: string]: Item },
+) => {
 	const deps: string[] = []
 	const t = ts.createTypeLiteralNode(
 		Object.entries(schema.properties || []).map(([name, def]) => {
-			const { type, deps: d } = createPropertyDefinition(def)
+			const { type, deps: d } = createPropertyDefinition(def, schemas)
 			deps.push(...d)
 			let p = ts.createPropertySignature(
 				[ts.createToken(ts.SyntaxKind.ReadonlyKeyword)],
@@ -78,11 +96,11 @@ export const createObjectType = (objectName: string, schema: Item) => {
 				)
 				deps.push('Type')
 			}
-			
+
 			const comment = []
 			if (def.description) {
 				comment.push(def.description)
-				if (/DEPRECATED/.test(def.description)) {
+				if (def.description.includes('DEPRECATED')) {
 					comment.push('@deprecated Do not use! This field is deprecated.')
 				}
 			}
@@ -122,10 +140,14 @@ export const createObjectType = (objectName: string, schema: Item) => {
 	}
 }
 
-export const makeType = (name: string, schema: Item) => {
+export const makeType = (
+	name: string,
+	schema: Item,
+	schemas: { [key: string]: Item },
+) => {
 	const def = schema.properties
-		? createObjectType(name, schema)
-		: createPropertyDefinition(schema)
+		? createObjectType(name, schema, schemas)
+		: createPropertyDefinition(schema, schemas)
 
 	const t = ts.createTypeAliasDeclaration(
 		undefined,
@@ -152,12 +174,16 @@ export const makeType = (name: string, schema: Item) => {
 }
 
 const knownModules = {
-	'ResolvableCollection',
-		ResolvableObject,
-		linkCollection,
-		linkObject,
-	} from '../types/Link'
-}
+	ResolvableCollection: '../types/Link',
+	ResolvableObject: '../types/Link',
+	linkCollection: '../types/Link',
+	linkObject: '../types/Link',
+	Option: 'fp-ts/lib/Option',
+	toDateOrUndefined: '../transformer/toDate',
+	ApiCollectionRef: '../types/ApiCollectionRef',
+	ApiObjectRef: '../types/ApiObjectRef',
+	TypedApiObject: '../types/TypedApiObject',
+} as { [key: string]: string }
 
 export const makeImport = (name: string) => {
 	return ts.createImportDeclaration(
@@ -169,7 +195,7 @@ export const makeImport = (name: string) => {
 				ts.createImportSpecifier(undefined, ts.createIdentifier(name)),
 			]),
 		),
-		ts.createLiteral(`./${name}`),
+		ts.createLiteral(knownModules[name] || `./${name}`),
 	)
 }
 

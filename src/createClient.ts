@@ -12,8 +12,7 @@ import { Either } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { createError, ErrorInfo } from './types/ErrorInfo'
-import { LiftedShipment } from './lifters/Shipment'
-import { Type } from './generated'
+import { Type, LiftedShipment } from './generated'
 
 const { fetch, Response } = fetchPonyfill()
 

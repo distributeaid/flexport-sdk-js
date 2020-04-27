@@ -6,7 +6,7 @@ import { emptyPageMock } from './testdata/mocks'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
-import { Shipment } from './generated'
+import { LiftedShipment } from './generated'
 import { Type } from './generated/Type'
 
 const shipmentsPage1 = JSON.parse(
@@ -59,8 +59,8 @@ describe('paginate', () => {
 			},
 		)
 		expect(isRight(shipments)).toBeTruthy()
-		expect((shipments as Right<Shipment[]>).right).toHaveLength(1)
-		expect((shipments as Right<Shipment[]>).right[0]._object).toEqual(
+		expect((shipments as Right<LiftedShipment[]>).right).toHaveLength(1)
+		expect((shipments as Right<LiftedShipment[]>).right[0]._object).toEqual(
 			Type.Shipment,
 		)
 	})

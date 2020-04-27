@@ -55,7 +55,10 @@ parseOpenAPI(
 							: ts.createToken(ts.SyntaxKind.QuestionToken),
 						ts.createTypeLiteralNode(
 							def.parameters?.map((param) => {
-								const { type, deps: d } = createPropertyDefinition(param.schema)
+								const { type, deps: d } = createPropertyDefinition(
+									param.schema,
+									f.components.schemas,
+								)
 								deps.push(...d)
 								return ts.createPropertySignature(
 									[],
@@ -142,7 +145,10 @@ parseOpenAPI(
 			}
 
 			// Generate the returned types of the operation
-			const { types: returns, deps: returnDeps } = createReturns(def)
+			const { types: returns, deps: returnDeps } = createReturns(
+				def,
+				f.components.schemas,
+			)
 			deps.push(...returnDeps)
 
 			const m = ts.createArrowFunction(

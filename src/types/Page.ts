@@ -1,5 +1,5 @@
 import { ApiObject } from './ApiObject'
-import { Either, right, isLeft, isRight } from 'fp-ts/lib/Either'
+import { Either, right } from 'fp-ts/lib/Either'
 import { linkCollection, ResolvableCollection } from './Link'
 import { transform } from '../transformer/transform'
 import { Option, none } from 'fp-ts/lib/Option'
@@ -40,10 +40,7 @@ export const toPage = <A extends ApiObject>(
 	itemType: Type,
 ): Either<ErrorInfo, Page<A>> => {
 	const { data, next, prev } = pageResponse
-	const transformedItems = data?.map((item) => transform<A>(item)) ?? []
-	const itemError = transformedItems.find((item) => isLeft(item))
-	if (itemError) return itemError as Either<ErrorInfo, never>
-	const items = transformedItems.map((i) => isRight(i) && i.right) as A[]
+	const items = data?.map((item) => transform<A>(item)) ?? []
 	return right({
 		_object: Type.Page,
 		total_count: pageResponse.total_count,

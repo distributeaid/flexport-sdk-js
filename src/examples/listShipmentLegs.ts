@@ -2,8 +2,7 @@ import { createClient } from '..'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { handleError } from './handleError'
-import { Address } from '../generated'
-import { LiftedShipmentLeg } from '../lifters/ShipmentLeg'
+import { Address, LiftedShipmentLeg } from '../generated'
 import { createError } from '../types/ErrorInfo'
 
 const client = createClient({ apiKey: process.env.FLEXPORT_API_KEY || '' })

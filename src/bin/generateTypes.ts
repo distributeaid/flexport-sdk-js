@@ -23,11 +23,11 @@ parseOpenAPI(
 		await Promise.all(
 			Object.entries(f.components.schemas as { [key: string]: any }).map(
 				async ([name, schema]) => {
-					const { type, deps } = makeType(name, schema)
+					const { type, deps } = makeType(name, schema, f.components.schemas)
 					const { lifter, deps: lifterDeps, liftedType } = makeLifter(
 						name,
 						schema,
-						f.components.schemas
+						f.components.schemas,
 					)
 					const comment = []
 					comment.push('Auto-generated file. Do not change.')

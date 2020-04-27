@@ -1,24 +1,23 @@
 import { ApiObject, ApiResponseObject, toPage, Page } from '../types'
 import { Either, left, right } from 'fp-ts/lib/Either'
 import { nullToUndefined } from './nullToUndefined'
-import { liftShipment } from '../lifters/Shipment'
-import { liftShipmentLeg } from '../lifters/ShipmentLeg'
 import { ErrorInfo, createError } from '../types/ErrorInfo'
-import { Type } from '../generated'
+import { Type, liftShipment, liftShipmentLeg } from '../generated'
 import { ApiPageObject } from '../types/ApiPageObject'
+import { TypedApiObject } from '../types/TypedApiObject'
 
 const transformers = {
 	[Type.Shipment]: liftShipment,
 	[Type.ShipmentLeg]: liftShipmentLeg,
 } as {
-	[key: string]: <O extends ApiObject>(
-		apiResponseObject: O,
-	) => Either<ErrorInfo, unknown>
+	[key: string]: <I extends ApiObject, O extends TypedApiObject>(
+		apiResponseObject: I,
+	) => O
 }
 
 export const passThrough = <O extends ApiObject>(
 	apiResponseObject: O,
-): Either<never, O> => right(nullToUndefined(apiResponseObject))
+): TypedApiObject => nullToUndefined(apiResponseObject)
 
 const getTransformer = (_object: string) => {
 	if (transformers[_object]) return transformers[_object]
@@ -26,8 +25,8 @@ const getTransformer = (_object: string) => {
 	return passThrough
 }
 
-export const transform = <A>(o: ApiObject): Either<ErrorInfo, A> =>
-	getTransformer(o._object)(nullToUndefined(o)) as Either<ErrorInfo, A>
+export const transform = <A>(o: ApiObject): A =>
+	(getTransformer(o._object)(nullToUndefined(o)) as unknown) as A
 
 const transformPage = <A extends ApiObject>(
 	o: ApiPageObject<A>,
@@ -45,7 +44,7 @@ export const transformResponse = <A extends ApiObject>() => (
 			createError(`${response.error.message} (${response.error.code})`),
 		)
 	try {
-		return transform<A>(response.data)
+		return right(transform<A>(response.data))
 	} catch (error) {
 		console.error(error)
 		console.debug(response)
