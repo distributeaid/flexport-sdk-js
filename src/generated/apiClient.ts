@@ -898,6 +898,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The created booking amendment
+		 * FIXME: Implement request body handling
 		 */
 		booking_amendment_create,
 		/**
@@ -916,6 +917,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The created booking line item
+		 * FIXME: Implement request body handling
 		 */
 		booking_line_item_create,
 		/**
@@ -941,6 +943,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The created booking
+		 * FIXME: Implement request body handling
 		 */
 		booking_create,
 		/**
@@ -1066,6 +1069,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The created company
+		 * FIXME: Implement request body handling
 		 */
 		network_company_create,
 		/**
@@ -1082,6 +1086,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The updated company
+		 * FIXME: Implement request body handling
 		 */
 		network_company_update,
 		/**
@@ -1098,6 +1103,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The created company entity
+		 * FIXME: Implement request body handling
 		 */
 		network_company_entity_create,
 		/**
@@ -1114,6 +1120,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: Success
+		 * FIXME: Implement request body handling
 		 */
 		network_company_entity_update,
 		/**
@@ -1130,6 +1137,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The created contact
+		 * FIXME: Implement request body handling
 		 */
 		network_contact_create,
 		/**
@@ -1146,6 +1154,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The updated contact
+		 * FIXME: Implement request body handling
 		 */
 		network_contact_update,
 		/**
@@ -1162,6 +1171,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The created location
+		 * FIXME: Implement request body handling
 		 */
 		network_location_create,
 		/**
@@ -1178,6 +1188,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: Success
+		 * FIXME: Implement request body handling
 		 */
 		location_update,
 		/**
@@ -1248,6 +1259,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: Created
+		 * FIXME: Implement request body handling
 		 */
 		product_create,
 		/**
@@ -1266,6 +1278,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: Updated
+		 * FIXME: Implement request body handling
 		 */
 		product_update,
 		/**
@@ -1343,6 +1356,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 		 *
 		 * Returns:
 		 * - for status code 200: The updated shipment
+		 * FIXME: Implement request body handling
 		 */
 		shipment_update,
 	}

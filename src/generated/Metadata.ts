@@ -14,4 +14,6 @@ export type LiftedMetadata = Metadata
  * Set of custom key-values specific to the object. The keys are strings and values are arrays of strings. The set of valid keys is always the consignee's list of keys, even if call was made by a different party.
  
  */
-export const liftMetadata = (original: Metadata): LiftedMetadata => original
+export const liftMetadata = (original: Metadata): LiftedMetadata => {
+	return original
+}

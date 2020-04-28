@@ -39,4 +39,6 @@ export type LiftedUpdateLocation = UpdateLocation
  */
 export const liftUpdateLocation = (
 	original: UpdateLocation,
-): LiftedUpdateLocation => original
+): LiftedUpdateLocation => {
+	return original
+}

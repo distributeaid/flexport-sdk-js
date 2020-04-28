@@ -23,4 +23,6 @@ export type LiftedWriteProductProperty = WriteProductProperty
  */
 export const liftWriteProductProperty = (
 	original: WriteProductProperty,
-): LiftedWriteProductProperty => original
+): LiftedWriteProductProperty => {
+	return original
+}

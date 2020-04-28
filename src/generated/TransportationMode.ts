@@ -13,4 +13,6 @@ export type LiftedTransportationMode = TransportationMode
  */
 export const liftTransportationMode = (
 	original: TransportationMode,
-): LiftedTransportationMode => original
+): LiftedTransportationMode => {
+	return original
+}

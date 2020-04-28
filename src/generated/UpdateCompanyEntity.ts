@@ -32,4 +32,6 @@ export type LiftedUpdateCompanyEntity = UpdateCompanyEntity
  */
 export const liftUpdateCompanyEntity = (
 	original: UpdateCompanyEntity,
-): LiftedUpdateCompanyEntity => original
+): LiftedUpdateCompanyEntity => {
+	return original
+}

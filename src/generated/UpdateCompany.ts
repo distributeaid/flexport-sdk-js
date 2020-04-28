@@ -23,4 +23,6 @@ export type LiftedUpdateCompany = UpdateCompany
  */
 export const liftUpdateCompany = (
 	original: UpdateCompany,
-): LiftedUpdateCompany => original
+): LiftedUpdateCompany => {
+	return original
+}

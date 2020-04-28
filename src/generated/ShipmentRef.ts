@@ -25,5 +25,6 @@ export type LiftedShipmentRef = TypedApiObject & ShipmentRef
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftShipmentRef = (original: ShipmentRef): LiftedShipmentRef =>
-	original
+export const liftShipmentRef = (original: ShipmentRef): LiftedShipmentRef => {
+	return original
+}

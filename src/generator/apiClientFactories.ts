@@ -28,6 +28,7 @@ export type OpenAPIv3Operation = {
 	tags?: string[]
 	parameters?: Parameters
 	responses: Responses
+	requestBody?: Responses
 }
 
 export type ApiMethodInfo = {
@@ -38,6 +39,7 @@ export type ApiMethodInfo = {
 	path: string
 	parameters?: Parameters
 	responses: Responses
+	requestBody?: Responses
 }
 
 export const isPageResponse = (schema: Item) =>

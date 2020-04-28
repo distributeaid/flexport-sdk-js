@@ -20,4 +20,6 @@ export type LiftedShipmentStatus = ShipmentStatus
  */
 export const liftShipmentStatus = (
 	original: ShipmentStatus,
-): LiftedShipmentStatus => original
+): LiftedShipmentStatus => {
+	return original
+}

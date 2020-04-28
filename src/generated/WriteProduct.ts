@@ -49,5 +49,8 @@ export type LiftedWriteProduct = WriteProduct
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftWriteProduct = (original: WriteProduct): LiftedWriteProduct =>
-	original
+export const liftWriteProduct = (
+	original: WriteProduct,
+): LiftedWriteProduct => {
+	return original
+}

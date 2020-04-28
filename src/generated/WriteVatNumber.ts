@@ -23,4 +23,6 @@ export type LiftedWriteVatNumber = WriteVatNumber
  */
 export const liftWriteVatNumber = (
 	original: WriteVatNumber,
-): LiftedWriteVatNumber => original
+): LiftedWriteVatNumber => {
+	return original
+}

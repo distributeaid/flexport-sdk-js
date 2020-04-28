@@ -33,4 +33,6 @@ export type LiftedShipmentEventData = TypedApiObject & ShipmentEventData
  */
 export const liftShipmentEventData = (
 	original: ShipmentEventData,
-): LiftedShipmentEventData => original
+): LiftedShipmentEventData => {
+	return original
+}

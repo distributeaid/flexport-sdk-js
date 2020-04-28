@@ -15,5 +15,6 @@ export type LiftedFreightType = FreightType
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftFreightType = (original: FreightType): LiftedFreightType =>
-	original
+export const liftFreightType = (original: FreightType): LiftedFreightType => {
+	return original
+}

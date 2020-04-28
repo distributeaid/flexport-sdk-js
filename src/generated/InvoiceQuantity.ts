@@ -33,4 +33,6 @@ export type LiftedInvoiceQuantity = TypedApiObject & InvoiceQuantity
  */
 export const liftInvoiceQuantity = (
 	original: InvoiceQuantity,
-): LiftedInvoiceQuantity => original
+): LiftedInvoiceQuantity => {
+	return original
+}

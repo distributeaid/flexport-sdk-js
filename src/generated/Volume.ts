@@ -26,4 +26,6 @@ export type LiftedVolume = TypedApiObject & Volume
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftVolume = (original: Volume): LiftedVolume => original
+export const liftVolume = (original: Volume): LiftedVolume => {
+	return original
+}

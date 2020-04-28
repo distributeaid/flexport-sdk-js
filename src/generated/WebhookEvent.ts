@@ -40,5 +40,8 @@ export type LiftedWebhookEvent = TypedApiObject & WebhookEvent
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftWebhookEvent = (original: WebhookEvent): LiftedWebhookEvent =>
-	original
+export const liftWebhookEvent = (
+	original: WebhookEvent,
+): LiftedWebhookEvent => {
+	return original
+}

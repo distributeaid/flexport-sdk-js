@@ -27,4 +27,6 @@ export type LiftedLength = TypedApiObject & Length
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftLength = (original: Length): LiftedLength => original
+export const liftLength = (original: Length): LiftedLength => {
+	return original
+}

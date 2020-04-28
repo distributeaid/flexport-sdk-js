@@ -32,6 +32,7 @@ parseOpenAPI(
 							path,
 							parameters: def.parameters,
 							responses: def.responses,
+							requestBody: def.requestBody,
 						},
 					}),
 					{},
@@ -159,31 +160,6 @@ parseOpenAPI(
 				params,
 				undefined,
 				undefined,
-				/*
-				ts.createBlock(
-					[
-						ts.createVariableStatement(
-							undefined,
-							ts.createVariableDeclarationList(
-								[
-									ts.createVariableDeclaration(
-										'response',
-										undefined,
-										ts.createCall(
-											ts.createIdentifier('apiClient'),
-											[ts.createUnionTypeNode(returns)],
-											[ts.createObjectLiteral(apiClientArgumens)],
-										),
-									),
-								],
-								ts.NodeFlags.Const,
-							),
-						),
-						...lifters.map((lifter) => ts.createReturn(lifter)),
-					],
-					true,
-				),
-				*/
 				// TODO: Implement support for different responses
 				ts.createCall(ts.createIdentifier('pipe'), undefined, [
 					ts.createCall(
@@ -265,6 +241,9 @@ parseOpenAPI(
 													comment.push(
 														'FIXME: Only the first response type is handled',
 													)
+												}
+												if (def.requestBody) {
+													comment.push('FIXME: Implement request body handling')
 												}
 												ts.addSyntheticLeadingComment(
 													p,

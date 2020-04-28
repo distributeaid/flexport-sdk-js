@@ -32,4 +32,6 @@ export type LiftedHsCode = TypedApiObject & HsCode
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftHsCode = (original: HsCode): LiftedHsCode => original
+export const liftHsCode = (original: HsCode): LiftedHsCode => {
+	return original
+}
