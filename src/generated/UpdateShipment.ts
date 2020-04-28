@@ -16,6 +16,4 @@ export type LiftedUpdateShipment = UpdateShipment
  */
 export const liftUpdateShipment = (
 	original: UpdateShipment,
-): LiftedUpdateShipment => {
-	return original
-}
+): LiftedUpdateShipment => original

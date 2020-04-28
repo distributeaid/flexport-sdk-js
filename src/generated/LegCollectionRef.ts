@@ -29,6 +29,4 @@ export type LiftedLegCollectionRef = TypedApiObject & LegCollectionRef
  */
 export const liftLegCollectionRef = (
 	original: LegCollectionRef,
-): LiftedLegCollectionRef => {
-	return original
-}
+): LiftedLegCollectionRef => original

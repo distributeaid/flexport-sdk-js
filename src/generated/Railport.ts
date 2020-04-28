@@ -18,6 +18,4 @@ export type LiftedRailport = TypedApiObject & Railport
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftRailport = (original: Railport): LiftedRailport => {
-	return original
-}
+export const liftRailport = (original: Railport): LiftedRailport => original

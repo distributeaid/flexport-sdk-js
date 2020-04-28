@@ -22,6 +22,4 @@ export type LiftedWriteProductClassification = WriteProductClassification
  */
 export const liftWriteProductClassification = (
 	original: WriteProductClassification,
-): LiftedWriteProductClassification => {
-	return original
-}
+): LiftedWriteProductClassification => original

@@ -25,6 +25,4 @@ export type LiftedLegRef = TypedApiObject & LegRef
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftLegRef = (original: LegRef): LiftedLegRef => {
-	return original
-}
+export const liftLegRef = (original: LegRef): LiftedLegRef => original

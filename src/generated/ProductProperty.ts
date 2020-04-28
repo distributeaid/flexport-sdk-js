@@ -29,6 +29,4 @@ export type LiftedProductProperty = TypedApiObject & ProductProperty
  */
 export const liftProductProperty = (
 	original: ProductProperty,
-): LiftedProductProperty => {
-	return original
-}
+): LiftedProductProperty => original

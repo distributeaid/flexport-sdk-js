@@ -26,8 +26,5 @@ export type LiftedFileMetadata = TypedApiObject & FileMetadata
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftFileMetadata = (
-	original: FileMetadata,
-): LiftedFileMetadata => {
-	return original
-}
+export const liftFileMetadata = (original: FileMetadata): LiftedFileMetadata =>
+	original

@@ -159,6 +159,7 @@ parseOpenAPI(
 				params,
 				undefined,
 				undefined,
+				/*
 				ts.createBlock(
 					[
 						ts.createVariableStatement(
@@ -182,7 +183,23 @@ parseOpenAPI(
 					],
 					true,
 				),
+				*/
+				// TODO: Implement support for different responses
+				ts.createCall(ts.createIdentifier('pipe'), undefined, [
+					ts.createCall(
+						ts.createIdentifier('apiClient'),
+						[ts.createUnionTypeNode(returns)],
+						[ts.createObjectLiteral(apiClientArgumens)],
+					),
+					ts.createCall(ts.createIdentifier('map'), undefined, [lifters[0]]),
+				]),
+				//ts.createBlock([ts.createReturn(ts.createLiteral('foo'))]),
 			)
+
+			deps.push({
+				pipe: 'fp-ts/lib/pipeable',
+				map: 'fp-ts/lib/TaskEither',
+			})
 
 			return ts.createVariableStatement(
 				undefined,
@@ -238,6 +255,17 @@ parseOpenAPI(
 															`- for status code ${httpStatusCode}: ${description}`,
 													),
 												)
+												if (
+													Object.values(def.responses).reduce(
+														(numResponses, { content }) =>
+															numResponses + Object.values(content).length,
+														0,
+													) > 1
+												) {
+													comment.push(
+														'FIXME: Only the first response type is handled',
+													)
+												}
 												ts.addSyntheticLeadingComment(
 													p,
 													ts.SyntaxKind.MultiLineCommentTrivia,
@@ -269,7 +297,7 @@ parseOpenAPI(
 			} else {
 				return {
 					...(uniqueDeps as { [key: string]: string }),
-					[dep]: dep,
+					[dep]: `./${dep}`,
 				}
 			}
 		}, {} as { [key: string]: string })
@@ -313,7 +341,7 @@ parseOpenAPI(
 							ts.createImportSpecifier(undefined, ts.createIdentifier(exp)),
 						]),
 					),
-					ts.createLiteral(knownModules[mod] || `./${mod}`),
+					ts.createLiteral(knownModules[mod] || mod),
 				),
 			),
 			client,

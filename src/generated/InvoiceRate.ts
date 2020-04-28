@@ -31,6 +31,5 @@ export type LiftedInvoiceRate = TypedApiObject & InvoiceRate
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  * Describes the rate per unit used to calculate the price of a line item
  */
-export const liftInvoiceRate = (original: InvoiceRate): LiftedInvoiceRate => {
-	return original
-}
+export const liftInvoiceRate = (original: InvoiceRate): LiftedInvoiceRate =>
+	original

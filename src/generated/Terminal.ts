@@ -26,6 +26,4 @@ export type LiftedTerminal = TypedApiObject & Terminal
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  * Name and address of a specific terminal within a port or airport.  Possibly null
  */
-export const liftTerminal = (original: Terminal): LiftedTerminal => {
-	return original
-}
+export const liftTerminal = (original: Terminal): LiftedTerminal => original

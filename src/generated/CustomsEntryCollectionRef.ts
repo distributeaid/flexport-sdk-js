@@ -23,6 +23,4 @@ export type LiftedCustomsEntryCollectionRef = TypedApiObject &
  */
 export const liftCustomsEntryCollectionRef = (
 	original: CustomsEntryCollectionRef,
-): LiftedCustomsEntryCollectionRef => {
-	return original
-}
+): LiftedCustomsEntryCollectionRef => original

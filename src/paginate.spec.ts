@@ -6,7 +6,7 @@ import { emptyPageMock } from './testdata/mocks'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
-import { LiftedShipment } from './generated'
+import { LiftedShipment, liftShipment } from './generated'
 import { Type } from './generated/Type'
 
 const shipmentsPage1 = JSON.parse(
@@ -31,7 +31,7 @@ describe('paginate', () => {
 		})
 		const shipments = await pipe(
 			client.listAllShipments(),
-			TE.chain(paginate(client)),
+			TE.chain(paginate(client, liftShipment)),
 		)()
 
 		expect(fetchImplementation).toHaveBeenCalledWith(

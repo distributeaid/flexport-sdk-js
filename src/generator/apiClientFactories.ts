@@ -98,14 +98,24 @@ export const createReturn = (
 	return createObjectType(objectName, schema, schemas)
 }
 
-export const createLifterCall = (
-	schema: Item,
-	contentType: string,
-	httpStatusCode: number,
-) => {
-	// Response is binary  return as is
-	if (schema.type === 'string' && schema.format === 'binary') {
-	}
+const passLifter = ts.createArrowFunction(
+	undefined,
+	undefined,
+	[
+		ts.createParameter(
+			undefined,
+			undefined,
+			undefined,
+			ts.createIdentifier('res'),
+			undefined,
+		),
+	],
+	undefined,
+	undefined,
+	ts.createBlock([ts.createReturn(ts.createIdentifier('res'))]),
+)
+
+export const createLifterCall = (schema: Item) => {
 	// Response is paginated
 	if (isPageResponse(schema)) {
 		const ref = schema.properties?.data?.properties?.data?.items?.$ref
@@ -118,18 +128,18 @@ export const createLifterCall = (
 						ts.createTypeReferenceNode(dep, []),
 						ts.createTypeReferenceNode(`Lifted${dep}`, []),
 					],
-					[ts.createIdentifier('response'), ts.createIdentifier(`lift${dep}`)],
+					[ts.createIdentifier(`lift${dep}`)],
 				),
 				deps: [
 					{ ['toPage']: '../types/Page' },
 					dep,
-					{ [`Lifted${dep}`]: dep },
-					{ [`lift${dep}`]: dep },
+					{ [`Lifted${dep}`]: `./${dep}` },
+					{ [`lift${dep}`]: `./${dep}` },
 				],
 			}
 		}
 		return {
-			lifter: ts.createReturn(ts.createIdentifier('response')),
+			lifter: passLifter,
 			deps: [],
 		}
 	}
@@ -139,14 +149,12 @@ export const createLifterCall = (
 		if (ref) {
 			const dep = ref.replace(/#\/components\/schemas\//, '')
 			return {
-				lifter: ts.createCall(ts.createIdentifier(`lift${dep}`), undefined, [
-					ts.createIdentifier('response'),
-				]),
-				deps: [dep, { [`lift${dep}`]: dep }],
+				lifter: ts.createIdentifier(`lift${dep}`),
+				deps: [dep, { [`lift${dep}`]: `./${dep}` }],
 			}
 		}
 		return {
-			lifter: ts.createReturn(ts.createIdentifier('response')),
+			lifter: passLifter,
 			deps: [],
 		}
 	}
@@ -154,15 +162,13 @@ export const createLifterCall = (
 	if (schema.$ref) {
 		const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
 		return {
-			lifter: ts.createCall(ts.createIdentifier(`lift${dep}`), undefined, [
-				ts.createIdentifier('response'),
-			]),
-			deps: [dep, { [`lift${dep}`]: dep }],
+			lifter: ts.createIdentifier(`lift${dep}`),
+			deps: [dep, { [`lift${dep}`]: `./${dep}` }],
 		}
 	}
-	// It's a regular object
+	// It's a regular object, or binary: return as is
 	return {
-		lifter: ts.createReturn(ts.createIdentifier('response')),
+		lifter: passLifter,
 		deps: [],
 	}
 }
@@ -183,11 +189,9 @@ export const createReturns = (
 		)
 		.flat()
 
-	const l = Object.entries(def.responses)
-		.map(([httpStatusCode, { content }]) =>
-			Object.entries(content).map(([contentType, { schema }]) =>
-				createLifterCall(schema, contentType, parseInt(httpStatusCode, 10)),
-			),
+	const l = Object.values(def.responses)
+		.map(({ content }) =>
+			Object.values(content).map(({ schema }) => createLifterCall(schema)),
 		)
 		.flat()
 

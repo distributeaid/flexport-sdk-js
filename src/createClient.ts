@@ -7,24 +7,28 @@ import {
 	transformPaginatedResponse,
 	transformResponse,
 } from './transformer/transform'
-import { ResolvableObject, ResolvableCollection } from './types'
+import { ResolvableObject, ResolvableCollection, ResolvablePage } from './types'
 import { Either } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { createError, ErrorInfo } from './types/ErrorInfo'
-import { Type, LiftedShipment } from './generated'
+import { LiftedShipment, Shipment, liftShipment } from './generated'
+import { TypedApiObject } from './types/TypedApiObject'
 
 const { fetch, Response } = fetchPonyfill()
 
 export type Client = {
 	getShipment: (id: string | number) => TE.TaskEither<ErrorInfo, LiftedShipment>
 	listAllShipments: () => TE.TaskEither<ErrorInfo, Page<LiftedShipment>>
-	resolveCollectionRef: <A extends ApiObject>() => (
-		link: ResolvableCollection,
-	) => TE.TaskEither<ErrorInfo, Page<A>>
-	resolveObjectRef: <A extends ApiObject>() => (
+	resolveCollectionRef: <A extends ApiObject, O extends TypedApiObject>(
+		transform: (apiResponseObject: A) => O,
+	) => (link: ResolvableCollection) => TE.TaskEither<ErrorInfo, Page<O>>
+	resolvePageRef: <A extends ApiObject, O extends TypedApiObject>(
+		transform: (apiResponseObject: A) => O,
+	) => (link: ResolvablePage) => TE.TaskEither<ErrorInfo, Page<O>>
+	resolveObjectRef: <O extends TypedApiObject>() => (
 		link: ResolvableObject,
-	) => TE.TaskEither<ErrorInfo, A>
+	) => TE.TaskEither<ErrorInfo, O>
 }
 
 const fetchJSON = <A extends ApiObject>(fn: () => Promise<typeof Response>) =>
@@ -84,11 +88,16 @@ export const createClient = ({
 		listAllShipments: () =>
 			authorizedGet(
 				'shipments',
-				transformPaginatedResponse<LiftedShipment>(Type.Shipment),
+				transformPaginatedResponse<Shipment, LiftedShipment>(liftShipment),
 			),
-		resolveCollectionRef: <A extends ApiObject>() => (
-			link: ResolvableCollection,
-		) => authorizedGet(link.link, transformPaginatedResponse<A>(link.refType)),
+		resolveCollectionRef: <A extends ApiObject, O extends TypedApiObject>(
+			transform: (apiResponseObject: A) => O,
+		) => (link: ResolvableCollection) =>
+			authorizedGet(link.link, transformPaginatedResponse<A, O>(transform)),
+		resolvePageRef: <A extends ApiObject, O extends TypedApiObject>(
+			transform: (apiResponseObject: A) => O,
+		) => (link: ResolvablePage) =>
+			authorizedGet(link.link, transformPaginatedResponse<A, O>(transform)),
 		resolveObjectRef: <A extends ApiObject>() => (link: ResolvableObject) =>
 			authorizedGet(link.link, transformResponse<A>()),
 	}

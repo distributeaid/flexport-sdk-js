@@ -30,6 +30,4 @@ export type LiftedUpdateContact = UpdateContact
  */
 export const liftUpdateContact = (
 	original: UpdateContact,
-): LiftedUpdateContact => {
-	return original
-}
+): LiftedUpdateContact => original

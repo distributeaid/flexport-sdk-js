@@ -26,6 +26,4 @@ export type LiftedWeight = TypedApiObject & Weight
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftWeight = (original: Weight): LiftedWeight => {
-	return original
-}
+export const liftWeight = (original: Weight): LiftedWeight => original

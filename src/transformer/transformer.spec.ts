@@ -5,12 +5,18 @@ import {
 	Page,
 	ShipmentLeg,
 	Type,
-	ResolvableCollection,
 } from '../'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as fs from 'fs'
 import * as path from 'path'
 import { isSome, Some } from 'fp-ts/lib/Option'
+import {
+	LiftedShipment,
+	liftShipment,
+	LiftedShipmentLeg,
+	liftShipmentLeg,
+} from '../generated'
+import { ResolvablePage } from '../types'
 
 const shipmentsPageJSON = JSON.parse(
 	fs
@@ -33,13 +39,13 @@ const shipmentJSON = JSON.parse(
 )
 
 describe('transformer', () => {
-	let shipments: Page<Shipment>
+	let shipments: Page<LiftedShipment>
 	it('should transform an API page response', () => {
-		const maybeShipments = transformPaginatedResponse<Shipment>(Type.Shipment)(
-			shipmentsPageJSON,
-		)
+		const maybeShipments = transformPaginatedResponse<Shipment, LiftedShipment>(
+			liftShipment,
+		)(shipmentsPageJSON)
 		expect(isRight(maybeShipments)).toBeTruthy()
-		shipments = (maybeShipments as Right<Page<Shipment>>).right
+		shipments = (maybeShipments as Right<Page<LiftedShipment>>).right
 		expect(shipments._object).toEqual(Type.Page)
 		expect(shipments.items).toHaveLength(1)
 		expect(shipments.items[0]._object).toEqual(Type.Shipment)
@@ -75,11 +81,13 @@ describe('transformer', () => {
 		expect(documentsLink).toBeDefined()
 	})
 	it('should transform a shipment legs API page response', () => {
-		const maybeShipmentLegs = transformPaginatedResponse<ShipmentLeg>(
-			Type.ShipmentLeg,
-		)(shipmentLegsPageJSON)
+		const maybeShipmentLegs = transformPaginatedResponse<
+			ShipmentLeg,
+			LiftedShipmentLeg
+		>(liftShipmentLeg)(shipmentLegsPageJSON)
 		expect(isRight(maybeShipmentLegs)).toBeTruthy()
-		const shipmentLegs = (maybeShipmentLegs as Right<Page<ShipmentLeg>>).right
+		const shipmentLegs = (maybeShipmentLegs as Right<Page<LiftedShipmentLeg>>)
+			.right
 		expect(shipmentLegs.items).toHaveLength(1)
 		const leg = shipmentLegs.items[0]
 		expect(leg.actual_arrival_date).toBeInstanceOf(Date)
@@ -94,16 +102,13 @@ describe('transformer', () => {
 		expect(leg.carrier_name).toEqual('Liberty Carrier')
 	})
 	it('should parse pagination links', () => {
-		const { next } = (transformPaginatedResponse<Shipment>(Type.Shipment)(
-			shipmentsPageJSON,
-		) as Right<Page<Shipment>>).right
+		const { next } = (transformPaginatedResponse<Shipment, LiftedShipment>(
+			liftShipment,
+		)(shipmentsPageJSON) as Right<Page<LiftedShipment>>).right
 		expect(next).toBeDefined()
 		expect(isSome(next)).toBeTruthy()
-		expect((next as Some<ResolvableCollection>).value.link).toEqual(
+		expect((next as Some<ResolvablePage>).value.link).toEqual(
 			'https://api.flexport.com/shipments?page=2',
-		)
-		expect((next as Some<ResolvableCollection>).value.refType).toEqual(
-			Type.Shipment,
 		)
 	})
 })

@@ -56,6 +56,4 @@ export type LiftedOceanBookingDetail = TypedApiObject & OceanBookingDetail
  */
 export const liftOceanBookingDetail = (
 	original: OceanBookingDetail,
-): LiftedOceanBookingDetail => {
-	return original
-}
+): LiftedOceanBookingDetail => original

@@ -45,6 +45,5 @@ export type LiftedInvoiceItem = TypedApiObject & InvoiceItem
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftInvoiceItem = (original: InvoiceItem): LiftedInvoiceItem => {
-	return original
-}
+export const liftInvoiceItem = (original: InvoiceItem): LiftedInvoiceItem =>
+	original

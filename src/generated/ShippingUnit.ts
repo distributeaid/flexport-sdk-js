@@ -53,8 +53,5 @@ export type LiftedShippingUnit = TypedApiObject & ShippingUnit
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  * For detailed cargo, `shipping_units` is required. For simple cargo, `shipping_units` is required, but only one should be specified.
  */
-export const liftShippingUnit = (
-	original: ShippingUnit,
-): LiftedShippingUnit => {
-	return original
-}
+export const liftShippingUnit = (original: ShippingUnit): LiftedShippingUnit =>
+	original

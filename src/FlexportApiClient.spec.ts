@@ -32,7 +32,7 @@ describe('FlexportApiClient', () => {
 		return pipe(
 			client.shipment_index(),
 			TE.map((shipments) => {
-				expect(shipments.data).toHaveLength(10)
+				expect(shipments.items).toHaveLength(10)
 			}),
 		)()
 	})

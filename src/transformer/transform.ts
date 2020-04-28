@@ -28,10 +28,10 @@ const getTransformer = (_object: string) => {
 export const transform = <A>(o: ApiObject): A =>
 	(getTransformer(o._object)(nullToUndefined(o)) as unknown) as A
 
-const transformPage = <A extends ApiObject>(
+const transformPage = <A extends ApiObject, O extends TypedApiObject>(
 	o: ApiPageObject<A>,
-	type: Type,
-): Either<ErrorInfo, Page<A>> => toPage<A>(nullToUndefined(o), type)
+	transform: (apiResponseObject: A) => O,
+): Page<O> => toPage<A, O>(transform)(nullToUndefined(o))
 
 export const transformResponse = <A extends ApiObject>() => (
 	response: ApiResponseObject<A>,
@@ -52,11 +52,14 @@ export const transformResponse = <A extends ApiObject>() => (
 	}
 }
 
-export const transformPaginatedResponse = <A extends ApiObject>(
-	refType: Type,
+export const transformPaginatedResponse = <
+	A extends ApiObject,
+	O extends TypedApiObject
+>(
+	transform: (apiResponseObject: A) => O,
 ) => (
 	response: ApiResponseObject<ApiPageObject<A>>,
-): Either<ErrorInfo, Page<A>> => {
+): Either<ErrorInfo, Page<O>> => {
 	if (response._object !== Type.Response) {
 		return left(createError(`Must pass an ${Type.Response}!`))
 	}
@@ -70,7 +73,7 @@ export const transformPaginatedResponse = <A extends ApiObject>(
 		)
 	}
 	try {
-		return transformPage<A>(response.data, refType)
+		return right(transformPage<A, O>(response.data, transform))
 	} catch (error) {
 		console.error(error)
 		console.debug(response)

@@ -22,6 +22,4 @@ export type LiftedDocumentCollectionRef = TypedApiObject & DocumentCollectionRef
  */
 export const liftDocumentCollectionRef = (
 	original: DocumentCollectionRef,
-): LiftedDocumentCollectionRef => {
-	return original
-}
+): LiftedDocumentCollectionRef => original

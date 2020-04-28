@@ -29,6 +29,4 @@ export type LiftedTruckingBookingDetail = TypedApiObject & TruckingBookingDetail
  */
 export const liftTruckingBookingDetail = (
 	original: TruckingBookingDetail,
-): LiftedTruckingBookingDetail => {
-	return original
-}
+): LiftedTruckingBookingDetail => original

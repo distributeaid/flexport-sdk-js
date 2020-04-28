@@ -5,6 +5,7 @@ import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { Type } from './generated/Type'
 import { ErrorInfo } from './types/ErrorInfo'
+import { liftDocument } from './generated'
 
 describe('API Client', () => {
 	it('can be instantiated', () => {
@@ -47,7 +48,7 @@ describe('API Client', () => {
 		await pipe(
 			TE.right(documentsLink),
 			TE.chain(TE.fromOption(() => (undefined as unknown) as ErrorInfo)),
-			TE.chain(client.resolveCollectionRef()),
+			TE.chain(client.resolveCollectionRef(liftDocument)),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/documents?f.shipment.id=677632',

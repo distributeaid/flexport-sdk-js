@@ -21,8 +21,5 @@ export type LiftedShipmentNode = TypedApiObject & ShipmentNode
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftShipmentNode = (
-	original: ShipmentNode,
-): LiftedShipmentNode => {
-	return original
-}
+export const liftShipmentNode = (original: ShipmentNode): LiftedShipmentNode =>
+	original

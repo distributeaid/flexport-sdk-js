@@ -23,6 +23,4 @@ export type LiftedMoney = TypedApiObject & Money
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftMoney = (original: Money): LiftedMoney => {
-	return original
-}
+export const liftMoney = (original: Money): LiftedMoney => original

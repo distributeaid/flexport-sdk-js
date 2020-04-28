@@ -3,12 +3,13 @@ import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { handleError } from './handleError'
 import { paginate } from '../paginate'
+import { liftShipment } from '../generated'
 
 const client = createClient({ apiKey: process.env.FLEXPORT_API_KEY || '' })
 
 pipe(
 	client.listAllShipments(),
-	TE.chain(paginate(client)),
+	TE.chain(paginate(client, liftShipment)),
 	TE.map((shipments) => {
 		shipments.forEach((shipment) => {
 			console.log(

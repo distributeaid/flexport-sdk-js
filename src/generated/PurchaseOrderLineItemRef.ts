@@ -28,6 +28,4 @@ export type LiftedPurchaseOrderLineItemRef = TypedApiObject &
  */
 export const liftPurchaseOrderLineItemRef = (
 	original: PurchaseOrderLineItemRef,
-): LiftedPurchaseOrderLineItemRef => {
-	return original
-}
+): LiftedPurchaseOrderLineItemRef => original

@@ -25,6 +25,4 @@ export type LiftedVatNumber = TypedApiObject & VatNumber
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftVatNumber = (original: VatNumber): LiftedVatNumber => {
-	return original
-}
+export const liftVatNumber = (original: VatNumber): LiftedVatNumber => original

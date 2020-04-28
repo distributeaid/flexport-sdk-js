@@ -2,7 +2,7 @@ import { createClient } from '..'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { handleError } from './handleError'
-import { Address, LiftedShipmentLeg } from '../generated'
+import { Address, liftShipmentLeg } from '../generated'
 import { createError } from '../types/ErrorInfo'
 
 const client = createClient({ apiKey: process.env.FLEXPORT_API_KEY || '' })
@@ -30,7 +30,7 @@ pipe(
 	client.getShipment(shipmentId),
 	TE.map(({ legs }) => legs),
 	TE.chain(TE.fromOption(() => createError('Shipment has no legs!'))),
-	TE.chain(client.resolveCollectionRef<LiftedShipmentLeg>()),
+	TE.chain(client.resolveCollectionRef(liftShipmentLeg)),
 	TE.map((legs) => {
 		legs.items.map((leg) => {
 			console.log(

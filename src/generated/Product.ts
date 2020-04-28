@@ -75,6 +75,4 @@ export type LiftedProduct = TypedApiObject & Product
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftProduct = (original: Product): LiftedProduct => {
-	return original
-}
+export const liftProduct = (original: Product): LiftedProduct => original

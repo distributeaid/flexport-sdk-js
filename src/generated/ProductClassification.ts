@@ -28,6 +28,4 @@ export type LiftedProductClassification = TypedApiObject & ProductClassification
  */
 export const liftProductClassification = (
 	original: ProductClassification,
-): LiftedProductClassification => {
-	return original
-}
+): LiftedProductClassification => original

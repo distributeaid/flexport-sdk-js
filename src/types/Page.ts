@@ -1,9 +1,7 @@
 import { ApiObject } from './ApiObject'
-import { Either, right } from 'fp-ts/lib/Either'
 import { linkPage, ResolvablePage } from './Link'
 import { Option } from 'fp-ts/lib/Option'
 import { Type } from '../generated/Type'
-import { ErrorInfo } from './ErrorInfo'
 import { ApiPageObject } from './ApiPageObject'
 import { TypedApiObject } from './TypedApiObject'
 
@@ -36,16 +34,15 @@ export type Page<A extends ApiObject> = {
 }
 
 export const toPage = <A extends ApiObject, O extends TypedApiObject>(
-	pageResponse: ApiPageObject<A>,
 	transform: (apiResponseObject: A) => O,
-): Either<ErrorInfo, Page<O>> => {
+) => (pageResponse: ApiPageObject<A>): Page<O> => {
 	const { data } = pageResponse
 	const items = data?.map((item) => transform(item)) ?? []
-	return right({
+	return {
 		_object: Type.Page,
 		total_count: pageResponse.total_count,
 		next: linkPage<A>('next', pageResponse),
 		prev: linkPage<A>('prev', pageResponse),
 		items,
-	})
+	}
 }

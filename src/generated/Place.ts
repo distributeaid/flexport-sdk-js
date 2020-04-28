@@ -30,6 +30,4 @@ export type LiftedPlace = TypedApiObject & Place
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
-export const liftPlace = (original: Place): LiftedPlace => {
-	return original
-}
+export const liftPlace = (original: Place): LiftedPlace => original
