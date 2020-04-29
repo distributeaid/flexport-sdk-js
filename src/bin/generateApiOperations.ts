@@ -203,7 +203,7 @@ parseOpenAPI(
 									undefined,
 									ts.createIdentifier('apiClient'),
 									undefined,
-									ts.createTypeReferenceNode('FlexportApiClient', []),
+									ts.createTypeReferenceNode('Client', []),
 								),
 							],
 							undefined,
@@ -288,13 +288,10 @@ parseOpenAPI(
 				ts.createImportClause(
 					undefined,
 					ts.createNamedImports([
-						ts.createImportSpecifier(
-							undefined,
-							ts.createIdentifier('FlexportApiClient'),
-						),
+						ts.createImportSpecifier(undefined, ts.createIdentifier('Client')),
 					]),
 				),
-				ts.createLiteral('../FlexportApiClient'),
+				ts.createLiteral('../Client'),
 			),
 			ts.createImportDeclaration(
 				undefined,

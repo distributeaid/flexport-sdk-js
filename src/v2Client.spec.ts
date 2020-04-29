@@ -1,25 +1,40 @@
-import { createClient } from './createClient'
-import { emptyPageMock, shipmentMock } from './testdata/mocks'
-import { linkCollection, linkObject } from './types'
+import { v2Client } from './v2Client'
+import { requestHandler } from '@distributeaid/flexport-api-sandbox'
+import * as http from 'http'
 import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
-import { Type } from './generated/Type'
+import { emptyPageMock, shipmentMock } from './testdata/mocks'
+import { linkCollection, linkObject } from './types'
+import { Type, liftDocument, liftShipment } from './generated'
 import { ErrorInfo } from './types/ErrorInfo'
-import { liftDocument } from './generated'
 
-describe('API Client', () => {
-	it('can be instantiated', () => {
-		const client = createClient({ apiKey: 'some-api-key' })
+const port = 3000
+const hostname = `http://0.0.0.0:${port}`
+
+describe('v2Client', () => {
+	let server: http.Server
+	beforeAll(() => {
+		server = http.createServer(requestHandler(hostname))
+		server.listen(port)
+	})
+	afterAll(() => {
+		server.close()
+	})
+	it('can be created', () => {
+		const client = v2Client({
+			apiKey: 'foo',
+			endpoint: hostname,
+		})
 		expect(client).toBeDefined()
 	})
 	it('sends the right headers', async () => {
 		const fetchMock = emptyPageMock()
-		const client = createClient({
+		const client = v2Client({
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
 		})
 
-		await pipe(client.listAllShipments())()
+		await pipe(client.shipment_index())()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments',
 			{
@@ -41,14 +56,14 @@ describe('API Client', () => {
 		})
 
 		const fetchMock = emptyPageMock()
-		const client = createClient({
+		const client = v2Client({
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
 		})
 		await pipe(
 			TE.right(documentsLink),
 			TE.chain(TE.fromOption(() => (undefined as unknown) as ErrorInfo)),
-			TE.chain(client.resolveCollectionRef(liftDocument)),
+			TE.chain(client.resolveCollection(liftDocument)),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/documents?f.shipment.id=677632',
@@ -73,14 +88,14 @@ describe('API Client', () => {
 		})
 
 		const fetchMock = shipmentMock()
-		const client = createClient({
+		const client = v2Client({
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
 		})
 		await pipe(
 			TE.right(shipmentLink),
 			TE.chain(TE.fromOption(() => (undefined as unknown) as ErrorInfo)),
-			TE.chain(client.resolveObjectRef()),
+			TE.chain(client.resolveObject(liftShipment)),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
 			'https://api.flexport.com/shipments/677632',
@@ -94,5 +109,18 @@ describe('API Client', () => {
 				},
 			},
 		)
+	})
+	it('can fetch shipments', async () => {
+		const client = v2Client({
+			apiKey: 'foo',
+			endpoint: hostname,
+		})
+		expect.assertions(1)
+		return pipe(
+			client.shipment_index(),
+			TE.map((shipments) => {
+				expect(shipments.items).toHaveLength(10)
+			}),
+		)()
 	})
 })

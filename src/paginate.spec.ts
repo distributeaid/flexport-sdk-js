@@ -1,4 +1,3 @@
-import { createClient } from './createClient'
 import { paginate } from './paginate'
 import * as fs from 'fs'
 import * as path from 'path'
@@ -8,6 +7,7 @@ import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { LiftedShipment, liftShipment } from './generated'
 import { Type } from './generated/Type'
+import { v2Client } from './v2Client'
 
 const shipmentsPage1 = JSON.parse(
 	fs
@@ -25,13 +25,16 @@ describe('paginate', () => {
 			}),
 		)
 		fetchImplementation.mockImplementationOnce(emptyPageMock())
-		const client = createClient({
+		const client = v2Client({
 			apiKey: 'some-api-key',
 			fetchImplementation,
 		})
 		const shipments = await pipe(
-			client.listAllShipments(),
-			TE.chain(paginate(client, liftShipment)),
+			client.shipment_index(),
+			TE.chain((f) => {
+				const r = paginate(client.resolvePage(liftShipment))(f)
+				return r
+			}),
 		)()
 
 		expect(fetchImplementation).toHaveBeenCalledWith(

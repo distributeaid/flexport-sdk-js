@@ -1,7 +1,7 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { FlexportApiClient } from '../FlexportApiClient'
+import { ClientImplementation } from '../types/Client'
 import { ApiPageObject } from '../types/ApiPageObject'
 import { BookingAmendment } from './BookingAmendment'
 import { liftBookingAmendment } from './BookingAmendment'
@@ -67,7 +67,7 @@ import { ShipmentStatus } from './ShipmentStatus'
 import { Shipment } from './Shipment'
 import { LiftedShipment } from './Shipment'
 import { liftShipment } from './Shipment'
-export const flexportApiV2 = (apiClient: FlexportApiClient) => {
+export const flexportApiV2 = (apiClient: ClientImplementation) => {
 	const booking_amendment_create = () =>
 		pipe(
 			apiClient<BookingAmendment>({
@@ -874,7 +874,7 @@ export const flexportApiV2 = (apiClient: FlexportApiClient) => {
 			}),
 			map(toPage<Shipment, LiftedShipment>(liftShipment)),
 		)
-	const shipment_show = (params: { ['id']: string }) =>
+	const shipment_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Shipment>({
 				method: 'GET',
