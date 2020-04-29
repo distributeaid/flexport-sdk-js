@@ -123,4 +123,30 @@ describe('v2Client', () => {
 			}),
 		)()
 	})
+	it('can fetch shipments by id', async () => {
+		const client = v2Client({
+			apiKey: 'foo',
+			endpoint: hostname,
+		})
+		expect.assertions(1)
+		return pipe(
+			client.shipment_show({ id: 253590 }),
+			TE.map((shipment) => {
+				expect(shipment.name).toEqual('LCL Test Shipment')
+			}),
+		)()
+	})
+	it('can fetch shipment containers by id', async () => {
+		const client = v2Client({
+			apiKey: 'foo',
+			endpoint: hostname,
+		})
+		expect.assertions(1)
+		return pipe(
+			client.container_show({ id: 125230 }),
+			TE.map((container) => {
+				expect(container.container_number).toEqual('UACU8059492')
+			}),
+		)()
+	})
 })

@@ -32,9 +32,14 @@ export const v2Client = ({
 		method,
 		params,
 	}: ClientImplementationArgs) => {
-		// FIXME: replace path parameters
-		// FIXME: Handle errors
-		const url = path.startsWith('http') ? path : `${e}${path}`
+		const replacedPath = Object.entries(params?.path ?? {}).reduce(
+			(replacedPath, [k, v]) =>
+				replacedPath
+					.replace(`{${k}}`, encodeURIComponent(v))
+					.replace(`:${k}`, encodeURIComponent(v)),
+			path,
+		)
+		const url = path.startsWith('http') ? path : `${e}${replacedPath}`
 		return TE.tryCatch<ErrorInfo, A>(
 			() => {
 				const args = {
@@ -57,7 +62,18 @@ export const v2Client = ({
 					args.query = query
 				}
 				return (fetchImplementation || fetch)(url, args)
-					.then(async (res: any) => res.json())
+					.then(async (res: any) => {
+						if (res.status >= 400) {
+							return res.text().then((text: string) => {
+								throw new Error(
+									`Encountered error ${res.status} when ${method}ing ${url}${
+										text && `: ${text}`
+									}`,
+								)
+							})
+						}
+						return res.json()
+					})
 					.then((res: any) => res.data)
 			},
 			(err) => createError((err as Error).message),

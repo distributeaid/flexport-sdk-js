@@ -25,7 +25,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -e",
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && npm test"
     }
   },
   "lint-staged": {
@@ -41,12 +41,12 @@
     "@bifravst/code-style": "^7.1.8",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
-    "@distributeaid/flexport-api-sandbox": "^1.2.0",
+    "@distributeaid/flexport-api-sandbox": "^1.2.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@types/jest": "^25.2.1",
     "@types/js-yaml": "^3.12.3",
     "husky": "^4.2.5",
-    "jest": "^25.5.0",
+    "jest": "^25.5.1",
     "js-yaml": "^3.13.1",
     "semantic-release": "^17.0.7",
     "ts-jest": "^25.4.0",
