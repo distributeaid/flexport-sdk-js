@@ -203,7 +203,7 @@ parseOpenAPI(
 									undefined,
 									ts.createIdentifier('apiClient'),
 									undefined,
-									ts.createTypeReferenceNode('Client', []),
+									ts.createTypeReferenceNode('ClientImplementation', []),
 								),
 							],
 							undefined,
@@ -288,10 +288,13 @@ parseOpenAPI(
 				ts.createImportClause(
 					undefined,
 					ts.createNamedImports([
-						ts.createImportSpecifier(undefined, ts.createIdentifier('Client')),
+						ts.createImportSpecifier(
+							undefined,
+							ts.createIdentifier('ClientImplementation'),
+						),
 					]),
 				),
-				ts.createLiteral('../Client'),
+				ts.createLiteral('../types/Client'),
 			),
 			ts.createImportDeclaration(
 				undefined,

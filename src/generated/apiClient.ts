@@ -207,7 +207,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 				),
 			),
 		)
-	const commercial_invoices_show = (params: { ['id']: string }) =>
+	const commercial_invoices_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<CommercialInvoice>({
 				method: 'GET',
@@ -235,7 +235,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(toPage<CustomsEntry, LiftedCustomsEntry>(liftCustomsEntry)),
 		)
-	const customs_entries_show = (params: { ['id']: string }) =>
+	const customs_entries_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<CustomsEntry>({
 				method: 'GET',
@@ -275,7 +275,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(toPage<Document, LiftedDocument>(liftDocument)),
 		)
-	const documents_show = (params: { ['id']: string }) =>
+	const documents_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Document>({
 				method: 'GET',
@@ -284,7 +284,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(liftDocument),
 		)
-	const documents_download = (params: { ['id']: string }) =>
+	const documents_download = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<
 				| string
@@ -376,7 +376,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(toPage<Invoice, LiftedInvoice>(liftInvoice)),
 		)
-	const invoices_show = (params: { ['id']: string }) =>
+	const invoices_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Invoice>({
 				method: 'GET',
@@ -412,7 +412,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			apiClient<Company>({ method: 'POST', path: '/network/companies' }),
 			map(liftCompany),
 		)
-	const network_company_show = (params: { ['id']: string }) =>
+	const network_company_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Company>({
 				method: 'GET',
@@ -421,7 +421,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(liftCompany),
 		)
-	const network_company_update = (params: { ['id']: string }) =>
+	const network_company_update = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Company>({
 				method: 'PATCH',
@@ -461,7 +461,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(liftCompanyEntity),
 		)
-	const network_company_entity_show = (params: { ['id']: string }) =>
+	const network_company_entity_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<CompanyEntity>({
 				method: 'GET',
@@ -470,7 +470,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(liftCompanyEntity),
 		)
-	const network_company_entity_update = (params: { ['id']: string }) =>
+	const network_company_entity_update = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<CompanyEntity>({
 				method: 'PATCH',
@@ -507,7 +507,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			apiClient<Contact>({ method: 'POST', path: '/network/contacts' }),
 			map(liftContact),
 		)
-	const network_contact_show = (params: { ['id']: string }) =>
+	const network_contact_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Contact>({
 				method: 'GET',
@@ -516,7 +516,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(liftContact),
 		)
-	const network_contact_update = (params: { ['id']: string }) =>
+	const network_contact_update = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Contact>({
 				method: 'PATCH',
@@ -558,7 +558,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			apiClient<Location>({ method: 'POST', path: '/network/locations' }),
 			map(liftLocation),
 		)
-	const network_location_show = (params: { ['id']: string }) =>
+	const network_location_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Location>({
 				method: 'GET',
@@ -567,7 +567,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(liftLocation),
 		)
-	const location_update = (params: { ['id']: string }) =>
+	const location_update = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Location>({
 				method: 'PATCH',
@@ -645,7 +645,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 				),
 			),
 		)
-	const container_show = (params: { ['id']: string }) =>
+	const container_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<ShipmentContainer>({
 				method: 'GET',
@@ -700,7 +700,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			apiClient<Product>({ method: 'POST', path: '/products' }),
 			map(liftProduct),
 		)
-	const product_show = (params: { ['id']: string }) =>
+	const product_show = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Product>({
 				method: 'GET',
@@ -709,7 +709,7 @@ export const flexportApiV2 = (apiClient: ClientImplementation) => {
 			}),
 			map(liftProduct),
 		)
-	const product_update = (params: { ['id']: string }) =>
+	const product_update = (params: { ['id']: number }) =>
 		pipe(
 			apiClient<Product>({
 				method: 'PATCH',

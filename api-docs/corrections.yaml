@@ -82,3 +82,88 @@ components:
         - _object
         - name
         - address
+paths:
+  "/commercial_invoices/:id":
+    get:
+      parameters:
+        - schema:
+            type: number
+  "/invoices/:id":
+    get:
+      parameters:
+        - schema:
+            type: number
+  "/documents/{id}":
+    get:
+      parameters:
+        - schema:
+            type: number
+  "/documents/{id}/download":
+    get:
+      parameters:
+        - schema:
+            type: number
+  "/network/companies/{id}":
+    get:
+      parameters:
+        - schema:
+            type: number
+    patch:
+      parameters:
+        - schema:
+            type: number
+  "/network/company_entities/{id}":
+    get:
+      parameters:
+        - schema:
+            type: number
+    patch:
+      parameters:
+        - schema:
+            type: number
+  "/network/contacts/{id}":
+    get:
+      parameters:
+        - schema:
+            type: number
+    patch:
+      parameters:
+        - schema:
+            type: number
+  "/network/locations/{id}":
+    get:
+      parameters:
+        - schema:
+            type: number
+    patch:
+      parameters:
+        - schema:
+            type: number
+  "/ocean/shipment_containers/:id":
+    get:
+      parameters:
+        - schema:
+            type: number
+  "/products/{id}":
+    get:
+      parameters:
+        - schema:
+            type: number
+    patch:
+      parameters:
+        - schema:
+            type: number
+  "/shipments/:id":
+    get:
+      parameters:
+        - schema:
+            type: number
+    patch:
+      parameters:
+        - schema:
+            type: number
+  "/customs_entries/:id":
+    get:
+      parameters:
+        - schema:
+            type: number
