@@ -37,16 +37,16 @@
     ]
   },
   "devDependencies": {
-    "@bifravst/code-style": "^7.1.1",
+    "@bifravst/code-style": "^7.1.8",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@types/jest": "^25.2.1",
     "husky": "^4.2.5",
-    "jest": "^25.3.0",
-    "semantic-release": "^17.0.6",
+    "jest": "^25.5.0",
+    "semantic-release": "^17.0.7",
     "ts-jest": "^25.4.0",
-    "ts-loader": "^7.0.0",
+    "ts-loader": "^7.0.1",
     "typescript": "^3.8.3"
   },
   "jest": {
@@ -79,7 +79,7 @@
   },
   "dependencies": {
     "fetch-ponyfill": "^6.1.0",
-    "fp-ts": "^2.5.3"
+    "fp-ts": "^2.5.4"
   },
   "publishConfig": {
     "access": "public"
