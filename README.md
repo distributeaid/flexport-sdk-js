@@ -21,9 +21,9 @@ see [`./src/examples`](./src/examples) for working examples.
 ### Create a client
 
 ```typescript
-import { createClient } from "@distributeaid/flexport-sdk";
+import { v2Client } from "@distributeaid/flexport-sdk";
 
-const client = createClient({ apiKey: "your api key" });
+const client = v2Client({ apiKey: "your api key" });
 ```
 
 ### Query a resource
@@ -33,7 +33,7 @@ import * as TE from "fp-ts/lib/TaskEither";
 import { pipe } from "fp-ts/lib/pipeable";
 
 pipe(
-  client.listAllShipments(),
+  client.shipment_index(),
   TE.map((shipments) => {
     console.dir(shipments, { depth: 9 });
   })
@@ -43,11 +43,13 @@ pipe(
 ### Follow links
 
 ```typescript
+import { liftShipmentLeg } from "@distributeaid/flexport-sdk";
+
 pipe(
-  client.getShipment(shipmentId),
+  client.shipment_show({ id: shipmentId }),
   TE.map(({ legs }) => legs), // Extract legs link, Option<ResolvableCollection>
   TE.chain(TE.fromOption(() => createError("Shipment has no legs!"))),
-  TE.chain(client.resolveCollection<ShipmentLeg>()), // Resolve the link to the collection
+  TE.chain(client.resolveCollection(liftShipmentLeg)), // Resolve the link to the collection
   TE.map((legs) => {
     console.dir(legs, { depth: 9 });
   })
@@ -57,11 +59,11 @@ pipe(
 ### Paginate a collection
 
 ```typescript
-import { paginate } from "../paginate";
+import { paginate } from "@distributeaid/flexport-sdk";
 
 pipe(
-  client.listAllShipments(),
-  TE.chain(paginate(client)),
+  client.shipment_index(),
+  TE.chain(paginate(client.resolvePage(liftShipment))),
   TE.map((shipments) => {
     console.dir(shipments, { depth: 9 });
   })
