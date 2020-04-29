@@ -140,6 +140,12 @@ export const MilestoneInfo: {
 		resource: Type.Shipment,
 	},
 
+	[Milestone.shipment__updated_cargo_ready_date]: {
+		name: 'Updated Cargo Ready Date',
+		description: 'Cargo ready date changed.',
+		resource: Type.Shipment,
+	},
+
 	[Milestone.shipment__documents_sent_to_nominated_broker]: {
 		name: 'Documents Sent to Nominated Broker',
 		description:

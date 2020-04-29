@@ -132,6 +132,13 @@ export enum Milestone {
 	shipment__cargo_ready_date_changed = '/shipment#cargo_ready_date_changed',
 
 	/**
+	 * Updated Cargo Ready Date
+	 *
+	 * NOTE: Not documented in https://apibeta.flexport.com/reference/milestones
+	 */
+	shipment__updated_cargo_ready_date = '/shipment#updated_cargo_ready_date',
+
+	/**
 	 * Documents Sent to Nominated Broker
 	 *
 	 * Arrival notice sent to client-nominated customs broker. Applicable to non-Flexport customs service shipments only.
