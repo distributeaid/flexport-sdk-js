@@ -5,10 +5,11 @@ import * as path from 'path'
 import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { Type, liftDocument, liftShipment } from './generated'
-import { ErrorInfo } from './types/ErrorInfo'
-import { emptyPageMock } from './testmocks'
+import { ErrorInfo, ErrorType } from './types/ErrorInfo'
+import { emptyPageMock, mockHeaders } from './testmocks'
 import { promises as fs } from 'fs'
 import { linkObject, linkCollection } from './links'
+import { isLeft, Left } from 'fp-ts/lib/Either'
 
 const port = 3000
 const hostname = `http://0.0.0.0:${port}`
@@ -92,6 +93,7 @@ describe('v2Client', () => {
 		const fetchMock = jest.fn(async () =>
 			Promise.resolve({
 				status: 200,
+				headers: mockHeaders(),
 				json: async () =>
 					JSON.parse(
 						(
@@ -169,5 +171,56 @@ describe('v2Client', () => {
 				expect(container.container_number).toEqual('UACU8059492')
 			}),
 		)()
+	})
+	it('can handle invalid responses', async () => {
+		const fetchMock = jest.fn(async () =>
+			Promise.resolve({
+				status: 200,
+				headers: mockHeaders(),
+				json: async () => ({}),
+			}),
+		)
+		const client = v2Client({
+			apiKey: 'some-api-key',
+			fetchImplementation: fetchMock,
+		})
+		const res = await pipe(
+			client.container_show({ id: 125230 }),
+			TE.map(() => {
+				fail('This should not be called')
+			}),
+		)()
+		expect(isLeft(res)).toBeTruthy()
+		expect((res as Left<ErrorInfo>).left.type).toEqual(
+			ErrorType.INTEGRATION_ERROR,
+		)
+		expect((res as Left<ErrorInfo>).left.message).toEqual(
+			'Expected "/api/response", received: "undefined"!',
+		)
+	})
+	it('can handle not found', async () => {
+		const fetchMock = jest.fn(async () =>
+			Promise.resolve({
+				status: 404,
+				text: async () => 'NOT FOUND',
+			}),
+		)
+		const client = v2Client({
+			apiKey: 'some-api-key',
+			fetchImplementation: fetchMock,
+		})
+		const res = await pipe(
+			client.container_show({ id: 125230 }),
+			TE.map(() => {
+				fail('This should not be called')
+			}),
+		)()
+		expect(isLeft(res)).toBeTruthy()
+		expect((res as Left<ErrorInfo>).left.type).toEqual(
+			ErrorType.INTEGRATION_ERROR,
+		)
+		expect((res as Left<ErrorInfo>).left.message).toEqual(
+			'Encountered error 404 when GETing https://api.flexport.com/ocean/shipment_containers/125230: NOT FOUND!',
+		)
 	})
 })

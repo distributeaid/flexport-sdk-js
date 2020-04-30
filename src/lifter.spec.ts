@@ -21,5 +21,4 @@ describe('lifter', () => {
 		const shipment = liftShipment(shipmentJSON.data)
 		expect(shipment.name).toEqual('Ron-Quote_2 ')
 	})
-	it.todo('should handle erroneous JSON')
 })

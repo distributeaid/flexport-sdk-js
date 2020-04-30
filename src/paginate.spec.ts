@@ -7,7 +7,7 @@ import { pipe } from 'fp-ts/lib/pipeable'
 import { LiftedShipment, liftShipment } from './generated'
 import { Type } from './generated/Type'
 import { v2Client } from './v2Client'
-import { emptyPageMock } from './testmocks'
+import { emptyPageMock, mockHeaders } from './testmocks'
 
 const shipmentsPage1 = JSON.parse(
 	fs
@@ -29,6 +29,7 @@ describe('paginate', () => {
 		fetchImplementation.mockImplementationOnce(async () =>
 			Promise.resolve({
 				status: 200,
+				headers: mockHeaders(),
 				json: async () => shipmentsPage1,
 			}),
 		)

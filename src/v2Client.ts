@@ -9,11 +9,13 @@ import {
 	ApiObject,
 	ResolvableCollection,
 	ResolvableObject,
+	ApiResponseObject,
 } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { TypedApiObject } from './types/TypedApiObject'
 import { ApiPageObject } from './types/ApiPageObject'
 import { toPage } from './toPage'
+import { Type } from './generated'
 
 const { fetch } = fetchPonyfill()
 
@@ -61,20 +63,38 @@ export const v2Client = ({
 				if (Object.keys(query).length) {
 					args.query = query
 				}
-				return (fetchImplementation || fetch)(url, args)
-					.then(async (res: any) => {
+				return (fetchImplementation || fetch)(url, args).then(
+					async (res: any) => {
 						if (res.status >= 400) {
 							return res.text().then((text: string) => {
 								throw new Error(
 									`Encountered error ${res.status} when ${method}ing ${url}${
 										text && `: ${text}`
-									}`,
+									}!`,
 								)
 							})
 						}
-						return res.json()
-					})
-					.then((res: any) => res.data)
+						if (res.headers.get('content-type').startsWith('application/json'))
+							return res.json().then((res: ApiResponseObject<A>) => {
+								if (!res) throw new Error('Empty response received')
+								const { _object, version, error, data } = res
+								if (_object !== Type.Response)
+									throw new Error(
+										`Expected "${Type.Response}", received: "${_object}"!`,
+									)
+								if (version !== 2) {
+									throw new Error(`Expected version 2, received: ${version}!`)
+								}
+								if (error) {
+									throw new Error(
+										`API returned an error: ${error.message} (${error.code})`,
+									)
+								}
+								return data
+							})
+						return res.text()
+					},
+				)
 			},
 			(err) => createError((err as Error).message),
 		)

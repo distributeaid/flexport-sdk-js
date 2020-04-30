@@ -1,4 +1,4 @@
-enum ErrorType {
+export enum ErrorType {
 	INTEGRATION_ERROR = 'IntegrationError',
 }
 

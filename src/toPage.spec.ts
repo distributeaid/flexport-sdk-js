@@ -21,5 +21,4 @@ describe('toPage', () => {
 		const shipments = toPage(liftShipment)(shipmentsJSON.data)
 		expect(shipments.items).toHaveLength(10)
 	})
-	it.todo('should handle erroneous JSON')
 })
