@@ -1,12 +1,14 @@
 import { v2Client } from './v2Client'
 import { requestHandler } from '@distributeaid/flexport-api-sandbox'
 import * as http from 'http'
+import * as path from 'path'
 import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
-import { emptyPageMock, shipmentMock } from './testdata/mocks'
 import { linkCollection, linkObject } from './types'
 import { Type, liftDocument, liftShipment } from './generated'
 import { ErrorInfo } from './types/ErrorInfo'
+import { emptyPageMock } from './testmocks'
+import { promises as fs } from 'fs'
 
 const port = 3000
 const hostname = `http://0.0.0.0:${port}`
@@ -52,7 +54,7 @@ describe('v2Client', () => {
 		const documentsLink = linkCollection({
 			_object: Type.CollectionRef,
 			ref_type: '/document',
-			link: 'https://api.flexport.com/documents?f.shipment.id=677632',
+			link: 'https://api.flexport.com/documents?f.shipment.id=685551',
 		})
 
 		const fetchMock = emptyPageMock()
@@ -66,7 +68,7 @@ describe('v2Client', () => {
 			TE.chain(client.resolveCollection(liftDocument)),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
-			'https://api.flexport.com/documents?f.shipment.id=677632',
+			'https://api.flexport.com/documents?f.shipment.id=685551',
 			{
 				method: 'GET',
 				headers: {
@@ -83,11 +85,30 @@ describe('v2Client', () => {
 		const shipmentLink = linkObject({
 			_object: Type.ObjectRef,
 			ref_type: '/shipment',
-			link: 'https://api.flexport.com/shipments/677632',
-			id: 677632,
+			link: 'https://api.flexport.com/shipments/685551',
+			id: 685551,
 		})
 
-		const fetchMock = shipmentMock()
+		const fetchMock = jest.fn(async () =>
+			Promise.resolve({
+				status: 200,
+				json: async () =>
+					JSON.parse(
+						(
+							await fs.readFile(
+								path.join(
+									process.cwd(),
+									'node_modules',
+									'@distributeaid/flexport-api-sandbox',
+									'sandbox',
+									'shipments',
+									'685551.json',
+								),
+							)
+						).toString(),
+					),
+			}),
+		)
 		const client = v2Client({
 			apiKey: 'some-api-key',
 			fetchImplementation: fetchMock,
@@ -98,7 +119,7 @@ describe('v2Client', () => {
 			TE.chain(client.resolveObject(liftShipment)),
 		)()
 		expect(fetchMock).toHaveBeenCalledWith(
-			'https://api.flexport.com/shipments/677632',
+			'https://api.flexport.com/shipments/685551',
 			{
 				method: 'GET',
 				headers: {

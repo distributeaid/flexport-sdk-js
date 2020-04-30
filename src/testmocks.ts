@@ -1,6 +1,3 @@
-import * as fs from 'fs'
-import * as path from 'path'
-
 const emptyPage = {
 	_object: '/api/response',
 	self:
@@ -20,18 +17,5 @@ export const emptyPageMock = () =>
 		Promise.resolve({
 			status: 200,
 			json: async () => emptyPage,
-		}),
-	)
-
-export const shipment = JSON.parse(
-	fs
-		.readFileSync(path.join(process.cwd(), 'src', 'testdata', 'shipment.json'))
-		.toString(),
-)
-export const shipmentMock = () =>
-	jest.fn(async () =>
-		Promise.resolve({
-			status: 200,
-			json: async () => shipment,
 		}),
 	)
