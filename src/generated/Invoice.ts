@@ -10,7 +10,7 @@ import { ApiObjectRef } from '../types/ApiObjectRef'
 import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../types/Link'
+import { linkObject } from '../links'
 export type Invoice = {
 	/**
 	 * Type of the object. Always '/invoice' for this object.

@@ -6,7 +6,7 @@ import { ApiCollectionRef } from '../types/ApiCollectionRef'
 import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableCollection } from '../types/Link'
-import { linkCollection } from '../types/Link'
+import { linkCollection } from '../links'
 export type RailShipmentLeg = {
 	readonly _object: Type.RailShipmentLeg
 	readonly container_legs?: ApiCollectionRef

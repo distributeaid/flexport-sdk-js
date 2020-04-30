@@ -1,6 +1,6 @@
 import { ApiError } from './ApiError'
 import { ApiObject } from './ApiObject'
-import { Type } from '../generated'
+import { Type } from '../generated/Type'
 
 /**
  * All responses to authenticated API requests follow the same structure, wrapping resource data within an `/api/response` object of the following form

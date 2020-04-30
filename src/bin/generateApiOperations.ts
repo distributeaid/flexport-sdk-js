@@ -3,14 +3,13 @@ import * as path from 'path'
 import { printNode } from '../generator/printNode'
 import * as ts from 'typescript'
 import { promises as fs } from 'fs'
-import { createPropertyDefinition } from '../generator/factories'
+import { createPropertyDefinition, makeImport } from '../generator/factories'
 import {
 	ApiMethodInfo,
 	OpenAPIv3Operation,
 	createReturns,
 } from '../generator/apiClientFactories'
-
-const knownModules = {} as { [key: string]: string }
+import { uniqueDeps } from '../generator/uniqueDeps'
 
 parseOpenAPI(
 	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
@@ -169,7 +168,6 @@ parseOpenAPI(
 					),
 					ts.createCall(ts.createIdentifier('map'), undefined, [lifters[0]]),
 				]),
-				//ts.createBlock([ts.createReturn(ts.createLiteral('foo'))]),
 			)
 
 			deps.push({
@@ -267,20 +265,6 @@ parseOpenAPI(
 		)
 
 		// Write apiClient
-		const uniqueDeps = deps.reduce((uniqueDeps, dep) => {
-			if (typeof dep === 'object') {
-				return {
-					...(uniqueDeps as { [key: string]: string }),
-					...(dep as object),
-				}
-			} else {
-				return {
-					...(uniqueDeps as { [key: string]: string }),
-					[dep]: `./${dep}`,
-				}
-			}
-		}, {} as { [key: string]: string })
-
 		const c = [
 			ts.createImportDeclaration(
 				undefined,
@@ -310,19 +294,7 @@ parseOpenAPI(
 				),
 				ts.createLiteral('../types/ApiPageObject'),
 			),
-			...Object.entries(uniqueDeps).map(([exp, mod]) =>
-				ts.createImportDeclaration(
-					undefined,
-					undefined,
-					ts.createImportClause(
-						undefined,
-						ts.createNamedImports([
-							ts.createImportSpecifier(undefined, ts.createIdentifier(exp)),
-						]),
-					),
-					ts.createLiteral(knownModules[mod] || mod),
-				),
-			),
+			...Object.entries(uniqueDeps(deps)).map(makeImport),
 			client,
 		]
 			.map(printNode)

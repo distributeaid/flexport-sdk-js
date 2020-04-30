@@ -11,7 +11,7 @@ import { Metadata } from './Metadata'
 import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableCollection } from '../types/Link'
-import { linkCollection } from '../types/Link'
+import { linkCollection } from '../links'
 export type PurchaseOrder = {
 	/**
 	 * A unique identifier for the purchase order

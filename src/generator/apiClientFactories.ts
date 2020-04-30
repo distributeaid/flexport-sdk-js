@@ -133,7 +133,7 @@ export const createLifterCall = (schema: Item) => {
 					[ts.createIdentifier(`lift${dep}`)],
 				),
 				deps: [
-					{ ['toPage']: '../types/Page' },
+					{ ['toPage']: '../toPage' },
 					dep,
 					{ [`Lifted${dep}`]: `./${dep}` },
 					{ [`lift${dep}`]: `./${dep}` },

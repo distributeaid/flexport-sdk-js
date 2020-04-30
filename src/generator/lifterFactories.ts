@@ -267,20 +267,32 @@ export const makeLifter = (
 		true,
 	)
 
-	const deps = []
+	const deps: (string | { [key: string]: string })[] = []
 	if (hasType) {
-		deps.push('TypedApiObject')
+		deps.push({ TypedApiObject: '../types/TypedApiObject' })
 	}
 	if (linkedObjectFields.length) {
-		deps.push('Option', 'ResolvableObject', 'linkObject')
+		deps.push(
+			{ Option: 'fp-ts/lib/Option' },
+			{ ResolvableObject: '../types/Link' },
+			{
+				linkObject: '../links',
+			},
+		)
 	}
 	if (linkedCollectionFields.length) {
-		deps.push('Option', 'ResolvableCollection', 'linkCollection')
+		deps.push(
+			{ Option: 'fp-ts/lib/Option' },
+			{ ResolvableCollection: '../types/Link' },
+			{
+				linkCollection: '../links',
+			},
+		)
 	}
 
 	return {
 		lifter,
 		liftedType,
-		deps: [...new Set(deps)],
+		deps,
 	}
 }

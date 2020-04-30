@@ -21,17 +21,19 @@ export const createPropertyDefinition = (
 	def: Item,
 	schemas: { [key: string]: Item },
 ) => {
-	const deps: string[] = []
+	const deps: (string | { [key: string]: string })[] = []
 	let t
 	if (def.$ref) {
 		const dep = def.$ref.replace(/#\/components\/schemas\//, '')
 		if (schemas[dep]?.properties?._object?.example === '/api/refs/object') {
-			deps.push('ApiObjectRef')
+			deps.push({ ApiObjectRef: '../types/ApiObjectRef' })
 			t = ts.createTypeReferenceNode('ApiObjectRef', [])
 		} else if (
 			schemas[dep]?.properties?._object?.example === '/api/refs/collection'
 		) {
-			deps.push('ApiCollectionRef')
+			deps.push({
+				ApiCollectionRef: '../types/ApiCollectionRef',
+			})
 			t = ts.createTypeReferenceNode('ApiCollectionRef', [])
 		} else {
 			deps.push(dep)
@@ -68,7 +70,7 @@ export const createObjectType = (
 	schema: Item,
 	schemas: { [key: string]: Item },
 ) => {
-	const deps: string[] = []
+	const deps: (string | { [key: string]: string })[] = []
 	const t = ts.createTypeLiteralNode(
 		Object.entries(schema.properties || []).map(([name, def]) => {
 			const { type, deps: d } = createPropertyDefinition(def, schemas)
@@ -173,29 +175,17 @@ export const makeType = (
 	}
 }
 
-const knownModules = {
-	ResolvableCollection: '../types/Link',
-	ResolvableObject: '../types/Link',
-	linkCollection: '../types/Link',
-	linkObject: '../types/Link',
-	Option: 'fp-ts/lib/Option',
-	toDateOrUndefined: '../transformer/toDate',
-	ApiCollectionRef: '../types/ApiCollectionRef',
-	ApiObjectRef: '../types/ApiObjectRef',
-	TypedApiObject: '../types/TypedApiObject',
-} as { [key: string]: string }
-
-export const makeImport = (name: string) => {
+export const makeImport = ([exp, mod]: string[]) => {
 	return ts.createImportDeclaration(
 		undefined,
 		undefined,
 		ts.createImportClause(
 			undefined,
 			ts.createNamedImports([
-				ts.createImportSpecifier(undefined, ts.createIdentifier(name)),
+				ts.createImportSpecifier(undefined, ts.createIdentifier(exp)),
 			]),
 		),
-		ts.createLiteral(knownModules[name] || `./${name}`),
+		ts.createLiteral(mod),
 	)
 }
 

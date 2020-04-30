@@ -6,7 +6,6 @@ import { ErrorInfo, createError } from './types/ErrorInfo'
 import { ClientImplementationArgs, ClientImplementation } from './types/Client'
 import {
 	ResolvablePage,
-	toPage,
 	ApiObject,
 	ResolvableCollection,
 	ResolvableObject,
@@ -14,6 +13,7 @@ import {
 import { pipe } from 'fp-ts/lib/pipeable'
 import { TypedApiObject } from './types/TypedApiObject'
 import { ApiPageObject } from './types/ApiPageObject'
+import { toPage } from './toPage'
 
 const { fetch } = fetchPonyfill()
 

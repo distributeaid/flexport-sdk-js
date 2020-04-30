@@ -15,9 +15,9 @@ import { Metadata } from './Metadata'
 import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../types/Link'
+import { linkObject } from '../links'
 import { ResolvableCollection } from '../types/Link'
-import { linkCollection } from '../types/Link'
+import { linkCollection } from '../links'
 export type Booking = {
 	/**
 	 * Unique identifier for the booking

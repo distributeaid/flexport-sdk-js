@@ -13,7 +13,7 @@ import { RailShipmentLeg } from './RailShipmentLeg'
 import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../types/Link'
+import { linkObject } from '../links'
 export type ShipmentLeg = {
 	/**
 	 * Type of the object

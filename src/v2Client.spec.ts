@@ -4,11 +4,11 @@ import * as http from 'http'
 import * as path from 'path'
 import { pipe } from 'fp-ts/lib/pipeable'
 import * as TE from 'fp-ts/lib/TaskEither'
-import { linkCollection, linkObject } from './types'
 import { Type, liftDocument, liftShipment } from './generated'
 import { ErrorInfo } from './types/ErrorInfo'
 import { emptyPageMock } from './testmocks'
 import { promises as fs } from 'fs'
+import { linkObject, linkCollection } from './links'
 
 const port = 3000
 const hostname = `http://0.0.0.0:${port}`

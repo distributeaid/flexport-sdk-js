@@ -1,4 +1,4 @@
-import { Type } from '../generated'
+import { Type } from '../generated/Type'
 
 export type TypedApiObject = {
 	/**

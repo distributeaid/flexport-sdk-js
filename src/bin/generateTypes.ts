@@ -10,6 +10,7 @@ import {
 } from '../generator/factories'
 import { ApiTypes } from '../generator/knowTypes'
 import { makeLifter } from '../generator/lifterFactories'
+import { uniqueDeps } from '../generator/uniqueDeps'
 
 parseOpenAPI(
 	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
@@ -31,11 +32,12 @@ parseOpenAPI(
 					)
 					const comment = []
 					comment.push('Auto-generated file. Do not change.')
+
 					const nodes = [
 						`/**\n * ${comment.join('\n * ')} \n */`,
-						...[...new Set([...deps, ...lifterDeps])].map((dep) =>
-							printNode(makeImport(dep)),
-						),
+						...Object.entries(
+							uniqueDeps([...deps, ...lifterDeps]),
+						).map(([exp, mod]) => printNode(makeImport([exp, mod]))),
 						printNode(type),
 						printNode(liftedType),
 						printNode(lifter),
