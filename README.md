@@ -72,9 +72,9 @@ pipe(
 
 ## Generation of base types
 
-The base types in [`./src/generated`](./src/generated) are generated using
-[`./src/generator/parseOpenAPI.ts`](./src/generator/parseOpenAPI.ts), which
-parses the [Open API 3 definition file](./api-docs/v2.yaml)
+The types in [`./src/generated`](./src/generated) are generated using
+[`./src/bin/generateTypes.ts`](./src/bin/generateTypes.ts), which parses the
+[Open API 3 definition file](./api-docs/v2.yaml)
 ([source](https://api.flexport.com/docs/v2/flexport)). However this API
 documentation contains errors, which are corrected in the schema through
 [a file containing corrections](./api-docs/corrections.yaml), before the base
@@ -83,7 +83,9 @@ types are generated.
 ## _Lifting_ of base types
 
 The lifters in the same files _lift_ the Flexport API responses into the SDK
-domain, by augmenting them with higher level properties.
+domain, by augmenting them with higher level properties. They are generated with
+the API client using
+[`./src/bin/generateApiOperations.ts`](./src/bin/generateApiOperations.ts).
 
 ## Architecture decision records (ADRs)
 
