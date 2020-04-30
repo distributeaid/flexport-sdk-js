@@ -1,16 +1,25 @@
-import { createClient } from './createClient'
 import { paginate } from './paginate'
 import * as fs from 'fs'
 import * as path from 'path'
-import { emptyPageMock } from './testdata/mocks'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
-import { Shipment, Type } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
+import { LiftedShipment, liftShipment } from './generated'
+import { Type } from './generated/Type'
+import { v2Client } from './v2Client'
+import { emptyPageMock, mockHeaders } from './testmocks'
 
 const shipmentsPage1 = JSON.parse(
 	fs
-		.readFileSync(path.join(process.cwd(), 'src', 'testdata', 'shipments.json'))
+		.readFileSync(
+			path.join(
+				process.cwd(),
+				'node_modules',
+				'@distributeaid/flexport-api-sandbox',
+				'sandbox',
+				'shipments.json',
+			),
+		)
 		.toString(),
 )
 
@@ -20,21 +29,26 @@ describe('paginate', () => {
 		fetchImplementation.mockImplementationOnce(async () =>
 			Promise.resolve({
 				status: 200,
+				headers: mockHeaders(),
 				json: async () => shipmentsPage1,
 			}),
 		)
 		fetchImplementation.mockImplementationOnce(emptyPageMock())
-		const client = createClient({
+		const client = v2Client({
 			apiKey: 'some-api-key',
 			fetchImplementation,
+			endpoint: 'https://flexport-sandbox.example.com',
 		})
 		const shipments = await pipe(
-			client.listAllShipments(),
-			TE.chain(paginate(client)),
+			client.shipment_index(),
+			TE.chain((f) => {
+				const r = paginate(client.resolvePage(liftShipment))(f)
+				return r
+			}),
 		)()
 
 		expect(fetchImplementation).toHaveBeenCalledWith(
-			'https://api.flexport.com/shipments',
+			'https://flexport-sandbox.example.com/shipments',
 			{
 				method: 'GET',
 				headers: {
@@ -46,7 +60,7 @@ describe('paginate', () => {
 			},
 		)
 		expect(fetchImplementation).toHaveBeenCalledWith(
-			'https://api.flexport.com/shipments?page=2',
+			'https://flexport-sandbox.example.com/shipments?page=2&per=10',
 			{
 				method: 'GET',
 				headers: {
@@ -58,8 +72,8 @@ describe('paginate', () => {
 			},
 		)
 		expect(isRight(shipments)).toBeTruthy()
-		expect((shipments as Right<Shipment[]>).right).toHaveLength(1)
-		expect((shipments as Right<Shipment[]>).right[0]._object).toEqual(
+		expect((shipments as Right<LiftedShipment[]>).right).toHaveLength(10)
+		expect((shipments as Right<LiftedShipment[]>).right[0]._object).toEqual(
 			Type.Shipment,
 		)
 	})

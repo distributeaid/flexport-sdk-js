@@ -1,4 +1,6 @@
-export * from './createClient'
 export * from './types'
 export * from './transformer'
 export * from './paginate'
+export * from './generated'
+export * from './events'
+export * from './v2Client'

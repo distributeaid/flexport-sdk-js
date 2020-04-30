@@ -1,4 +1,4 @@
-import { Type } from './types'
+import { Type } from '../generated/Type'
 
 /**
  * CollectionRefs are expandable

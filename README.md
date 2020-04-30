@@ -21,9 +21,9 @@ see [`./src/examples`](./src/examples) for working examples.
 ### Create a client
 
 ```typescript
-import { createClient } from "@distributeaid/flexport-sdk";
+import { v2Client } from "@distributeaid/flexport-sdk";
 
-const client = createClient({ apiKey: "your api key" });
+const client = v2Client({ apiKey: "your api key" });
 ```
 
 ### Query a resource
@@ -33,8 +33,8 @@ import * as TE from "fp-ts/lib/TaskEither";
 import { pipe } from "fp-ts/lib/pipeable";
 
 pipe(
-  client.listAllShipments(),
-  TE.map(shipments => {
+  client.shipment_index(),
+  TE.map((shipments) => {
     console.dir(shipments, { depth: 9 });
   })
 )();
@@ -43,12 +43,14 @@ pipe(
 ### Follow links
 
 ```typescript
+import { liftShipmentLeg } from "@distributeaid/flexport-sdk";
+
 pipe(
-  client.getShipment(shipmentId),
+  client.shipment_show({ id: shipmentId }),
   TE.map(({ legs }) => legs), // Extract legs link, Option<ResolvableCollection>
   TE.chain(TE.fromOption(() => createError("Shipment has no legs!"))),
-  TE.chain(client.resolveCollectionRef<ShipmentLeg>()), // Resolve the link to the collection
-  TE.map(legs => {
+  TE.chain(client.resolveCollection(liftShipmentLeg)), // Resolve the link to the collection
+  TE.map((legs) => {
     console.dir(legs, { depth: 9 });
   })
 )();
@@ -57,16 +59,31 @@ pipe(
 ### Paginate a collection
 
 ```typescript
-import { paginate } from "../paginate";
+import { paginate } from "@distributeaid/flexport-sdk";
 
 pipe(
-  client.listAllShipments(),
-  TE.chain(paginate(client)),
-  TE.map(shipments => {
+  client.shipment_index(),
+  TE.chain(paginate(client.resolvePage(liftShipment))),
+  TE.map((shipments) => {
     console.dir(shipments, { depth: 9 });
   })
 )();
 ```
+
+## Generation of base types
+
+The base types in [`./src/generated`](./src/generated) are generated using
+[`./src/generator/parseOpenAPI.ts`](./src/generator/parseOpenAPI.ts), which
+parses the [Open API 3 definition file](./api-docs/v2.yaml)
+([source](https://api.flexport.com/docs/v2/flexport)). However this API
+documentation contains errors, which are corrected in the schema through
+[a file containing corrections](./api-docs/corrections.yaml), before the base
+types are generated.
+
+## _Lifting_ of base types
+
+The lifters in the same files _lift_ the Flexport API responses into the SDK
+domain, by augmenting them with higher level properties.
 
 ## Architecture decision records (ADRs)
 
