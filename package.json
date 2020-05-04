@@ -4,7 +4,8 @@
   "description": "JavaScript client SDK for Flexport's API v2",
   "scripts": {
     "test": "jest",
-    "prettier": "prettier --write src/**/*.ts"
+    "prettier": "prettier --write src/**/*.ts",
+    "postinstall": "check-node-version --package"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,6 +46,7 @@
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@types/jest": "^25.2.1",
     "@types/js-yaml": "^3.12.3",
+    "check-node-version": "^4.0.3",
     "husky": "^4.2.5",
     "jest": "^25.5.1",
     "js-yaml": "^3.13.1",
@@ -94,5 +96,9 @@
     "dist",
     "LICENSE",
     "README.md"
-  ]
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
 }
