@@ -27,6 +27,8 @@ jobs:
         run: |
           node node dist/bin/generateTypes.js
           node node dist/bin/generateApiOperations.js
+      - name: Run tests
+        run: npm test
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
