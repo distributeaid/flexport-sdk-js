@@ -1,0 +1,35 @@
+name: Monitor API definition for changes
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - name: Keep npm cache around to speed up installs
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci --no-audit
+      - name: Compile
+        run: npx tsc
+      - name: Download API definition
+        run: curl https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
+      - name: Update client
+        run: |
+          node node dist/bin/generateTypes.js
+          node node dist/bin/generateApiOperations.js
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          destination_branch: "saga"
+          pr_title: "Update client to the latest definition"
