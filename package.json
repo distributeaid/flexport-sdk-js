@@ -39,21 +39,21 @@
     ]
   },
   "devDependencies": {
-    "@bifravst/code-style": "^7.1.8",
+    "@bifravst/code-style": "^7.1.11",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
     "@distributeaid/flexport-api-sandbox": "^1.2.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
-    "@types/jest": "^25.2.1",
-    "@types/js-yaml": "^3.12.3",
+    "@types/jest": "^25.2.2",
+    "@types/js-yaml": "^3.12.4",
     "check-node-version": "^4.0.3",
     "husky": "^4.2.5",
-    "jest": "^25.5.1",
+    "jest": "^26.0.1",
     "js-yaml": "^3.13.1",
     "semantic-release": "^17.0.7",
     "ts-jest": "^26.0.0",
-    "ts-loader": "^7.0.1",
-    "typescript": "^3.8.3"
+    "ts-loader": "^7.0.4",
+    "typescript": "^3.9.2"
   },
   "jest": {
     "testURL": "http://localhost",
@@ -86,7 +86,7 @@
   "dependencies": {
     "deepmerge": "^4.2.2",
     "fetch-ponyfill": "^6.1.0",
-    "fp-ts": "^2.5.4"
+    "fp-ts": "^2.6.1"
   },
   "publishConfig": {
     "access": "public"
