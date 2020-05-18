@@ -25,8 +25,8 @@ jobs:
         run: curl https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
       - name: Update client
         run: |
-          node node dist/bin/generateTypes.js
-          node node dist/bin/generateApiOperations.js
+          node dist/bin/generateTypes.js
+          node dist/bin/generateApiOperations.js
       - name: Run tests
         run: npm test
       - name: pull-request
@@ -34,4 +34,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           destination_branch: "saga"
-          pr_title: "Update client to the latest definition"
+          pr_title: "fix: update client to the latest definition"
