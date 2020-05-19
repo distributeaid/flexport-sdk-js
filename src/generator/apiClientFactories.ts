@@ -1,4 +1,4 @@
-import { Item, createObjectType } from './factories'
+import { Item, createObjectType, createPropertyDefinition } from './factories'
 import * as ts from 'typescript'
 import { Type } from '../generated'
 
@@ -157,6 +157,7 @@ export const createLifterCall = (schema: Item) => {
 		}
 		return {
 			lifter: passLifter,
+			return: ts.createTypeReferenceNode('any', []),
 			deps: [],
 		}
 	}
@@ -204,5 +205,129 @@ export const createReturns = (
 		],
 		types: r.map(({ type }) => type).flat(),
 		lifters: l.map(({ lifter }) => lifter).flat(),
+	}
+}
+
+export const commentOperation = (p: ts.Node, def: ApiMethodInfo) => {
+	const comment = []
+	comment.push(def.summary)
+	if (def.description) {
+		comment.push('')
+		comment.push(def.description.trim())
+	}
+	comment.push('')
+	comment.push('Returns:')
+	comment.push(
+		Object.entries(def.responses).map(
+			([httpStatusCode, { description }]) =>
+				`- for status code ${httpStatusCode}: ${description}`,
+		),
+	)
+	if (
+		Object.values(def.responses).reduce(
+			(numResponses, { content }) =>
+				numResponses + Object.values(content).length,
+			0,
+		) > 1
+	) {
+		comment.push('FIXME: Only the first response type is handled')
+	}
+	if (def.requestBody) {
+		comment.push('FIXME: Implement request body handling')
+	}
+	ts.addSyntheticLeadingComment(
+		p,
+		ts.SyntaxKind.MultiLineCommentTrivia,
+		`*\n * ${comment.join('\n * ')} \n `,
+		true,
+	)
+}
+
+export const generateParams = (schemas: any, def: ApiMethodInfo) => {
+	const params = []
+	const deps: (string | { [key: string]: string })[] = []
+	const paramsRequired = def.parameters?.find(({ required }) => required)
+	if (def.parameters) {
+		params.push(
+			ts.createParameter(
+				undefined,
+				undefined,
+				undefined,
+				'params',
+				paramsRequired
+					? undefined
+					: ts.createToken(ts.SyntaxKind.QuestionToken),
+				ts.createTypeLiteralNode(
+					def.parameters?.map((param) => {
+						const { type, deps: d } = createPropertyDefinition(
+							param.schema,
+							schemas,
+						)
+						deps.push(...d)
+						return ts.createPropertySignature(
+							[],
+							ts.createComputedPropertyName(ts.createStringLiteral(param.name)),
+							param.required
+								? undefined
+								: ts.createToken(ts.SyntaxKind.QuestionToken),
+							type,
+							undefined,
+						)
+					}),
+				),
+				undefined,
+			),
+		)
+	}
+
+	const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
+	const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
+	const paramProperties = []
+	if (pathParams?.length) {
+		paramProperties.push(
+			ts.createPropertyAssignment(
+				'path',
+				ts.createObjectLiteral(
+					pathParams.map((param) =>
+						ts.createPropertyAssignment(
+							ts.createComputedPropertyName(ts.createStringLiteral(param.name)),
+							ts.createElementAccessChain(
+								ts.createIdentifier('params'),
+								paramsRequired
+									? undefined
+									: ts.createToken(ts.SyntaxKind.QuestionDotToken),
+								ts.createStringLiteral(param.name),
+							),
+						),
+					),
+				),
+			),
+		)
+	}
+	if (queryParams?.length) {
+		paramProperties.push(
+			ts.createPropertyAssignment(
+				'query',
+				ts.createObjectLiteral(
+					queryParams.map((param) =>
+						ts.createPropertyAssignment(
+							ts.createComputedPropertyName(ts.createStringLiteral(param.name)),
+							ts.createElementAccessChain(
+								ts.createIdentifier('params'),
+								paramsRequired
+									? undefined
+									: ts.createToken(ts.SyntaxKind.QuestionDotToken),
+								ts.createStringLiteral(param.name),
+							),
+						),
+					),
+				),
+			),
+		)
+	}
+	return {
+		params,
+		deps,
+		paramProperties,
 	}
 }
