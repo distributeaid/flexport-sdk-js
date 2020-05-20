@@ -3,11 +3,14 @@ import * as path from 'path'
 import { printNode } from '../generator/printNode'
 import * as ts from 'typescript'
 import { promises as fs } from 'fs'
-import { createPropertyDefinition, makeImport } from '../generator/factories'
+import { makeImport } from '../generator/factories'
 import {
 	ApiMethodInfo,
 	OpenAPIv3Operation,
-	createReturns,
+	createOperationCall,
+	commentOperation,
+	generateParams,
+	createLifterCall,
 } from '../generator/apiClientFactories'
 import { uniqueDeps } from '../generator/uniqueDeps'
 
@@ -40,150 +43,52 @@ parseOpenAPI(
 			{} as { [key: string]: ApiMethodInfo },
 		)
 
+		// Create the return type of the client function
+
 		const deps: (string | { [key: string]: string })[] = []
 
-		const functions = Object.entries(operations).map(([operationId, def]) => {
-			const params = []
-			const paramsRequired = def.parameters?.find(({ required }) => required)
-			if (def.parameters) {
-				params.push(
-					ts.createParameter(
-						undefined,
-						undefined,
-						undefined,
-						'params',
-						paramsRequired
-							? undefined
-							: ts.createToken(ts.SyntaxKind.QuestionToken),
-						ts.createTypeLiteralNode(
-							def.parameters?.map((param) => {
-								const { type, deps: d } = createPropertyDefinition(
-									param.schema,
-									f.components.schemas,
-								)
-								deps.push(...d)
-								return ts.createPropertySignature(
-									[],
-									ts.createComputedPropertyName(
-										ts.createStringLiteral(param.name),
-									),
-									param.required
-										? undefined
-										: ts.createToken(ts.SyntaxKind.QuestionToken),
-									type,
-									undefined,
-								)
-							}),
-						),
-						undefined,
-					),
-				)
-			}
-
-			const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
-			const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
-			const paramProperties = []
-			if (pathParams?.length) {
-				paramProperties.push(
-					ts.createPropertyAssignment(
-						'path',
-						ts.createObjectLiteral(
-							pathParams.map((param) =>
-								ts.createPropertyAssignment(
-									ts.createComputedPropertyName(
-										ts.createStringLiteral(param.name),
-									),
-									ts.createElementAccessChain(
-										ts.createIdentifier('params'),
-										paramsRequired
-											? undefined
-											: ts.createToken(ts.SyntaxKind.QuestionDotToken),
-										ts.createStringLiteral(param.name),
-									),
-								),
-							),
-						),
-					),
-				)
-			}
-			if (queryParams?.length) {
-				paramProperties.push(
-					ts.createPropertyAssignment(
-						'query',
-						ts.createObjectLiteral(
-							queryParams.map((param) =>
-								ts.createPropertyAssignment(
-									ts.createComputedPropertyName(
-										ts.createStringLiteral(param.name),
-									),
-									ts.createElementAccessChain(
-										ts.createIdentifier('params'),
-										paramsRequired
-											? undefined
-											: ts.createToken(ts.SyntaxKind.QuestionDotToken),
-										ts.createStringLiteral(param.name),
-									),
-								),
-							),
-						),
-					),
-				)
-			}
-
-			const apiClientArgumens = [
-				ts.createPropertyAssignment(
-					'method',
-					ts.createStringLiteral(def.method.toUpperCase()),
-				),
-				ts.createPropertyAssignment('path', ts.createStringLiteral(def.path)),
-			]
-			if (queryParams?.length || pathParams?.length) {
-				apiClientArgumens.push(
-					ts.createPropertyAssignment(
-						'params',
-						ts.createObjectLiteral(paramProperties),
-					),
-				)
-			}
-
-			// Generate the returned types of the operation
-			const { types: returns, deps: returnDeps, lifters } = createReturns(
-				def,
-				f.components.schemas,
-			)
-			deps.push(...returnDeps)
-
-			const m = ts.createArrowFunction(
-				undefined,
-				undefined,
-				params,
-				undefined,
-				undefined,
-				// TODO: Implement support for different responses
-				ts.createCall(ts.createIdentifier('pipe'), undefined, [
-					ts.createCall(
-						ts.createIdentifier('apiClient'),
-						[ts.createUnionTypeNode(returns)],
-						[ts.createObjectLiteral(apiClientArgumens)],
-					),
-					ts.createCall(ts.createIdentifier('map'), undefined, [lifters[0]]),
-				]),
-			)
-
-			deps.push({
-				pipe: 'fp-ts/lib/pipeable',
-				map: 'fp-ts/lib/TaskEither',
-			})
-
-			return ts.createVariableStatement(
-				undefined,
-				ts.createVariableDeclarationList(
-					[ts.createVariableDeclaration(operationId, undefined, m)],
-					ts.NodeFlags.Const,
-				),
-			)
+		deps.push({
+			TaskEither: 'fp-ts/lib/TaskEither',
+			ErrorInfo: '../types/ErrorInfo',
+			Page: '../types/Page',
 		})
+		const clientInstanceType = ts.createTypeAliasDeclaration(
+			undefined,
+			[ts.createToken(ts.SyntaxKind.ExportKeyword)],
+			'FlexportApiV2ClientInstance',
+			undefined,
+			ts.createTypeLiteralNode(
+				Object.entries(operations).map(([operationId, def]) => {
+					const { params } = generateParams(f.components.schemas, def)
+					const lifters = Object.values(def.responses)
+						.map(({ content }) => Object.values(content))
+						.flat()
+						.map(({ schema }) => createLifterCall(schema))
 
+					deps.push(...lifters.map(({ deps }) => deps).flat())
+
+					const p = ts.createPropertySignature(
+						[],
+						operationId,
+						undefined,
+						ts.createFunctionTypeNode(
+							[],
+							params,
+							ts.createTypeReferenceNode('TaskEither', [
+								ts.createTypeReferenceNode('ErrorInfo', []),
+								// TODO: Implement support for different responses
+								lifters[0].returns,
+							]),
+						),
+						undefined,
+					)
+					commentOperation(p, def)
+					return p
+				}),
+			),
+		)
+
+		// Create the client
 		const client = ts.createVariableStatement(
 			[ts.createToken(ts.SyntaxKind.ExportKeyword)],
 			ts.createVariableDeclarationList(
@@ -204,52 +109,23 @@ parseOpenAPI(
 									ts.createTypeReferenceNode('ClientImplementation', []),
 								),
 							],
-							undefined,
+							ts.createTypeReferenceNode('FlexportApiV2ClientInstance', []),
 							undefined,
 							ts.createBlock(
 								[
-									...functions,
 									ts.createReturn(
 										ts.createObjectLiteral(
 											Object.entries(operations).map(([operationId, def]) => {
-												const p = ts.createShorthandPropertyAssignment(
+												const {
+													method,
+													deps: methodDeps,
+												} = createOperationCall(f.components.schemas, def)
+												const a = ts.createPropertyAssignment(
 													operationId,
+													method,
 												)
-												const comment = []
-												comment.push(def.summary)
-												if (def.description) {
-													comment.push('')
-													comment.push(def.description.trim())
-												}
-												comment.push('')
-												comment.push('Returns:')
-												comment.push(
-													Object.entries(def.responses).map(
-														([httpStatusCode, { description }]) =>
-															`- for status code ${httpStatusCode}: ${description}`,
-													),
-												)
-												if (
-													Object.values(def.responses).reduce(
-														(numResponses, { content }) =>
-															numResponses + Object.values(content).length,
-														0,
-													) > 1
-												) {
-													comment.push(
-														'FIXME: Only the first response type is handled',
-													)
-												}
-												if (def.requestBody) {
-													comment.push('FIXME: Implement request body handling')
-												}
-												ts.addSyntheticLeadingComment(
-													p,
-													ts.SyntaxKind.MultiLineCommentTrivia,
-													`*\n * ${comment.join('\n * ')} \n `,
-													true,
-												)
-												return p
+												deps.push(...methodDeps)
+												return a
 											}),
 											true,
 										),
@@ -295,6 +171,7 @@ parseOpenAPI(
 				ts.createLiteral('../types/ApiPageObject'),
 			),
 			...Object.entries(uniqueDeps(deps)).map(makeImport),
+			clientInstanceType,
 			client,
 		]
 			.map(printNode)
