@@ -71,6 +71,13 @@ import { pipe } from 'fp-ts/lib/pipeable'
 import { map } from 'fp-ts/lib/TaskEither'
 import { TransportationMode } from './TransportationMode'
 import { ShipmentStatus } from './ShipmentStatus'
+/**
+ * Generated API client for the Flexport v2 API
+ *
+ * This client is auto-generated from the OpenAPI documentation published by Flexport, with some corrections.
+ *
+ * @see https://api.flexport.com/docs/v2/flexport
+ */
 export type FlexportApiV2ClientInstance = {
 	/**
 	 * Create and return a booking amendment - a request to change an existing booking.
