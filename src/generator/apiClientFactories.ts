@@ -117,7 +117,13 @@ const passLifter = ts.createArrowFunction(
 	ts.createBlock([ts.createReturn(ts.createIdentifier('res'))]),
 )
 
-export const createLifterCall = (schema: Item) => {
+export const createLifterCall = (
+	schema: Item,
+): {
+	lifter: ts.ArrowFunction | ts.CallExpression | ts.Identifier
+	returns: ts.TypeReferenceNode
+	deps: (string | { [key: string]: string })[]
+} => {
 	// Response is paginated
 	if (isPageResponse(schema)) {
 		const ref = schema.properties?.data?.properties?.data?.items?.$ref
@@ -132,6 +138,9 @@ export const createLifterCall = (schema: Item) => {
 					],
 					[ts.createIdentifier(`lift${dep}`)],
 				),
+				returns: ts.createTypeReferenceNode('Page', [
+					ts.createTypeReferenceNode(`Lifted${dep}`, []),
+				]),
 				deps: [
 					{ ['toPage']: '../toPage' },
 					dep,
@@ -142,6 +151,7 @@ export const createLifterCall = (schema: Item) => {
 		}
 		return {
 			lifter: passLifter,
+			returns: ts.createTypeReferenceNode('any', []), // FIXME: convert to proper type
 			deps: [],
 		}
 	}
@@ -152,12 +162,17 @@ export const createLifterCall = (schema: Item) => {
 			const dep = ref.replace(/#\/components\/schemas\//, '')
 			return {
 				lifter: ts.createIdentifier(`lift${dep}`),
-				deps: [dep, { [`lift${dep}`]: `./${dep}` }],
+				returns: ts.createTypeReferenceNode(`Lifted${dep}`, []),
+				deps: [
+					dep,
+					{ [`lift${dep}`]: `./${dep}` },
+					{ [`Lifted${dep}`]: `./${dep}` },
+				],
 			}
 		}
 		return {
 			lifter: passLifter,
-			return: ts.createTypeReferenceNode('any', []),
+			returns: ts.createTypeReferenceNode('any', []), // FIXME: convert to proper type
 			deps: [],
 		}
 	}
@@ -166,12 +181,18 @@ export const createLifterCall = (schema: Item) => {
 		const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
 		return {
 			lifter: ts.createIdentifier(`lift${dep}`),
-			deps: [dep, { [`lift${dep}`]: `./${dep}` }],
+			returns: ts.createTypeReferenceNode(`Lifted${dep}`, []),
+			deps: [
+				dep,
+				{ [`lift${dep}`]: `./${dep}` },
+				{ [`Lifted${dep}`]: `./${dep}` },
+			],
 		}
 	}
 	// It's a regular object, or binary: return as is
 	return {
 		lifter: passLifter,
+		returns: ts.createTypeReferenceNode('any', []), // FIXME: convert to proper type
 		deps: [],
 	}
 }
@@ -329,5 +350,66 @@ export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 		params,
 		deps,
 		paramProperties,
+	}
+}
+
+export const createOperationCall = (schemas: any, def: ApiMethodInfo) => {
+	const deps: (string | { [key: string]: string })[] = []
+	const { params, paramProperties, deps: paramDeps } = generateParams(
+		schemas,
+		def,
+	)
+	deps.push(...paramDeps)
+
+	const apiClientArgumens = [
+		ts.createPropertyAssignment(
+			'method',
+			ts.createStringLiteral(def.method.toUpperCase()),
+		),
+		ts.createPropertyAssignment('path', ts.createStringLiteral(def.path)),
+	]
+	const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
+	const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
+	if (queryParams?.length || pathParams?.length) {
+		apiClientArgumens.push(
+			ts.createPropertyAssignment(
+				'params',
+				ts.createObjectLiteral(paramProperties),
+			),
+		)
+	}
+
+	// Generate the returned types of the operation
+	const { types: returns, deps: returnDeps, lifters } = createReturns(
+		def,
+		schemas,
+	)
+	deps.push(...returnDeps)
+
+	const m = ts.createArrowFunction(
+		undefined,
+		undefined,
+		params,
+		undefined,
+		undefined,
+		// TODO: Implement support for different responses
+		ts.createCall(ts.createIdentifier('pipe'), undefined, [
+			ts.createCall(
+				ts.createIdentifier('apiClient'),
+				[ts.createUnionTypeNode(returns)],
+				[ts.createObjectLiteral(apiClientArgumens)],
+			),
+			ts.createCall(ts.createIdentifier('map'), undefined, [lifters[0]]),
+		]),
+	)
+
+	deps.push({
+		pipe: 'fp-ts/lib/pipeable',
+		map: 'fp-ts/lib/TaskEither',
+	})
+
+	return {
+		method: m,
+		deps,
 	}
 }

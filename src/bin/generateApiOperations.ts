@@ -3,13 +3,14 @@ import * as path from 'path'
 import { printNode } from '../generator/printNode'
 import * as ts from 'typescript'
 import { promises as fs } from 'fs'
-import { createPropertyDefinition, makeImport } from '../generator/factories'
+import { makeImport } from '../generator/factories'
 import {
 	ApiMethodInfo,
 	OpenAPIv3Operation,
-	createReturns,
+	createOperationCall,
 	commentOperation,
 	generateParams,
+	createLifterCall,
 } from '../generator/apiClientFactories'
 import { uniqueDeps } from '../generator/uniqueDeps'
 
@@ -42,76 +43,14 @@ parseOpenAPI(
 			{} as { [key: string]: ApiMethodInfo },
 		)
 
-		const deps: (string | { [key: string]: string })[] = []
-
-		const functions = Object.entries(operations).map(([operationId, def]) => {
-			const { params, paramProperties, deps: paramDeps } = generateParams(
-				f.components.schemas,
-				def,
-			)
-			deps.push(...paramDeps)
-
-			const apiClientArgumens = [
-				ts.createPropertyAssignment(
-					'method',
-					ts.createStringLiteral(def.method.toUpperCase()),
-				),
-				ts.createPropertyAssignment('path', ts.createStringLiteral(def.path)),
-			]
-			const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
-			const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
-			if (queryParams?.length || pathParams?.length) {
-				apiClientArgumens.push(
-					ts.createPropertyAssignment(
-						'params',
-						ts.createObjectLiteral(paramProperties),
-					),
-				)
-			}
-
-			// Generate the returned types of the operation
-			const { types: returns, deps: returnDeps, lifters } = createReturns(
-				def,
-				f.components.schemas,
-			)
-			deps.push(...returnDeps)
-
-			const m = ts.createArrowFunction(
-				undefined,
-				undefined,
-				params,
-				undefined,
-				undefined,
-				// TODO: Implement support for different responses
-				ts.createCall(ts.createIdentifier('pipe'), undefined, [
-					ts.createCall(
-						ts.createIdentifier('apiClient'),
-						[ts.createUnionTypeNode(returns)],
-						[ts.createObjectLiteral(apiClientArgumens)],
-					),
-					ts.createCall(ts.createIdentifier('map'), undefined, [lifters[0]]),
-				]),
-			)
-
-			deps.push({
-				pipe: 'fp-ts/lib/pipeable',
-				map: 'fp-ts/lib/TaskEither',
-			})
-
-			return ts.createVariableStatement(
-				undefined,
-				ts.createVariableDeclarationList(
-					[ts.createVariableDeclaration(operationId, undefined, m)],
-					ts.NodeFlags.Const,
-				),
-			)
-		})
-
 		// Create the return type of the client function
+
+		const deps: (string | { [key: string]: string })[] = []
 
 		deps.push({
 			TaskEither: 'fp-ts/lib/TaskEither',
 			ErrorInfo: '../types/ErrorInfo',
+			Page: '../types/Page',
 		})
 		const clientInstanceType = ts.createTypeAliasDeclaration(
 			undefined,
@@ -120,11 +59,14 @@ parseOpenAPI(
 			undefined,
 			ts.createTypeLiteralNode(
 				Object.entries(operations).map(([operationId, def]) => {
-					const { lifters } = createReturns(def, f.components.schemas)
-					const { params, paramProperties } = generateParams(
-						f.components.schemas,
-						def,
-					)
+					const { params } = generateParams(f.components.schemas, def)
+					const lifters = Object.values(def.responses)
+						.map(({ content }) => Object.values(content))
+						.flat()
+						.map(({ schema }) => createLifterCall(schema))
+
+					deps.push(...lifters.map(({ deps }) => deps).flat())
+
 					const p = ts.createPropertySignature(
 						[],
 						operationId,
@@ -135,7 +77,7 @@ parseOpenAPI(
 							ts.createTypeReferenceNode('TaskEither', [
 								ts.createTypeReferenceNode('ErrorInfo', []),
 								// TODO: Implement support for different responses
-								ts.createTypeReferenceNode('any', []),
+								lifters[0].returns,
 							]),
 						),
 						undefined,
@@ -171,15 +113,19 @@ parseOpenAPI(
 							undefined,
 							ts.createBlock(
 								[
-									...functions,
 									ts.createReturn(
 										ts.createObjectLiteral(
 											Object.entries(operations).map(([operationId, def]) => {
-												const p = ts.createShorthandPropertyAssignment(
+												const {
+													method,
+													deps: methodDeps,
+												} = createOperationCall(f.components.schemas, def)
+												const a = ts.createPropertyAssignment(
 													operationId,
+													method,
 												)
-												commentOperation(p, def)
-												return p
+												deps.push(...methodDeps)
+												return a
 											}),
 											true,
 										),

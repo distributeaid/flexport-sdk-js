@@ -1,5 +1,8 @@
 import * as fetchPonyfill from 'fetch-ponyfill'
-import { flexportApiV2 } from './generated/apiClient'
+import {
+	flexportApiV2,
+	FlexportApiV2ClientInstance,
+} from './generated/apiClient'
 import { headers } from './headers'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { ErrorInfo, createError } from './types/ErrorInfo'
@@ -10,6 +13,7 @@ import {
 	ResolvableCollection,
 	ResolvableObject,
 	ApiResponseObject,
+	Page,
 } from './types'
 import { pipe } from 'fp-ts/lib/pipeable'
 import { TypedApiObject } from './types/TypedApiObject'
@@ -19,6 +23,18 @@ import { Type } from './generated'
 
 const { fetch } = fetchPonyfill()
 
+export type ResolvingFlexportApiV2ClientInstance = FlexportApiV2ClientInstance & {
+	resolvePage: <A extends ApiObject, O extends TypedApiObject>(
+		transform: (apiResponseObject: A) => O,
+	) => (page: ResolvablePage) => TE.TaskEither<ErrorInfo, Page<O>>
+	resolveCollection: <A extends ApiObject, O extends TypedApiObject>(
+		transform: (apiResponseObject: A) => O,
+	) => (collection: ResolvableCollection) => TE.TaskEither<ErrorInfo, Page<O>>
+	resolveObject: <A extends ApiObject, O extends TypedApiObject>(
+		transform: (apiResponseObject: A) => O,
+	) => (object: ResolvableObject) => TE.TaskEither<ErrorInfo, O>
+}
+
 export const v2Client = ({
 	apiKey,
 	endpoint,
@@ -27,7 +43,7 @@ export const v2Client = ({
 	apiKey: string
 	endpoint?: string
 	fetchImplementation?: typeof fetch
-}) => {
+}): ResolvingFlexportApiV2ClientInstance => {
 	const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
 	const fetchClient: ClientImplementation = <A>({
 		path,
