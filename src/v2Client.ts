@@ -23,7 +23,7 @@ import { Type } from './generated'
 
 const { fetch } = fetchPonyfill()
 
-export type ResolvingFlexportApiV2ClientInstance = FlexportApiV2ClientInstance & {
+export type V2Client = FlexportApiV2ClientInstance & {
 	resolvePage: <A extends ApiObject, O extends TypedApiObject>(
 		transform: (apiResponseObject: A) => O,
 	) => (page: ResolvablePage) => TE.TaskEither<ErrorInfo, Page<O>>
@@ -43,7 +43,7 @@ export const v2Client = ({
 	apiKey: string
 	endpoint?: string
 	fetchImplementation?: typeof fetch
-}): ResolvingFlexportApiV2ClientInstance => {
+}): V2Client => {
 	const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
 	const fetchClient: ClientImplementation = <A>({
 		path,
