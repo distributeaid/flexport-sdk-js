@@ -23,13 +23,29 @@ import { Type } from './generated'
 
 const { fetch } = fetchPonyfill()
 
+/**
+ * Instance of the Flexport API v2 client
+ *
+ * This wraps the generated Generated API client for the Flexport v2 API, and provides additional methods for resolving links.
+ *
+ * @see https://github.com/distributeaid/flexport-sdk-js
+ */
 export type V2Client = FlexportApiV2ClientInstance & {
+	/**
+	 * Resolve a link to a page
+	 */
 	resolvePage: <A extends ApiObject, O extends TypedApiObject>(
 		transform: (apiResponseObject: A) => O,
 	) => (page: ResolvablePage) => TE.TaskEither<ErrorInfo, Page<O>>
+	/**
+	 * Resolves a link to a collection (which returns a paginated response)
+	 */
 	resolveCollection: <A extends ApiObject, O extends TypedApiObject>(
 		transform: (apiResponseObject: A) => O,
 	) => (collection: ResolvableCollection) => TE.TaskEither<ErrorInfo, Page<O>>
+	/**
+	 * Resolves a link to a single object (e.g. the booking of a shipment)
+	 */
 	resolveObject: <A extends ApiObject, O extends TypedApiObject>(
 		transform: (apiResponseObject: A) => O,
 	) => (object: ResolvableObject) => TE.TaskEither<ErrorInfo, O>

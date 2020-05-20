@@ -413,3 +413,21 @@ export const createOperationCall = (schemas: any, def: ApiMethodInfo) => {
 		deps,
 	}
 }
+
+export const commentClientInstanceType = (
+	clientInstanceType: ts.TypeAliasDeclaration,
+) => {
+	const comment = [
+		'Generated API client for the Flexport v2 API',
+		'',
+		'This client is auto-generated from the OpenAPI documentation published by Flexport, with some corrections.',
+		'',
+		'@see https://api.flexport.com/docs/v2/flexport',
+	]
+	ts.addSyntheticLeadingComment(
+		clientInstanceType,
+		ts.SyntaxKind.MultiLineCommentTrivia,
+		`*\n * ${comment.join('\n * ')} \n `,
+		true,
+	)
+}

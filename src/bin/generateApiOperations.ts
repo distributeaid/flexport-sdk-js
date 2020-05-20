@@ -9,6 +9,7 @@ import {
 	OpenAPIv3Operation,
 	createOperationCall,
 	commentOperation,
+	commentClientInstanceType,
 	generateParams,
 	createLifterCall,
 } from '../generator/apiClientFactories'
@@ -87,6 +88,8 @@ parseOpenAPI(
 				}),
 			),
 		)
+
+		commentClientInstanceType(clientInstanceType)
 
 		// Create the client
 		const client = ts.createVariableStatement(
