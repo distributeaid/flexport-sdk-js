@@ -39,7 +39,7 @@
     ]
   },
   "devDependencies": {
-    "@bifravst/code-style": "^7.1.11",
+    "@bifravst/code-style": "^8.0.0",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
     "@distributeaid/flexport-api-sandbox": "^1.2.1",
