@@ -5,23 +5,27 @@ import { handleError } from './handleError'
 import { Address, liftShipmentLeg } from '../generated'
 import { createError } from '../types/ErrorInfo'
 
-const client = v2Client({ apiKey: process.env.FLEXPORT_API_KEY || '' })
+const client = v2Client({
+	apiKey: process.env.FLEXPORT_API_KEY ?? '',
+	endpoint: process.env.FLEXPORT_API_ENDPOINT,
+})
 
-const shipmentId = process.env.SHIPMENT_ID
-	? parseInt(process.env.SHIPMENT_ID, 10)
-	: 677632
+const shipmentId =
+	process.env.SHIPMENT_ID !== undefined
+		? parseInt(process.env.SHIPMENT_ID, 10)
+		: 677632
 
 console.log(`Fetching legs for shipment ${shipmentId}`)
 
 const addressToString = (address: Address) => {
 	const a = []
-	if (address.street_address) {
+	if (address.street_address !== undefined) {
 		a.push(address.street_address)
 	}
-	if (address.street_address2) {
+	if (address.street_address2 !== undefined) {
 		a.push(address.street_address2)
 	}
-	if (address.zip) {
+	if (address.zip !== undefined) {
 		a.push(address.zip)
 	}
 	a.push(address.city, address.country_code)
@@ -51,4 +55,5 @@ pipe(
 			)
 		})
 	}),
+	TE.mapLeft(console.error),
 )().catch(handleError)
