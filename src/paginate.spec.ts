@@ -23,6 +23,20 @@ const shipmentsPage1 = JSON.parse(
 		.toString(),
 )
 
+const shipmentsPage2 = JSON.parse(
+	fs
+		.readFileSync(
+			path.join(
+				process.cwd(),
+				'node_modules',
+				'@distributeaid/flexport-api-sandbox',
+				'sandbox',
+				'shipments?page=2&per=10.json',
+			),
+		)
+		.toString(),
+)
+
 describe('paginate', () => {
 	it('follows pagination links', async () => {
 		const fetchImplementation = jest.fn()
@@ -33,6 +47,13 @@ describe('paginate', () => {
 				json: async () => shipmentsPage1,
 			}),
 		)
+		fetchImplementation.mockImplementationOnce(async () =>
+			Promise.resolve({
+				status: 200,
+				headers: mockHeaders(),
+				json: async () => shipmentsPage2,
+			}),
+		)
 		fetchImplementation.mockImplementationOnce(emptyPageMock())
 		const client = v2Client({
 			apiKey: 'some-api-key',
@@ -41,10 +62,7 @@ describe('paginate', () => {
 		})
 		const shipments = await pipe(
 			client.shipment_index(),
-			TE.chain((f) => {
-				const r = paginate(client.resolvePage(liftShipment))(f)
-				return r
-			}),
+			TE.chain(paginate(client.resolvePage(liftShipment))),
 		)()
 
 		expect(fetchImplementation).toHaveBeenCalledWith(
@@ -71,8 +89,20 @@ describe('paginate', () => {
 				},
 			},
 		)
+		expect(fetchImplementation).toHaveBeenCalledWith(
+			'https://flexport-sandbox.example.com/shipments?page=3&per=10',
+			{
+				method: 'GET',
+				headers: {
+					Authorization: 'Bearer some-api-key',
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					'Flexport-Version': 2,
+				},
+			},
+		)
 		expect(isRight(shipments)).toBeTruthy()
-		expect((shipments as Right<LiftedShipment[]>).right).toHaveLength(10)
+		expect((shipments as Right<LiftedShipment[]>).right).toHaveLength(20)
 		expect((shipments as Right<LiftedShipment[]>).right[0]._object).toEqual(
 			Type.Shipment,
 		)
