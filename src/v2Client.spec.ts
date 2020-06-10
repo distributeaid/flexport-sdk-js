@@ -13,11 +13,12 @@ import { isLeft, Left } from 'fp-ts/lib/Either'
 
 const port = 3000
 const hostname = `http://0.0.0.0:${port}`
+const apiKey = 'foo'
 
 describe('v2Client', () => {
 	let server: http.Server
 	beforeAll(() => {
-		server = http.createServer(requestHandler(hostname))
+		server = http.createServer(requestHandler({ hostname, apiKey }))
 		server.listen(port)
 	})
 	afterAll(() => {
@@ -25,7 +26,7 @@ describe('v2Client', () => {
 	})
 	it('can be created', () => {
 		const client = v2Client({
-			apiKey: 'foo',
+			apiKey,
 			endpoint: hostname,
 		})
 		expect(client).toBeDefined()
@@ -135,7 +136,7 @@ describe('v2Client', () => {
 	})
 	it('can fetch shipments', async () => {
 		const client = v2Client({
-			apiKey: 'foo',
+			apiKey,
 			endpoint: hostname,
 		})
 		expect.assertions(1)
@@ -148,7 +149,7 @@ describe('v2Client', () => {
 	})
 	it('can fetch shipments by id', async () => {
 		const client = v2Client({
-			apiKey: 'foo',
+			apiKey,
 			endpoint: hostname,
 		})
 		expect.assertions(1)
@@ -161,7 +162,7 @@ describe('v2Client', () => {
 	})
 	it('can fetch shipment containers by id', async () => {
 		const client = v2Client({
-			apiKey: 'foo',
+			apiKey,
 			endpoint: hostname,
 		})
 		expect.assertions(1)

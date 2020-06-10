@@ -42,9 +42,9 @@
     "@bifravst/code-style": "^8.0.1",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
-    "@distributeaid/flexport-api-sandbox": "^1.2.1",
+    "@distributeaid/flexport-api-sandbox": "^1.5.1",
     "@semantic-release/commit-analyzer": "^8.0.1",
-    "@types/jest": "^25.2.3",
+    "@types/jest": "^26.0.0",
     "@types/js-yaml": "^3.12.4",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
@@ -86,7 +86,7 @@
     "check-node-version": "^4.0.3",
     "deepmerge": "^4.2.2",
     "fetch-ponyfill": "^6.1.1",
-    "fp-ts": "^2.6.3"
+    "fp-ts": "^2.6.4"
   },
   "publishConfig": {
     "access": "public"
