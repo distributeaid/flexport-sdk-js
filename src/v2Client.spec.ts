@@ -10,6 +10,7 @@ import { emptyPageMock, mockHeaders } from './testmocks'
 import { promises as fs } from 'fs'
 import { linkObject, linkCollection } from './links'
 import { isLeft, Left } from 'fp-ts/lib/Either'
+import { paginate } from './paginate'
 
 const port = 3000
 const hostname = `http://0.0.0.0:${port}`
@@ -223,5 +224,19 @@ describe('v2Client', () => {
 		expect((res as Left<ErrorInfo>).left.message).toEqual(
 			'Encountered error 404 when GETing https://api.flexport.com/ocean/shipment_containers/125230: NOT FOUND!',
 		)
+	})
+	it('paginates', async () => {
+		const client = v2Client({
+			apiKey,
+			endpoint: hostname,
+		})
+		expect.assertions(1)
+		return pipe(
+			client.shipment_index(),
+			TE.chain(paginate(client.resolvePage(liftShipment))),
+			TE.map((shipments) => {
+				expect(shipments).toHaveLength(126)
+			}),
+		)()
 	})
 })
