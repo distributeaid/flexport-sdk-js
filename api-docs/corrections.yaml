@@ -11,6 +11,12 @@ components:
           description: Date when the shipment was archived, if applicable.
           type: string
           format: date-time
+        actual_arrival_date:
+          description: |
+            Actual arrival date to the last port of the main voyage. 
+            NOTE: This field is not kept up to date with the actual arrival dates of the shipment legs.
+          type: string
+          format: date-time
       required:
         - metadata
         - _object
