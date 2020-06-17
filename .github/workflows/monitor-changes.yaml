@@ -36,6 +36,8 @@ jobs:
         continue-on-error: true
       - name: Add changes to git
         run: |
+          git config --global user.email "actions@example.com"
+          git config --global user.name "GitHub Actions"
           git checkout -b flexport-api-changes-`uuidgen`
           git add -A
           git commit -m 'fix: update generated code\n\nBREAKING CHANGE: Changes might be breaking.'
