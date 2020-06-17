@@ -34,7 +34,10 @@ jobs:
           node dist/bin/generateApiOperations.js
           npx prettier --write src/**/*.ts
         continue-on-error: true
-      - run: git add -A
+      - name: Add changes to git
+        run: |
+          git checkout -b flexport-api-changes-`uuidgen`
+          git add -A
       - name: Run tests
         run: npm test
         continue-on-error: true
