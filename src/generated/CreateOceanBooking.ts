@@ -3,6 +3,20 @@
  */
 import { ContainerCounts } from './ContainerCounts'
 import { CreateBookingHsCode } from './CreateBookingHsCode'
+export enum CreateOceanBookingIncotermTypes {
+	EXW = 'EXW',
+	FOB = 'FOB',
+	FAS = 'FAS',
+	FCA = 'FCA',
+	CPT = 'CPT',
+	CFR = 'CFR',
+	CIF = 'CIF',
+	CIP = 'CIP',
+	DAT = 'DAT',
+	DAP = 'DAP',
+	DDP = 'DDP',
+	DPU = 'DPU',
+}
 export type CreateOceanBooking = {
 	/**
 	 * Always required. Whether the booking is for an LCL shipment. If false, the booking is FCL. If true, the booking is LCL.
@@ -17,19 +31,7 @@ export type CreateOceanBooking = {
 	 * JSON-schema: string
 	 * @example "FOB"
 	 */
-	readonly incoterm:
-		| 'EXW'
-		| 'FOB'
-		| 'FAS'
-		| 'FCA'
-		| 'CPT'
-		| 'CFR'
-		| 'CIF'
-		| 'CIP'
-		| 'DAT'
-		| 'DAP'
-		| 'DDP'
-		| 'DPU'
+	readonly incoterm: CreateOceanBookingIncotermTypes
 	/**
 	 * JSON-schema: array
 	 */

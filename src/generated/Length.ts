@@ -3,6 +3,10 @@
  */
 import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
+export enum LengthUnitTypes {
+	CM = 'cm',
+	IN = 'in',
+}
 export type Length = {
 	/**
 	 * String representing the object’s type. Always `/quantity/length` for this object.
@@ -21,7 +25,7 @@ export type Length = {
 	 * JSON-schema: string
 	 * @example "cm"
 	 */
-	readonly unit?: 'cm' | 'in'
+	readonly unit?: LengthUnitTypes
 }
 export type LiftedLength = TypedApiObject & Length
 /**

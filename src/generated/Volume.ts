@@ -3,6 +3,10 @@
  */
 import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
+export enum VolumeUnitTypes {
+	CBM = 'cbm',
+	CBFT = 'cbft',
+}
 export type Volume = {
 	/**
 	 * Type of the object
@@ -20,7 +24,7 @@ export type Volume = {
 	 *
 	 * JSON-schema: string
 	 */
-	readonly unit?: 'cbm' | 'cbft'
+	readonly unit?: VolumeUnitTypes
 }
 export type LiftedVolume = TypedApiObject & Volume
 /**

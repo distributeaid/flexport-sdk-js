@@ -1,6 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
+export enum CreateTruckingBookingPayment_termsTypes {
+	COLLECT = 'collect',
+	PREPAID = 'prepaid',
+}
 export type CreateTruckingBooking = {
 	/**
 	 * Whether the booking is for an LTL shipment. If false, the booking is FTL. If true, then the booking is LTL.
@@ -15,7 +19,7 @@ export type CreateTruckingBooking = {
 	 * JSON-schema: string
 	 * @example "collect"
 	 */
-	readonly payment_terms: 'collect' | 'prepaid'
+	readonly payment_terms: CreateTruckingBookingPayment_termsTypes
 	/**
 	 * General description of the products in the shipment.
 	 *

@@ -20,10 +20,15 @@ export type Item = {
 export const createPropertyDefinition = (
 	def: Item,
 	schemas: { [key: string]: Item },
+	name: string,
 ) => {
 	const deps: (string | { [key: string]: string })[] = []
+	const enums: ts.EnumDeclaration[] = []
+	if (name === undefined)
+		throw new Error(`createPropertyDefinition: name is undefined!`)
+
 	let t
-	if (def.$ref) {
+	if (def.$ref !== undefined) {
 		const dep = def.$ref.replace(/#\/components\/schemas\//, '')
 		if (schemas[dep]?.properties?._object?.example === '/api/refs/object') {
 			deps.push({ ApiObjectRef: '../types/ApiObjectRef' })
@@ -39,20 +44,36 @@ export const createPropertyDefinition = (
 			deps.push(dep)
 			t = ts.createTypeReferenceNode(dep, [])
 		}
-	} else if (def.enum) {
-		t = ts.createUnionTypeNode(
-			def.enum.map((s) => ts.createLiteralTypeNode(ts.createStringLiteral(s))),
+	} else if (def.enum !== undefined) {
+		enums.push(
+			ts.createEnumDeclaration(
+				[],
+				[ts.createToken(ts.SyntaxKind.ExportKeyword)],
+				`${name}Types`,
+				def.enum.map((s) =>
+					ts.createEnumMember(
+						ts.createIdentifier(s.toUpperCase()),
+						ts.createStringLiteral(s),
+					),
+				),
+			),
 		)
-	} else if (def.oneOf) {
-		const defs = def.oneOf.map((t) => createPropertyDefinition(t, schemas))
+		t = ts.createTypeReferenceNode(`${name}Types`, [])
+	} else if (def.oneOf !== undefined) {
+		const defs = def.oneOf.map((t, k) =>
+			createPropertyDefinition(t, schemas, `${name}Types${k}`),
+		)
 		deps.push(...defs.map(({ deps }) => deps).flat())
+		enums.push(...defs.map(({ enums }) => enums).flat())
 		t = ts.createUnionTypeNode(defs.map(({ type }) => type))
 	} else if (def.type === 'array') {
-		const { type: itemType, deps: itemDeps } = createPropertyDefinition(
-			def.items as Item,
-			schemas,
-		)
+		const {
+			type: itemType,
+			deps: itemDeps,
+			enums: itemEnums,
+		} = createPropertyDefinition(def.items as Item, schemas, name)
 		deps.push(...itemDeps)
+		enums.push(...itemEnums)
 		t = ts.createArrayTypeNode(itemType)
 	} else {
 		let type = def.type as string
@@ -61,9 +82,13 @@ export const createPropertyDefinition = (
 	}
 	return {
 		type: t,
+		enums,
 		deps: [...new Set(deps)],
 	}
 }
+
+export const capitalize = (s: string): string =>
+	`${s.substr(0, 1).toUpperCase()}${s.substr(1)}`
 
 export const createObjectType = (
 	objectName: string,
@@ -71,14 +96,20 @@ export const createObjectType = (
 	schemas: { [key: string]: Item },
 ) => {
 	const deps: (string | { [key: string]: string })[] = []
+	const enums: ts.EnumDeclaration[] = []
 	const t = ts.createTypeLiteralNode(
-		Object.entries(schema.properties || []).map(([name, def]) => {
-			const { type, deps: d } = createPropertyDefinition(def, schemas)
+		Object.entries(schema.properties ?? []).map(([name, def]) => {
+			const { type, deps: d, enums: e } = createPropertyDefinition(
+				def,
+				schemas,
+				`${objectName}${capitalize(name)}`,
+			)
 			deps.push(...d)
+			enums.push(...e)
 			let p = ts.createPropertySignature(
 				[ts.createToken(ts.SyntaxKind.ReadonlyKeyword)],
 				name,
-				schema.required?.includes(name)
+				schema.required?.includes(name) ?? false
 					? undefined
 					: ts.createToken(ts.SyntaxKind.QuestionToken),
 				type,
@@ -100,22 +131,25 @@ export const createObjectType = (
 			}
 
 			const comment = []
-			if (def.description) {
+			if (def.description !== undefined) {
 				comment.push(def.description)
 				if (def.description.includes('DEPRECATED')) {
 					comment.push('@deprecated Do not use! This field is deprecated.')
 				}
 			}
 			if (!isObjectProperty) {
-				if (def.description) comment.push('')
-				if (def.type)
+				if (def.description !== undefined) comment.push('')
+				if (def.type !== undefined)
 					comment.push(
-						`JSON-schema: ${def.type}${def.format ? ` (${def.format})` : ''}`,
+						`JSON-schema: ${def.type}${
+							def.format !== undefined ? ` (${def.format})` : ''
+						}`,
 					)
-				if (def.example) comment.push(`@example ${JSON.stringify(def.example)}`)
+				if (def.example !== undefined)
+					comment.push(`@example ${JSON.stringify(def.example)}`)
 			}
 
-			if (!def.example) {
+			if (def.example === undefined) {
 				if (def.format === 'date') {
 					comment.push('@example "1970-01-01"')
 				}
@@ -126,7 +160,7 @@ export const createObjectType = (
 					comment.push('@example "1970-01-01T10:05:08+01:00"')
 				}
 			}
-			if (comment.length)
+			if (comment.length > 0)
 				ts.addSyntheticLeadingComment(
 					p,
 					ts.SyntaxKind.MultiLineCommentTrivia,
@@ -139,6 +173,7 @@ export const createObjectType = (
 	return {
 		type: t,
 		deps: [...new Set(deps)],
+		enums,
 	}
 }
 
@@ -149,7 +184,7 @@ export const makeType = (
 ) => {
 	const def = schema.properties
 		? createObjectType(name, schema, schemas)
-		: createPropertyDefinition(schema, schemas)
+		: createPropertyDefinition(schema, schemas, name)
 
 	const t = ts.createTypeAliasDeclaration(
 		undefined,
@@ -159,10 +194,10 @@ export const makeType = (
 		def.type,
 	)
 	const comment = []
-	if (schema.description) comment.push(schema.description.trim())
-	if (schema.example)
+	if (schema.description !== undefined) comment.push(schema.description.trim())
+	if (schema.example !== undefined)
 		comment.push('', `@example ${JSON.stringify(schema.example)}`, '')
-	if (comment.length)
+	if (comment.length > 0)
 		ts.addSyntheticLeadingComment(
 			t,
 			ts.SyntaxKind.MultiLineCommentTrivia,
@@ -172,6 +207,7 @@ export const makeType = (
 	return {
 		type: t,
 		deps: [...new Set(def.deps)],
+		enums: def.enums,
 	}
 }
 

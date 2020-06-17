@@ -7,6 +7,11 @@ import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
 import { linkObject } from '../links'
+export enum CustomsEntryRelease_statusTypes {
+	CLEARED = 'cleared',
+	CUSTOMS_HOLD = 'customs_hold',
+	PENDING = 'pending',
+}
 export type CustomsEntry = {
 	/**
 	 * Type of the object. Always /customs_entry for this object.
@@ -27,7 +32,7 @@ export type CustomsEntry = {
 	 *
 	 * JSON-schema: string
 	 */
-	readonly release_status?: 'cleared' | 'customs_hold' | 'pending'
+	readonly release_status?: CustomsEntryRelease_statusTypes
 	/**
 	 * The cargo release date for this entry.
 	 *

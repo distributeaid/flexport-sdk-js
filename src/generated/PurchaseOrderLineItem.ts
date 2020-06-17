@@ -17,6 +17,67 @@ import { ResolvableObject } from '../types/Link'
 import { linkObject } from '../links'
 import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
+export enum PurchaseOrderLineItemIncotermTypes {
+	EXW = 'EXW',
+	FOB = 'FOB',
+	FAS = 'FAS',
+	FCA = 'FCA',
+	CPT = 'CPT',
+	CFR = 'CFR',
+	CIF = 'CIF',
+	CIP = 'CIP',
+	DAT = 'DAT',
+	DAP = 'DAP',
+	DDP = 'DDP',
+	DPU = 'DPU',
+}
+export enum PurchaseOrderLineItemUnit_of_measureTypes {
+	BBL = 'BBL',
+	CAR = 'CAR',
+	CGM = 'CGM',
+	CKG = 'CKG',
+	CM = 'CM',
+	CM2 = 'CM2',
+	CTN = 'CTN',
+	CYK = 'CYK',
+	DPC = 'DPC',
+	DPR = 'DPR',
+	DS = 'DS',
+	FBM = 'FBM',
+	G = 'G',
+	GBQ = 'GBQ',
+	GR = 'GR',
+	GRL = 'GRL',
+	HUN = 'HUN',
+	IRG = 'IRG',
+	JWL = 'JWL',
+	K = 'K',
+	KG = 'KG',
+	KM = 'KM',
+	KM3 = 'KM3',
+	KWH = 'KWH',
+	L = 'L',
+	LNM = 'LNM',
+	M = 'M',
+	M2 = 'M2',
+	M3 = 'M3',
+	MBQ = 'MBQ',
+	NO = 'NO',
+	OSG = 'OSG',
+	PCS = 'PCS',
+	PDG = 'PDG',
+	PFL = 'PFL',
+	PK = 'PK',
+	PRS = 'PRS',
+	PTG = 'PTG',
+	PX = 'PX',
+	RHG = 'RHG',
+	RUG = 'RUG',
+	T = 'T',
+	TDWB = 'TDWB',
+	W = 'W',
+	X = 'X',
+}
 export type PurchaseOrderLineItem = {
 	/**
 	 * Type of the object
@@ -53,70 +114,13 @@ export type PurchaseOrderLineItem = {
 	 * JSON-schema: string
 	 * @example "FOB"
 	 */
-	readonly incoterm?:
-		| 'EXW'
-		| 'FOB'
-		| 'FAS'
-		| 'FCA'
-		| 'CPT'
-		| 'CFR'
-		| 'CIF'
-		| 'CIP'
-		| 'DAT'
-		| 'DAP'
-		| 'DDP'
-		| 'DPU'
+	readonly incoterm?: PurchaseOrderLineItemIncotermTypes
 	readonly transportation_mode?: TransportationMode
 	/**
 	 * JSON-schema: string
 	 * @example "BBL"
 	 */
-	readonly unit_of_measure?:
-		| 'BBL'
-		| 'CAR'
-		| 'CGM'
-		| 'CKG'
-		| 'CM'
-		| 'CM2'
-		| 'CTN'
-		| 'CYK'
-		| 'DPC'
-		| 'DPR'
-		| 'DS'
-		| 'FBM'
-		| 'G'
-		| 'GBQ'
-		| 'GR'
-		| 'GRL'
-		| 'HUN'
-		| 'IRG'
-		| 'JWL'
-		| 'K'
-		| 'KG'
-		| 'KM'
-		| 'KM3'
-		| 'KWH'
-		| 'L'
-		| 'LNM'
-		| 'M'
-		| 'M2'
-		| 'M3'
-		| 'MBQ'
-		| 'NO'
-		| 'OSG'
-		| 'PCS'
-		| 'PDG'
-		| 'PFL'
-		| 'PK'
-		| 'PRS'
-		| 'PTG'
-		| 'PX'
-		| 'RHG'
-		| 'RUG'
-		| 'T'
-		| 'TDWB'
-		| 'W'
-		| 'X'
+	readonly unit_of_measure?: PurchaseOrderLineItemUnit_of_measureTypes
 	/**
 	 * JSON-schema: string (date)
 	 * @example "1970-01-01"

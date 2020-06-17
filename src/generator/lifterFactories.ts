@@ -6,27 +6,29 @@ export const makeLifter = (
 	schema: Item,
 	schemas: { [key: string]: Item },
 ) => {
-	const dateFields = Object.entries(schema.properties || {})
-		.filter(([, { description }]) => !description?.includes('DEPRECATED'))
+	const dateFields = Object.entries(schema.properties ?? {})
+		.filter(
+			([, { description }]) => !(description?.includes('DEPRECATED') ?? false),
+		)
 		.filter(
 			([, { type, format }]) => type === 'string' && format === 'date-time',
 		)
 		.map(([name]) => name)
 
-	const linkedObjectFields = Object.entries(schema.properties || {})
+	const linkedObjectFields = Object.entries(schema.properties ?? {})
 		.filter(([, { $ref }]) => {
-			if (!$ref) return false
+			if ($ref === undefined) return false
 			const t = $ref.split('/').pop()
-			if (!t) return false
+			if (t === undefined) return false
 			return schemas[t]?.properties?._object?.example === '/api/refs/object'
 		})
 		.map(([name]) => name)
 
-	const linkedCollectionFields = Object.entries(schema.properties || {})
+	const linkedCollectionFields = Object.entries(schema.properties ?? {})
 		.filter(([, { $ref }]) => {
-			if (!$ref) return false
+			if ($ref === undefined) return false
 			const t = $ref.split('/').pop()
-			if (!t) return false
+			if (t === undefined) return false
 			return schemas[t]?.properties?._object?.example === '/api/refs/collection'
 		})
 		.map(([name]) => name)
@@ -34,7 +36,7 @@ export const makeLifter = (
 	const addComment = (t: ts.PropertySignature, schema: Item) => {
 		const comment = []
 		const description = schema?.description
-		if (description) {
+		if (description !== undefined) {
 			comment.push(description)
 		}
 		if (comment.length)
@@ -84,7 +86,7 @@ export const makeLifter = (
 					const t = ts.createPropertySignature(
 						[ts.createToken(ts.SyntaxKind.ReadonlyKeyword)],
 						f,
-						schema.required?.includes(f)
+						schema.required?.includes(f) ?? false
 							? undefined
 							: ts.createToken(ts.SyntaxKind.QuestionToken),
 						ts.createTypeReferenceNode('Date', []),
@@ -182,12 +184,15 @@ export const makeLifter = (
 							...dateFields.map((f) =>
 								ts.createPropertyAssignment(
 									f,
-									schema.required?.includes(f)
+									schema.required?.includes(f) ?? false
 										? ts.createNew(ts.createIdentifier('Date'), undefined, [
 												ts.createIdentifier(f),
 										  ])
 										: ts.createConditional(
-												ts.createIdentifier(f),
+												ts.createStrictInequality(
+													ts.createIdentifier(f),
+													ts.createIdentifier('undefined'),
+												),
 												ts.createNew(ts.createIdentifier('Date'), undefined, [
 													ts.createIdentifier(f),
 												]),
@@ -257,7 +262,7 @@ export const makeLifter = (
 	const comment = [
 		'Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.',
 	]
-	if (schema.description) {
+	if (schema.description !== undefined) {
 		comment.push(schema.description) // FIXME: remove line and make actual use of schema
 	}
 	ts.addSyntheticLeadingComment(

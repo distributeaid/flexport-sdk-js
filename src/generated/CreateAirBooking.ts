@@ -2,24 +2,26 @@
  * Auto-generated file. Do not change.
  */
 import { CreateBookingHsCode } from './CreateBookingHsCode'
+export enum CreateAirBookingIncotermTypes {
+	EXW = 'EXW',
+	FOB = 'FOB',
+	FAS = 'FAS',
+	FCA = 'FCA',
+	CPT = 'CPT',
+	CFR = 'CFR',
+	CIF = 'CIF',
+	CIP = 'CIP',
+	DAT = 'DAT',
+	DAP = 'DAP',
+	DDP = 'DDP',
+	DPU = 'DPU',
+}
 export type CreateAirBooking = {
 	/**
 	 * JSON-schema: string
 	 * @example "FOB"
 	 */
-	readonly incoterm:
-		| 'EXW'
-		| 'FOB'
-		| 'FAS'
-		| 'FCA'
-		| 'CPT'
-		| 'CFR'
-		| 'CIF'
-		| 'CIP'
-		| 'DAT'
-		| 'DAP'
-		| 'DDP'
-		| 'DPU'
+	readonly incoterm: CreateAirBookingIncotermTypes
 	/**
 	 * JSON-schema: array
 	 */
@@ -42,6 +44,7 @@ export type CreateAirBooking = {
 	 * One of `origin_port_us_cbp_port_code`, `origin_port_loc_code`, `origin_port_iata_code`, or `origin_port_icao_code` is required if `pickup_service` = `no`. Unique port reference code used by US CBP, not applicable for non-US airports.
 	 *
 	 * JSON-schema: string
+	 * @example null
 	 */
 	readonly origin_port_us_cbp_port_code?: string
 	/**

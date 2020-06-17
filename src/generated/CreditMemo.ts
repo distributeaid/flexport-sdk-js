@@ -40,6 +40,6 @@ export const liftCreditMemo = (original: CreditMemo): LiftedCreditMemo => {
 	const { credited_at, ...rest } = original
 	return {
 		...rest,
-		credited_at: credited_at ? new Date(credited_at) : undefined,
+		credited_at: credited_at !== undefined ? new Date(credited_at) : undefined,
 	}
 }

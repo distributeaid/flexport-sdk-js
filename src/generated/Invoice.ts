@@ -11,6 +11,17 @@ import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
 import { linkObject } from '../links'
+export enum InvoiceStatusTypes {
+	OUTSTANDING = 'outstanding',
+	PAST_DUE = 'past_due',
+	VOID = 'void',
+	PAID = 'paid',
+	PAYMENT_PENDING = 'payment_pending',
+}
+export enum InvoiceTypeTypes {
+	SHIPMENT = 'Shipment',
+	CLIENT = 'Client',
+}
 export type Invoice = {
 	/**
 	 * Type of the object. Always '/invoice' for this object.
@@ -59,18 +70,13 @@ export type Invoice = {
 	 *
 	 * JSON-schema: string
 	 */
-	readonly status?:
-		| 'outstanding'
-		| 'past_due'
-		| 'void'
-		| 'paid'
-		| 'payment_pending'
+	readonly status?: InvoiceStatusTypes
 	/**
 	 * What the invoice is being issued for. Shipment related charges are type `Shipment` and non-shipment related charges are type `Client`
 	 *
 	 * JSON-schema: string
 	 */
-	readonly type?: 'Shipment' | 'Client'
+	readonly type?: InvoiceTypeTypes
 	/**
 	 * When the invoice was voided (if applicable)
 	 *
@@ -142,9 +148,10 @@ export const liftInvoice = (original: Invoice): LiftedInvoice => {
 	const { issued_at, voided_at, last_updated_at, shipments, ...rest } = original
 	return {
 		...rest,
-		issued_at: issued_at ? new Date(issued_at) : undefined,
-		voided_at: voided_at ? new Date(voided_at) : undefined,
-		last_updated_at: last_updated_at ? new Date(last_updated_at) : undefined,
+		issued_at: issued_at !== undefined ? new Date(issued_at) : undefined,
+		voided_at: voided_at !== undefined ? new Date(voided_at) : undefined,
+		last_updated_at:
+			last_updated_at !== undefined ? new Date(last_updated_at) : undefined,
 		shipments: linkObject(shipments),
 	}
 }

@@ -3,6 +3,10 @@
  */
 import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
+export enum TruckingBookingDetailPayment_termsTypes {
+	COLLECT = 'collect',
+	PREPAID = 'prepaid',
+}
 export type TruckingBookingDetail = {
 	/**
 	 * Type of the object
@@ -10,13 +14,14 @@ export type TruckingBookingDetail = {
 	readonly _object: Type.TruckingBookingDetail
 	/**
 	 * JSON-schema: boolean
+	 * @example false
 	 */
 	readonly is_ftl?: boolean
 	/**
 	 * JSON-schema: string
 	 * @example "collect"
 	 */
-	readonly payment_terms?: 'collect' | 'prepaid'
+	readonly payment_terms?: TruckingBookingDetailPayment_termsTypes
 	/**
 	 * JSON-schema: string
 	 * @example "Wristwatches"

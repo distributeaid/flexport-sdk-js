@@ -3,6 +3,10 @@
  */
 import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
+export enum WeightUnitTypes {
+	KG = 'kg',
+	LBS = 'lbs',
+}
 export type Weight = {
 	/**
 	 * String representing the object’s type. Always `/quantity/weight` for this object.
@@ -20,7 +24,7 @@ export type Weight = {
 	 *
 	 * JSON-schema: string
 	 */
-	readonly unit?: 'kg' | 'lbs'
+	readonly unit?: WeightUnitTypes
 }
 export type LiftedWeight = TypedApiObject & Weight
 /**

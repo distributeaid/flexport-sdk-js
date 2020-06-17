@@ -103,23 +103,29 @@ export const liftAdditionalDates = (
 	} = original
 	return {
 		...rest,
-		delivery_appointment_requested_at_date: delivery_appointment_requested_at_date
-			? new Date(delivery_appointment_requested_at_date)
-			: undefined,
-		delivery_appointment_requested_date: delivery_appointment_requested_date
-			? new Date(delivery_appointment_requested_date)
-			: undefined,
-		delivery_appointment_scheduled_at_date: delivery_appointment_scheduled_at_date
-			? new Date(delivery_appointment_scheduled_at_date)
-			: undefined,
-		delivery_appointment_scheduled_date: delivery_appointment_scheduled_date
-			? new Date(delivery_appointment_scheduled_date)
-			: undefined,
-		loaded_on_truck_date: loaded_on_truck_date
-			? new Date(loaded_on_truck_date)
-			: undefined,
-		delivery_completed: delivery_completed
-			? new Date(delivery_completed)
-			: undefined,
+		delivery_appointment_requested_at_date:
+			delivery_appointment_requested_at_date !== undefined
+				? new Date(delivery_appointment_requested_at_date)
+				: undefined,
+		delivery_appointment_requested_date:
+			delivery_appointment_requested_date !== undefined
+				? new Date(delivery_appointment_requested_date)
+				: undefined,
+		delivery_appointment_scheduled_at_date:
+			delivery_appointment_scheduled_at_date !== undefined
+				? new Date(delivery_appointment_scheduled_at_date)
+				: undefined,
+		delivery_appointment_scheduled_date:
+			delivery_appointment_scheduled_date !== undefined
+				? new Date(delivery_appointment_scheduled_date)
+				: undefined,
+		loaded_on_truck_date:
+			loaded_on_truck_date !== undefined
+				? new Date(loaded_on_truck_date)
+				: undefined,
+		delivery_completed:
+			delivery_completed !== undefined
+				? new Date(delivery_completed)
+				: undefined,
 	}
 }
