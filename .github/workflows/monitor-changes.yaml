@@ -38,6 +38,7 @@ jobs:
         run: |
           git checkout -b flexport-api-changes-`uuidgen`
           git add -A
+          git commit -m 'fix: update generated code\n\nBREAKING CHANGE: Changes might be breaking.'
       - name: Run tests
         run: npm test
         continue-on-error: true
