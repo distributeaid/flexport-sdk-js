@@ -3,6 +3,11 @@ name: Monitor API definition for changes
 on:
   schedule:
     - cron: "0 0 * * *"
+  push:
+    branches:
+      - saga
+    paths:
+      - .github/workflows/monitor-changes.yaml
 
 jobs:
   monitor:
@@ -29,6 +34,7 @@ jobs:
           node dist/bin/generateApiOperations.js
       - name: Run tests
         run: npm test
+        continue-on-error: true
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
