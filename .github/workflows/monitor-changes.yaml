@@ -9,6 +9,9 @@ on:
     paths:
       - .github/workflows/monitor-changes.yaml
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   monitor:
     runs-on: ubuntu-latest
