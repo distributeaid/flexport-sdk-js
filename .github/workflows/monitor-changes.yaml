@@ -33,6 +33,7 @@ jobs:
           node dist/bin/generateTypes.js
           node dist/bin/generateApiOperations.js
           npx prettier --write src/**/*.ts
+        continue-on-error: true
       - run: git add -A
       - name: Run tests
         run: npm test
