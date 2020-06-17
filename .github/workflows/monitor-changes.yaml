@@ -27,7 +27,9 @@ jobs:
       - name: Compile
         run: npx tsc
       - name: Download API definition
-        run: curl https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
+        run: |
+          curl https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
+          git add -A
       - name: Update client
         run: |
           node dist/bin/generateTypes.js
