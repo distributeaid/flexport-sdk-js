@@ -46,9 +46,5 @@ jobs:
       - name: Run tests
         run: npm test
         continue-on-error: true
-      - name: Install GitHub CLI
-        run: |
-          curl -L https://github.com/cli/cli/releases/download/v0.10.0/gh_0.10.0_linux_amd64.deb > gh_0.10.0_linux_amd64.deb
-          sudo apt install ./gh_*_linux_amd64.deb
       - name: Create PR
         run: gh pr create --fill -d
