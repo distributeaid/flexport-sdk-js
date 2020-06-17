@@ -7,7 +7,7 @@ import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
-export enum TruckingShipmentLegService_typeTypes {
+export enum TruckingShipmentLegServiceTypeTypes {
 	LTL = 'ltl',
 	FTL = 'ftl',
 	DRAYAGE = 'drayage',
@@ -23,7 +23,7 @@ export type TruckingShipmentLeg = {
 	/**
 	 * JSON-schema: string
 	 */
-	readonly service_type?: TruckingShipmentLegService_typeTypes
+	readonly service_type?: TruckingShipmentLegServiceTypeTypes
 	/**
 	 * JSON-schema: integer
 	 * @example 32

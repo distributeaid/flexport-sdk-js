@@ -104,7 +104,7 @@ export enum InvoiceIndexStatusTypes {
 	VOID = 'void',
 	PAID = 'paid',
 }
-export enum PortsIndexPort_typeTypes {
+export enum PortsIndexPortTypeTypes {
 	AIRPORT = 'airport',
 	RAILPORT = 'railport',
 	ROADPORT = 'roadport',
@@ -642,7 +642,7 @@ export type FlexportApiV2ClientInstance = {
 	ports_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['f.port_type']?: PortsIndexPort_typeTypes
+		['f.port_type']?: PortsIndexPortTypeTypes
 		['f.unlocode']?: string
 	}) => TaskEither<ErrorInfo, Page<LiftedAddress>>
 	/**
@@ -1415,7 +1415,7 @@ export const flexportApiV2 = (
 		ports_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['f.port_type']?: PortsIndexPort_typeTypes
+			['f.port_type']?: PortsIndexPortTypeTypes
 			['f.unlocode']?: string
 		}) =>
 			pipe(

@@ -31,7 +31,7 @@ export enum PurchaseOrderLineItemIncotermTypes {
 	DDP = 'DDP',
 	DPU = 'DPU',
 }
-export enum PurchaseOrderLineItemUnit_of_measureTypes {
+export enum PurchaseOrderLineItemUnitOfMeasureTypes {
 	BBL = 'BBL',
 	CAR = 'CAR',
 	CGM = 'CGM',
@@ -120,7 +120,7 @@ export type PurchaseOrderLineItem = {
 	 * JSON-schema: string
 	 * @example "BBL"
 	 */
-	readonly unit_of_measure?: PurchaseOrderLineItemUnit_of_measureTypes
+	readonly unit_of_measure?: PurchaseOrderLineItemUnitOfMeasureTypes
 	/**
 	 * JSON-schema: string (date)
 	 * @example "1970-01-01"

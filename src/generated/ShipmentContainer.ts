@@ -12,7 +12,7 @@ import { ResolvableObject } from '../types/Link'
 import { linkObject } from '../links'
 import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
-export enum ShipmentContainerContainer_typeTypes {
+export enum ShipmentContainerContainerTypeTypes {
 	DRY = 'dry',
 	FLAT_RACK = 'flat_rack',
 	HEADLOAD = 'headload',
@@ -24,7 +24,7 @@ export enum ShipmentContainerContainer_typeTypes {
 	BULK = 'bulk',
 	SPECIAL = 'special',
 }
-export enum ShipmentContainerContainer_sizeTypes {
+export enum ShipmentContainerContainerSizeTypes {
 	TWENTY_FT = 'twenty_ft',
 	FOURTY_FT = 'fourty_ft',
 	FOURTY_FT_HC = 'fourty_ft_hc',
@@ -47,7 +47,7 @@ export type ShipmentContainer = {
 	 * JSON-schema: string
 	 * @example "dry"
 	 */
-	readonly container_type?: ShipmentContainerContainer_typeTypes
+	readonly container_type?: ShipmentContainerContainerTypeTypes
 	/**
 	 * JSON-schema: string
 	 * @example "BWSE3982156"
@@ -57,7 +57,7 @@ export type ShipmentContainer = {
 	 * JSON-schema: string
 	 * @example "fourty_ft"
 	 */
-	readonly container_size?: ShipmentContainerContainer_sizeTypes
+	readonly container_size?: ShipmentContainerContainerSizeTypes
 	/**
 	 * JSON-schema: string
 	 * @example "UE_WQ2934875"

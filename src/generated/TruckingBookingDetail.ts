@@ -3,7 +3,7 @@
  */
 import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
-export enum TruckingBookingDetailPayment_termsTypes {
+export enum TruckingBookingDetailPaymentTermsTypes {
 	COLLECT = 'collect',
 	PREPAID = 'prepaid',
 }
@@ -21,7 +21,7 @@ export type TruckingBookingDetail = {
 	 * JSON-schema: string
 	 * @example "collect"
 	 */
-	readonly payment_terms?: TruckingBookingDetailPayment_termsTypes
+	readonly payment_terms?: TruckingBookingDetailPaymentTermsTypes
 	/**
 	 * JSON-schema: string
 	 * @example "Wristwatches"

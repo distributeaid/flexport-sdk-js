@@ -6,7 +6,7 @@ import { Volume } from './Volume'
 import { Weight } from './Weight'
 import { ShippingUnit } from './ShippingUnit'
 import { TypedApiObject } from '../types/TypedApiObject'
-export enum CargoLithium_batteries_packing_typesTypes {
+export enum CargoLithiumBatteriesPackingTypesTypes {
 	PACKED_LOOSE = 'packed_loose',
 	PACKED_WITH_EQUIPMENT = 'packed_with_equipment',
 	CONTAINED_IN_EQUIPMENT = 'contained_in_equipment',
@@ -73,7 +73,7 @@ export type Cargo = {
 	 *
 	 * JSON-schema: array
 	 */
-	readonly lithium_batteries_packing_types?: CargoLithium_batteries_packing_typesTypes[]
+	readonly lithium_batteries_packing_types?: CargoLithiumBatteriesPackingTypesTypes[]
 }
 export type LiftedCargo = TypedApiObject & Cargo
 /**

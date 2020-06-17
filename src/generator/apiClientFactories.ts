@@ -1,7 +1,11 @@
-import { Item, createObjectType, createPropertyDefinition } from './factories'
+import {
+	Item,
+	createObjectType,
+	createPropertyDefinition,
+	snakeToCamelCase,
+} from './factories'
 import * as ts from 'typescript'
 import { Type } from '../generated'
-import { capitalize } from './factories'
 
 export type Responses = {
 	[key: string]: {
@@ -285,10 +289,9 @@ export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 						const { type, deps: d, enums: e } = createPropertyDefinition(
 							param.schema,
 							schemas,
-							`${def.operationId
-								.split('_')
-								.map(capitalize)
-								.join('')}${capitalize(param.name.replace(/^f\./, ''))}`,
+							`${snakeToCamelCase(def.operationId)}${snakeToCamelCase(
+								param.name.replace(/^f\./, ''),
+							)}`,
 						)
 						deps.push(...d)
 						enums.push(...e)

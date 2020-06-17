@@ -90,6 +90,9 @@ export const createPropertyDefinition = (
 export const capitalize = (s: string): string =>
 	`${s.substr(0, 1).toUpperCase()}${s.substr(1)}`
 
+export const snakeToCamelCase = (s: string): string =>
+	s.split('_').map(capitalize).join('')
+
 export const createObjectType = (
 	objectName: string,
 	schema: Item,
@@ -102,7 +105,7 @@ export const createObjectType = (
 			const { type, deps: d, enums: e } = createPropertyDefinition(
 				def,
 				schemas,
-				`${objectName}${capitalize(name)}`,
+				`${objectName}${snakeToCamelCase(name)}`,
 			)
 			deps.push(...d)
 			enums.push(...e)

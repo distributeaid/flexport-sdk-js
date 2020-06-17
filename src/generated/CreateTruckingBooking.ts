@@ -1,7 +1,7 @@
 /**
  * Auto-generated file. Do not change.
  */
-export enum CreateTruckingBookingPayment_termsTypes {
+export enum CreateTruckingBookingPaymentTermsTypes {
 	COLLECT = 'collect',
 	PREPAID = 'prepaid',
 }
@@ -19,7 +19,7 @@ export type CreateTruckingBooking = {
 	 * JSON-schema: string
 	 * @example "collect"
 	 */
-	readonly payment_terms: CreateTruckingBookingPayment_termsTypes
+	readonly payment_terms: CreateTruckingBookingPaymentTermsTypes
 	/**
 	 * General description of the products in the shipment.
 	 *
