@@ -32,6 +32,7 @@ jobs:
         run: |
           node dist/bin/generateTypes.js
           node dist/bin/generateApiOperations.js
+          npx prettier --write src/**/*.ts
       - run: git add -A
       - name: Run tests
         run: npm test
