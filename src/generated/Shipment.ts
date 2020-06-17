@@ -20,6 +20,24 @@ import { ResolvableObject } from '../types/Link'
 import { linkObject } from '../links'
 import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
+export enum ShipmentIncotermTypes {
+	EXW = 'EXW',
+	FOB = 'FOB',
+	FAS = 'FAS',
+	FCA = 'FCA',
+	CPT = 'CPT',
+	CFR = 'CFR',
+	CIF = 'CIF',
+	CIP = 'CIP',
+	DAT = 'DAT',
+	DAP = 'DAP',
+	DDP = 'DDP',
+	DPU = 'DPU',
+}
+export enum ShipmentPriorityTypes {
+	STANDARD = 'standard',
+	HIGH = 'high',
+}
 export type Shipment = {
 	readonly metadata: Metadata
 	/**
@@ -46,19 +64,7 @@ export type Shipment = {
 	 * JSON-schema: string
 	 * @example "FOB"
 	 */
-	readonly incoterm:
-		| 'EXW'
-		| 'FOB'
-		| 'FAS'
-		| 'FCA'
-		| 'CPT'
-		| 'CFR'
-		| 'CIF'
-		| 'CIP'
-		| 'DAT'
-		| 'DAP'
-		| 'DDP'
-		| 'DPU'
+	readonly incoterm: ShipmentIncotermTypes
 	readonly calculated_weight?: Weight
 	readonly calculated_volume?: Volume
 	/**
@@ -83,7 +89,7 @@ export type Shipment = {
 	 * JSON-schema: string
 	 * @example "standard"
 	 */
-	readonly priority: 'standard' | 'high'
+	readonly priority: ShipmentPriorityTypes
 	/**
 	 * JSON-schema: string (date-time)
 	 * @example "1970-01-01T10:05:08+01:00"
@@ -105,9 +111,13 @@ export type Shipment = {
 	 */
 	readonly estimated_arrival_date?: string
 	/**
-	 * JSON-schema: string (date-time)
-	 * @example "1970-01-01T10:05:08+01:00"
-	 */
+     * Actual arrival date to the last port of the main voyage.
+    NOTE: This field is not kept up to date with the actual arrival dates of the shipment legs.
+    
+     *
+     * JSON-schema: string (date-time)
+     * @example "1970-01-01T10:05:08+01:00"
+     */
 	readonly actual_arrival_date?: string
 	/**
 	 * JSON-schema: string (date)
@@ -234,6 +244,11 @@ export type LiftedShipment = TypedApiObject &
 		readonly estimated_departure_date?: Date
 		readonly actual_departure_date?: Date
 		readonly estimated_arrival_date?: Date
+		/**
+     * Actual arrival date to the last port of the main voyage.
+    NOTE: This field is not kept up to date with the actual arrival dates of the shipment legs.
+    
+     */
 		readonly actual_arrival_date?: Date
 		readonly estimated_picked_up_in_full_date?: Date
 		readonly actual_picked_up_in_full_date?: Date
@@ -278,32 +293,40 @@ export const liftShipment = (original: Shipment): LiftedShipment => {
 	return {
 		...rest,
 		created_date: new Date(created_date),
-		updated_at: updated_at ? new Date(updated_at) : undefined,
-		estimated_departure_date: estimated_departure_date
-			? new Date(estimated_departure_date)
-			: undefined,
-		actual_departure_date: actual_departure_date
-			? new Date(actual_departure_date)
-			: undefined,
-		estimated_arrival_date: estimated_arrival_date
-			? new Date(estimated_arrival_date)
-			: undefined,
-		actual_arrival_date: actual_arrival_date
-			? new Date(actual_arrival_date)
-			: undefined,
-		estimated_picked_up_in_full_date: estimated_picked_up_in_full_date
-			? new Date(estimated_picked_up_in_full_date)
-			: undefined,
-		actual_picked_up_in_full_date: actual_picked_up_in_full_date
-			? new Date(actual_picked_up_in_full_date)
-			: undefined,
-		estimated_delivered_in_full_date: estimated_delivered_in_full_date
-			? new Date(estimated_delivered_in_full_date)
-			: undefined,
-		actual_delivered_in_full_date: actual_delivered_in_full_date
-			? new Date(actual_delivered_in_full_date)
-			: undefined,
-		archived_at: archived_at ? new Date(archived_at) : undefined,
+		updated_at: updated_at !== undefined ? new Date(updated_at) : undefined,
+		estimated_departure_date:
+			estimated_departure_date !== undefined
+				? new Date(estimated_departure_date)
+				: undefined,
+		actual_departure_date:
+			actual_departure_date !== undefined
+				? new Date(actual_departure_date)
+				: undefined,
+		estimated_arrival_date:
+			estimated_arrival_date !== undefined
+				? new Date(estimated_arrival_date)
+				: undefined,
+		actual_arrival_date:
+			actual_arrival_date !== undefined
+				? new Date(actual_arrival_date)
+				: undefined,
+		estimated_picked_up_in_full_date:
+			estimated_picked_up_in_full_date !== undefined
+				? new Date(estimated_picked_up_in_full_date)
+				: undefined,
+		actual_picked_up_in_full_date:
+			actual_picked_up_in_full_date !== undefined
+				? new Date(actual_picked_up_in_full_date)
+				: undefined,
+		estimated_delivered_in_full_date:
+			estimated_delivered_in_full_date !== undefined
+				? new Date(estimated_delivered_in_full_date)
+				: undefined,
+		actual_delivered_in_full_date:
+			actual_delivered_in_full_date !== undefined
+				? new Date(actual_delivered_in_full_date)
+				: undefined,
+		archived_at: archived_at !== undefined ? new Date(archived_at) : undefined,
 		booking: linkObject(booking),
 		legs: linkCollection(legs),
 		customs_entries: linkCollection(customs_entries),

@@ -71,6 +71,79 @@ import { pipe } from 'fp-ts/lib/pipeable'
 import { map } from 'fp-ts/lib/TaskEither'
 import { TransportationMode } from './TransportationMode'
 import { ShipmentStatus } from './ShipmentStatus'
+export enum BookingLineItemIndexSortTypes {
+	CARGO_READY_DATE = 'cargo_ready_date',
+	CREATED_AT = 'created_at',
+}
+export enum BookingLineItemIndexDirectionTypes {
+	ASC = 'asc',
+	DESC = 'desc',
+}
+export enum BookingsIndexSortTypes {
+	CARGO_READY_DATE = 'cargo_ready_date',
+	CREATED_AT = 'created_at',
+}
+export enum BookingsIndexDirectionTypes {
+	ASC = 'asc',
+	DESC = 'desc',
+}
+export enum BookingsIndexStatusTypes {
+	BOOKED = 'booked',
+	SUBMITTED = 'submitted',
+}
+export enum InvoiceIndexSortTypes {
+	DUE_DATE = 'due_date',
+}
+export enum InvoiceIndexDirectionTypes {
+	ASC = 'asc',
+	DESC = 'desc',
+}
+export enum InvoiceIndexStatusTypes {
+	OUTSTANDING = 'outstanding',
+	PAST_DUE = 'past_due',
+	VOID = 'void',
+	PAID = 'paid',
+}
+export enum PortsIndexPortTypeTypes {
+	AIRPORT = 'airport',
+	RAILPORT = 'railport',
+	ROADPORT = 'roadport',
+	SEAPORT = 'seaport',
+}
+export enum PurchaseOrderLineItemIndexSortTypes {
+	CARGO_READY_DATE = 'cargo_ready_date',
+	CREATED_AT = 'created_at',
+}
+export enum PurchaseOrderLineItemIndexDirectionTypes {
+	ASC = 'asc',
+	DESC = 'desc',
+}
+export enum PurchaseOrderIndexSortTypes {
+	ID = 'id',
+}
+export enum PurchaseOrderIndexDirectionTypes {
+	ASC = 'asc',
+	DESC = 'desc',
+}
+export enum PurchaseOrderIndexStatusTypes {
+	OPEN = 'open',
+	CLOSED = 'closed',
+	CANCELLED = 'cancelled',
+}
+export enum PurchaseOrderIndexRoleTypes {
+	BUYER = 'buyer',
+	SELLER = 'seller',
+}
+export enum ShipmentIndexSortTypes {
+	ID = 'id',
+	TRANSPORTATION_MODE = 'transportation_mode',
+	STATUS = 'status',
+	UPDATED_AT = 'updated_at',
+}
+export enum ShipmentIndexDirectionTypes {
+	ASC = 'asc',
+	DESC = 'desc',
+}
 /**
  * Generated API client for the Flexport v2 API
  *
@@ -98,8 +171,8 @@ export type FlexportApiV2ClientInstance = {
 	booking_line_item_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['sort']?: 'cargo_ready_date' | 'created_at'
-		['direction']?: 'asc' | 'desc'
+		['sort']?: BookingLineItemIndexSortTypes
+		['direction']?: BookingLineItemIndexDirectionTypes
 		['f.purchase_order.id']?: number
 	}) => TaskEither<ErrorInfo, Page<LiftedBookingLineItem>>
 	/**
@@ -134,9 +207,9 @@ export type FlexportApiV2ClientInstance = {
 	bookings_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['sort']?: 'cargo_ready_date' | 'created_at'
-		['direction']?: 'asc' | 'desc'
-		['f.status']?: 'booked' | 'submitted'
+		['sort']?: BookingsIndexSortTypes
+		['direction']?: BookingsIndexDirectionTypes
+		['f.status']?: BookingsIndexStatusTypes
 		['f.shipment.id']?: number
 		['f.consignee_entity_ref']?: string
 		['f.shipper_entity_ref']?: string
@@ -294,9 +367,9 @@ export type FlexportApiV2ClientInstance = {
 	invoice_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['sort']?: 'due_date'
-		['direction']?: 'asc' | 'desc'
-		['f.status']?: 'outstanding' | 'past_due' | 'void' | 'paid'
+		['sort']?: InvoiceIndexSortTypes
+		['direction']?: InvoiceIndexDirectionTypes
+		['f.status']?: InvoiceIndexStatusTypes
 		['f.shipment.id']?: number
 		['f.billed_directly_to_client']?: boolean
 		['f.entity.id']?: number
@@ -569,7 +642,7 @@ export type FlexportApiV2ClientInstance = {
 	ports_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['f.port_type']?: 'airport' | 'railport' | 'roadport' | 'seaport'
+		['f.port_type']?: PortsIndexPortTypeTypes
 		['f.unlocode']?: string
 	}) => TaskEither<ErrorInfo, Page<LiftedAddress>>
 	/**
@@ -629,8 +702,8 @@ export type FlexportApiV2ClientInstance = {
 	purchase_order_line_item_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['sort']?: 'cargo_ready_date' | 'created_at'
-		['direction']?: 'asc' | 'desc'
+		['sort']?: PurchaseOrderLineItemIndexSortTypes
+		['direction']?: PurchaseOrderLineItemIndexDirectionTypes
 		['f.purchase_order.id']?: number
 		['f.line_item_number']?: string
 		['f.item_key']?: string
@@ -657,13 +730,13 @@ export type FlexportApiV2ClientInstance = {
 	purchase_order_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['sort']?: 'id'
-		['direction']?: 'asc' | 'desc'
+		['sort']?: PurchaseOrderIndexSortTypes
+		['direction']?: PurchaseOrderIndexDirectionTypes
 		['f.archived_at.exists']?: boolean
-		['f.status']?: 'open' | 'closed' | 'cancelled'
+		['f.status']?: PurchaseOrderIndexStatusTypes
 		['f.buyer_ref']?: string
 		['f.seller_ref']?: string
-		['f.role']?: 'buyer' | 'seller'
+		['f.role']?: PurchaseOrderIndexRoleTypes
 		['f.shipment.id']?: number
 		['f.name']?: string
 	}) => TaskEither<ErrorInfo, Page<LiftedPurchaseOrder>>
@@ -710,8 +783,8 @@ export type FlexportApiV2ClientInstance = {
 	shipment_index: (params?: {
 		['page']?: number
 		['per']?: number
-		['sort']?: 'id' | 'transportation_mode' | 'status' | 'updated_at'
-		['direction']?: 'asc' | 'desc'
+		['sort']?: ShipmentIndexSortTypes
+		['direction']?: ShipmentIndexDirectionTypes
 		['f.transportation_mode']?: TransportationMode
 		['f.status']?: ShipmentStatus
 		['f.statuses.any']?: ShipmentStatus
@@ -762,8 +835,8 @@ export const flexportApiV2 = (
 		booking_line_item_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['sort']?: 'cargo_ready_date' | 'created_at'
-			['direction']?: 'asc' | 'desc'
+			['sort']?: BookingLineItemIndexSortTypes
+			['direction']?: BookingLineItemIndexDirectionTypes
 			['f.purchase_order.id']?: number
 		}) =>
 			pipe(
@@ -804,9 +877,9 @@ export const flexportApiV2 = (
 		bookings_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['sort']?: 'cargo_ready_date' | 'created_at'
-			['direction']?: 'asc' | 'desc'
-			['f.status']?: 'booked' | 'submitted'
+			['sort']?: BookingsIndexSortTypes
+			['direction']?: BookingsIndexDirectionTypes
+			['f.status']?: BookingsIndexStatusTypes
 			['f.shipment.id']?: number
 			['f.consignee_entity_ref']?: string
 			['f.shipper_entity_ref']?: string
@@ -1022,9 +1095,9 @@ export const flexportApiV2 = (
 		invoice_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['sort']?: 'due_date'
-			['direction']?: 'asc' | 'desc'
-			['f.status']?: 'outstanding' | 'past_due' | 'void' | 'paid'
+			['sort']?: InvoiceIndexSortTypes
+			['direction']?: InvoiceIndexDirectionTypes
+			['f.status']?: InvoiceIndexStatusTypes
 			['f.shipment.id']?: number
 			['f.billed_directly_to_client']?: boolean
 			['f.entity.id']?: number
@@ -1342,7 +1415,7 @@ export const flexportApiV2 = (
 		ports_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['f.port_type']?: 'airport' | 'railport' | 'roadport' | 'seaport'
+			['f.port_type']?: PortsIndexPortTypeTypes
 			['f.unlocode']?: string
 		}) =>
 			pipe(
@@ -1406,8 +1479,8 @@ export const flexportApiV2 = (
 		purchase_order_line_item_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['sort']?: 'cargo_ready_date' | 'created_at'
-			['direction']?: 'asc' | 'desc'
+			['sort']?: PurchaseOrderLineItemIndexSortTypes
+			['direction']?: PurchaseOrderLineItemIndexDirectionTypes
 			['f.purchase_order.id']?: number
 			['f.line_item_number']?: string
 			['f.item_key']?: string
@@ -1446,13 +1519,13 @@ export const flexportApiV2 = (
 		purchase_order_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['sort']?: 'id'
-			['direction']?: 'asc' | 'desc'
+			['sort']?: PurchaseOrderIndexSortTypes
+			['direction']?: PurchaseOrderIndexDirectionTypes
 			['f.archived_at.exists']?: boolean
-			['f.status']?: 'open' | 'closed' | 'cancelled'
+			['f.status']?: PurchaseOrderIndexStatusTypes
 			['f.buyer_ref']?: string
 			['f.seller_ref']?: string
-			['f.role']?: 'buyer' | 'seller'
+			['f.role']?: PurchaseOrderIndexRoleTypes
 			['f.shipment.id']?: number
 			['f.name']?: string
 		}) =>
@@ -1516,8 +1589,8 @@ export const flexportApiV2 = (
 		shipment_index: (params?: {
 			['page']?: number
 			['per']?: number
-			['sort']?: 'id' | 'transportation_mode' | 'status' | 'updated_at'
-			['direction']?: 'asc' | 'desc'
+			['sort']?: ShipmentIndexSortTypes
+			['direction']?: ShipmentIndexDirectionTypes
 			['f.transportation_mode']?: TransportationMode
 			['f.status']?: ShipmentStatus
 			['f.statuses.any']?: ShipmentStatus

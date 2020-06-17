@@ -1,4 +1,9 @@
-import { Item, createObjectType, createPropertyDefinition } from './factories'
+import {
+	Item,
+	createObjectType,
+	createPropertyDefinition,
+	snakeToCamelCase,
+} from './factories'
 import * as ts from 'typescript'
 import { Type } from '../generated'
 
@@ -64,13 +69,13 @@ export const createReturn = (
 		const ref = schema.properties?.data?.properties?.data?.items?.$ref
 		let dep
 		let t: ts.TypeNode = ts.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)
-		if (ref) {
+		if (ref !== undefined) {
 			dep = ref.replace(/#\/components\/schemas\//, '')
 			t = ts.createTypeReferenceNode(dep, [])
 		}
 		return {
 			type: ts.createTypeReferenceNode(`ApiPageObject`, [t]),
-			deps: dep ? [dep] : [],
+			deps: dep !== undefined ? [dep] : [],
 		}
 	}
 	// Regular response
@@ -78,22 +83,22 @@ export const createReturn = (
 		const ref = schema.properties?.data?.$ref
 		let dep
 		let t: ts.TypeNode = ts.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)
-		if (ref) {
+		if (ref !== undefined) {
 			dep = ref.replace(/#\/components\/schemas\//, '')
 			t = ts.createTypeReferenceNode(dep, [])
 		}
 		return {
 			type: t,
-			deps: dep ? [dep] : [],
+			deps: dep !== undefined ? [dep] : [],
 		}
 	}
 	// Object is returned (e.g. on updates)
-	if (schema.$ref) {
+	if (schema.$ref !== undefined) {
 		const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
 		const t = ts.createTypeReferenceNode(dep, [])
 		return {
 			type: t,
-			deps: dep ? [dep] : [],
+			deps: dep !== undefined ? [dep] : [],
 		}
 	}
 	// It's a regular object
@@ -127,7 +132,7 @@ export const createLifterCall = (
 	// Response is paginated
 	if (isPageResponse(schema)) {
 		const ref = schema.properties?.data?.properties?.data?.items?.$ref
-		if (ref) {
+		if (ref !== undefined) {
 			const dep = ref.replace(/#\/components\/schemas\//, '')
 			return {
 				lifter: ts.createCall(
@@ -158,7 +163,7 @@ export const createLifterCall = (
 	// Regular response
 	if (isResponse(schema)) {
 		const ref = schema.properties?.data?.$ref
-		if (ref) {
+		if (ref !== undefined) {
 			const dep = ref.replace(/#\/components\/schemas\//, '')
 			return {
 				lifter: ts.createIdentifier(`lift${dep}`),
@@ -177,7 +182,7 @@ export const createLifterCall = (
 		}
 	}
 	// Object is returned (e.g. on updates)
-	if (schema.$ref) {
+	if (schema.$ref !== undefined) {
 		const dep = schema.$ref.replace(/#\/components\/schemas\//, '')
 		return {
 			lifter: ts.createIdentifier(`lift${dep}`),
@@ -232,7 +237,7 @@ export const createReturns = (
 export const commentOperation = (p: ts.Node, def: ApiMethodInfo) => {
 	const comment = []
 	comment.push(def.summary)
-	if (def.description) {
+	if (def.description !== undefined) {
 		comment.push('')
 		comment.push(def.description.trim())
 	}
@@ -253,7 +258,7 @@ export const commentOperation = (p: ts.Node, def: ApiMethodInfo) => {
 	) {
 		comment.push('FIXME: Only the first response type is handled')
 	}
-	if (def.requestBody) {
+	if (def.requestBody !== undefined) {
 		comment.push('FIXME: Implement request body handling')
 	}
 	ts.addSyntheticLeadingComment(
@@ -267,6 +272,7 @@ export const commentOperation = (p: ts.Node, def: ApiMethodInfo) => {
 export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 	const params = []
 	const deps: (string | { [key: string]: string })[] = []
+	const enums: ts.EnumDeclaration[] = []
 	const paramsRequired = def.parameters?.find(({ required }) => required)
 	if (def.parameters) {
 		params.push(
@@ -280,15 +286,19 @@ export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 					: ts.createToken(ts.SyntaxKind.QuestionToken),
 				ts.createTypeLiteralNode(
 					def.parameters?.map((param) => {
-						const { type, deps: d } = createPropertyDefinition(
+						const { type, deps: d, enums: e } = createPropertyDefinition(
 							param.schema,
 							schemas,
+							`${snakeToCamelCase(def.operationId)}${snakeToCamelCase(
+								param.name.replace(/^f\./, ''),
+							)}`,
 						)
 						deps.push(...d)
+						enums.push(...e)
 						return ts.createPropertySignature(
 							[],
 							ts.createComputedPropertyName(ts.createStringLiteral(param.name)),
-							param.required
+							param.required === true
 								? undefined
 								: ts.createToken(ts.SyntaxKind.QuestionToken),
 							type,
@@ -301,10 +311,10 @@ export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 		)
 	}
 
-	const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
-	const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
+	const pathParams = def.parameters?.filter(({ in: i }) => i === 'path') ?? []
+	const queryParams = def.parameters?.filter(({ in: i }) => i === 'query') ?? []
 	const paramProperties = []
-	if (pathParams?.length) {
+	if (pathParams.length > 0) {
 		paramProperties.push(
 			ts.createPropertyAssignment(
 				'path',
@@ -325,7 +335,7 @@ export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 			),
 		)
 	}
-	if (queryParams?.length) {
+	if (queryParams.length > 0) {
 		paramProperties.push(
 			ts.createPropertyAssignment(
 				'query',
@@ -350,16 +360,21 @@ export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 		params,
 		deps,
 		paramProperties,
+		enums,
 	}
 }
 
 export const createOperationCall = (schemas: any, def: ApiMethodInfo) => {
 	const deps: (string | { [key: string]: string })[] = []
-	const { params, paramProperties, deps: paramDeps } = generateParams(
-		schemas,
-		def,
-	)
+	const enums: ts.EnumDeclaration[] = []
+	const {
+		params,
+		paramProperties,
+		deps: paramDeps,
+		enums: paramEnums,
+	} = generateParams(schemas, def)
 	deps.push(...paramDeps)
+	enums.push(...paramEnums)
 
 	const apiClientArgumens = [
 		ts.createPropertyAssignment(
@@ -368,9 +383,9 @@ export const createOperationCall = (schemas: any, def: ApiMethodInfo) => {
 		),
 		ts.createPropertyAssignment('path', ts.createStringLiteral(def.path)),
 	]
-	const pathParams = def.parameters?.filter(({ in: i }) => i === 'path')
-	const queryParams = def.parameters?.filter(({ in: i }) => i === 'query')
-	if (queryParams?.length || pathParams?.length) {
+	const pathParams = def.parameters?.filter(({ in: i }) => i === 'path') ?? []
+	const queryParams = def.parameters?.filter(({ in: i }) => i === 'query') ?? []
+	if (queryParams.length + pathParams.length > 0) {
 		apiClientArgumens.push(
 			ts.createPropertyAssignment(
 				'params',
@@ -411,6 +426,7 @@ export const createOperationCall = (schemas: any, def: ApiMethodInfo) => {
 	return {
 		method: m,
 		deps,
+		enums,
 	}
 }
 

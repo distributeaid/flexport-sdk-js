@@ -12,6 +12,26 @@ import { ResolvableObject } from '../types/Link'
 import { linkObject } from '../links'
 import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
+export enum ShipmentContainerContainerTypeTypes {
+	DRY = 'dry',
+	FLAT_RACK = 'flat_rack',
+	HEADLOAD = 'headload',
+	OPEN = 'open',
+	REEFER = 'reefer',
+	LCL = 'lcl',
+	TANK = 'tank',
+	VENTILATED = 'ventilated',
+	BULK = 'bulk',
+	SPECIAL = 'special',
+}
+export enum ShipmentContainerContainerSizeTypes {
+	TWENTY_FT = 'twenty_ft',
+	FOURTY_FT = 'fourty_ft',
+	FOURTY_FT_HC = 'fourty_ft_hc',
+	FOURTY_FIVE_FT_HC = 'fourty_five_ft_hc',
+	FIFTY_THREE_FT = 'fifty_three_ft',
+	FIFTY_THREE_FT_HC = 'fifty_three_ft_hc',
+}
 export type ShipmentContainer = {
 	/**
 	 * Type of the object
@@ -27,17 +47,7 @@ export type ShipmentContainer = {
 	 * JSON-schema: string
 	 * @example "dry"
 	 */
-	readonly container_type?:
-		| 'dry'
-		| 'flat_rack'
-		| 'headload'
-		| 'open'
-		| 'reefer'
-		| 'lcl'
-		| 'tank'
-		| 'ventilated'
-		| 'bulk'
-		| 'special'
+	readonly container_type?: ShipmentContainerContainerTypeTypes
 	/**
 	 * JSON-schema: string
 	 * @example "BWSE3982156"
@@ -47,13 +57,7 @@ export type ShipmentContainer = {
 	 * JSON-schema: string
 	 * @example "fourty_ft"
 	 */
-	readonly container_size?:
-		| 'twenty_ft'
-		| 'fourty_ft'
-		| 'fourty_ft_hc'
-		| 'fourty_five_ft_hc'
-		| 'fifty_three_ft'
-		| 'fifty_three_ft_hc'
+	readonly container_size?: ShipmentContainerContainerSizeTypes
 	/**
 	 * JSON-schema: string
 	 * @example "UE_WQ2934875"
@@ -186,39 +190,50 @@ export const liftShipmentContainer = (
 	} = original
 	return {
 		...rest,
-		estimated_departure_date: estimated_departure_date
-			? new Date(estimated_departure_date)
-			: undefined,
-		actual_departure_date: actual_departure_date
-			? new Date(actual_departure_date)
-			: undefined,
-		estimated_arrival_date: estimated_arrival_date
-			? new Date(estimated_arrival_date)
-			: undefined,
-		actual_arrival_date: actual_arrival_date
-			? new Date(actual_arrival_date)
-			: undefined,
-		estimated_pickup_date: estimated_pickup_date
-			? new Date(estimated_pickup_date)
-			: undefined,
-		actual_pickup_date: actual_pickup_date
-			? new Date(actual_pickup_date)
-			: undefined,
-		estimated_delivery_date: estimated_delivery_date
-			? new Date(estimated_delivery_date)
-			: undefined,
-		actual_delivery_date: actual_delivery_date
-			? new Date(actual_delivery_date)
-			: undefined,
-		last_free_day_date: last_free_day_date
-			? new Date(last_free_day_date)
-			: undefined,
-		available_for_pickup_date: available_for_pickup_date
-			? new Date(available_for_pickup_date)
-			: undefined,
-		estimated_available_for_pickup_date: estimated_available_for_pickup_date
-			? new Date(estimated_available_for_pickup_date)
-			: undefined,
+		estimated_departure_date:
+			estimated_departure_date !== undefined
+				? new Date(estimated_departure_date)
+				: undefined,
+		actual_departure_date:
+			actual_departure_date !== undefined
+				? new Date(actual_departure_date)
+				: undefined,
+		estimated_arrival_date:
+			estimated_arrival_date !== undefined
+				? new Date(estimated_arrival_date)
+				: undefined,
+		actual_arrival_date:
+			actual_arrival_date !== undefined
+				? new Date(actual_arrival_date)
+				: undefined,
+		estimated_pickup_date:
+			estimated_pickup_date !== undefined
+				? new Date(estimated_pickup_date)
+				: undefined,
+		actual_pickup_date:
+			actual_pickup_date !== undefined
+				? new Date(actual_pickup_date)
+				: undefined,
+		estimated_delivery_date:
+			estimated_delivery_date !== undefined
+				? new Date(estimated_delivery_date)
+				: undefined,
+		actual_delivery_date:
+			actual_delivery_date !== undefined
+				? new Date(actual_delivery_date)
+				: undefined,
+		last_free_day_date:
+			last_free_day_date !== undefined
+				? new Date(last_free_day_date)
+				: undefined,
+		available_for_pickup_date:
+			available_for_pickup_date !== undefined
+				? new Date(available_for_pickup_date)
+				: undefined,
+		estimated_available_for_pickup_date:
+			estimated_available_for_pickup_date !== undefined
+				? new Date(estimated_available_for_pickup_date)
+				: undefined,
 		shipment: linkObject(shipment),
 		container_legs: linkCollection(container_legs),
 	}

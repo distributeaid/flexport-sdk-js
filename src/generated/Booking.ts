@@ -18,6 +18,13 @@ import { ResolvableObject } from '../types/Link'
 import { linkObject } from '../links'
 import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
+export enum BookingStatusTypes {
+	ARCHIVED = 'archived',
+	DRAFT = 'draft',
+	SUBMITTED = 'submitted',
+	BOOKED = 'booked',
+	SHIPMENT = 'shipment',
+}
 export type Booking = {
 	/**
 	 * Unique identifier for the booking
@@ -41,7 +48,7 @@ export type Booking = {
 	/**
 	 * JSON-schema: string
 	 */
-	readonly status?: 'archived' | 'draft' | 'submitted' | 'booked' | 'shipment'
+	readonly status?: BookingStatusTypes
 	readonly shipper_entity?: CompanyEntity
 	readonly consignee_entity?: CompanyEntity
 	/**
@@ -97,7 +104,7 @@ export const liftBooking = (original: Booking): LiftedBooking => {
 	const { created_at, shipment, booking_line_items, ...rest } = original
 	return {
 		...rest,
-		created_at: created_at ? new Date(created_at) : undefined,
+		created_at: created_at !== undefined ? new Date(created_at) : undefined,
 		shipment: linkObject(shipment),
 		booking_line_items: linkCollection(booking_line_items),
 	}

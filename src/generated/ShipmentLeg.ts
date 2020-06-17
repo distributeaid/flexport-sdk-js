@@ -96,18 +96,22 @@ export const liftShipmentLeg = (original: ShipmentLeg): LiftedShipmentLeg => {
 	} = original
 	return {
 		...rest,
-		estimated_arrival_date: estimated_arrival_date
-			? new Date(estimated_arrival_date)
-			: undefined,
-		actual_arrival_date: actual_arrival_date
-			? new Date(actual_arrival_date)
-			: undefined,
-		estimated_departure_date: estimated_departure_date
-			? new Date(estimated_departure_date)
-			: undefined,
-		actual_departure_date: actual_departure_date
-			? new Date(actual_departure_date)
-			: undefined,
+		estimated_arrival_date:
+			estimated_arrival_date !== undefined
+				? new Date(estimated_arrival_date)
+				: undefined,
+		actual_arrival_date:
+			actual_arrival_date !== undefined
+				? new Date(actual_arrival_date)
+				: undefined,
+		estimated_departure_date:
+			estimated_departure_date !== undefined
+				? new Date(estimated_departure_date)
+				: undefined,
+		actual_departure_date:
+			actual_departure_date !== undefined
+				? new Date(actual_departure_date)
+				: undefined,
 		shipment: linkObject(shipment),
 	}
 }

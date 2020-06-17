@@ -31,6 +31,7 @@ export type BookingAmendment = {
 	 * Depending on various conditions, the requested booking amendment may either be accepted and applied instantly, or it may require Flexport approval. 'is_pending' is set to true if approval is required.
 	 *
 	 * JSON-schema: boolean
+	 * @example false
 	 */
 	readonly is_pending?: boolean
 	/**

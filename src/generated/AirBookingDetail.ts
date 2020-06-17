@@ -5,6 +5,20 @@ import { Type } from './Type'
 import { Place } from './Place'
 import { BookingHsCode } from './BookingHsCode'
 import { TypedApiObject } from '../types/TypedApiObject'
+export enum AirBookingDetailIncotermTypes {
+	EXW = 'EXW',
+	FOB = 'FOB',
+	FAS = 'FAS',
+	FCA = 'FCA',
+	CPT = 'CPT',
+	CFR = 'CFR',
+	CIF = 'CIF',
+	CIP = 'CIP',
+	DAT = 'DAT',
+	DAP = 'DAP',
+	DDP = 'DDP',
+	DPU = 'DPU',
+}
 export type AirBookingDetail = {
 	/**
 	 * Type of the object
@@ -14,19 +28,7 @@ export type AirBookingDetail = {
 	 * JSON-schema: string
 	 * @example "FOB"
 	 */
-	readonly incoterm?:
-		| 'EXW'
-		| 'FOB'
-		| 'FAS'
-		| 'FCA'
-		| 'CPT'
-		| 'CFR'
-		| 'CIF'
-		| 'CIP'
-		| 'DAT'
-		| 'DAP'
-		| 'DDP'
-		| 'DPU'
+	readonly incoterm?: AirBookingDetailIncotermTypes
 	/**
 	 * JSON-schema: boolean
 	 * @example true
@@ -34,6 +36,7 @@ export type AirBookingDetail = {
 	readonly wants_pickup_service?: boolean
 	/**
 	 * JSON-schema: boolean
+	 * @example false
 	 */
 	readonly wants_delivery_service?: boolean
 	readonly origin_port?: Place

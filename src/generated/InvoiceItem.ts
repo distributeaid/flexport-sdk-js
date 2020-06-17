@@ -6,6 +6,14 @@ import { Money } from './Money'
 import { InvoiceRate } from './InvoiceRate'
 import { InvoiceQuantity } from './InvoiceQuantity'
 import { TypedApiObject } from '../types/TypedApiObject'
+export enum InvoiceItemCategoryTypes {
+	FREIGHT = 'freight',
+	ORIGIN = 'origin',
+	DESTINATION = 'destination',
+	CUSTOMS = 'customs',
+	ADDITIONAL = 'additional',
+	CAPITAL = 'capital',
+}
 export type InvoiceItem = {
 	/**
 	 * Type of the object.
@@ -30,13 +38,7 @@ export type InvoiceItem = {
 	 *
 	 * JSON-schema: string
 	 */
-	readonly category?:
-		| 'freight'
-		| 'origin'
-		| 'destination'
-		| 'customs'
-		| 'additional'
-		| 'capital'
+	readonly category?: InvoiceItemCategoryTypes
 	readonly amount?: Money
 	readonly rate?: InvoiceRate
 	readonly quantity?: InvoiceQuantity

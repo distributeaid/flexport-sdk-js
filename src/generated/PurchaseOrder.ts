@@ -12,6 +12,25 @@ import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
+export enum PurchaseOrderStatusTypes {
+	OPEN = 'open',
+	CLOSED = 'closed',
+	CANCELLED = 'cancelled',
+}
+export enum PurchaseOrderIncotermTypes {
+	EXW = 'EXW',
+	FOB = 'FOB',
+	FAS = 'FAS',
+	FCA = 'FCA',
+	CPT = 'CPT',
+	CFR = 'CFR',
+	CIF = 'CIF',
+	CIP = 'CIP',
+	DAT = 'DAT',
+	DAP = 'DAP',
+	DDP = 'DDP',
+	DPU = 'DPU',
+}
 export type PurchaseOrder = {
 	/**
 	 * A unique identifier for the purchase order
@@ -37,26 +56,14 @@ export type PurchaseOrder = {
 	 * JSON-schema: string
 	 * @example "open"
 	 */
-	readonly status?: 'open' | 'closed' | 'cancelled'
+	readonly status?: PurchaseOrderStatusTypes
 	readonly seller?: Company
 	readonly buyer?: Company
 	/**
 	 * JSON-schema: string
 	 * @example "FOB"
 	 */
-	readonly incoterm?:
-		| 'EXW'
-		| 'FOB'
-		| 'FAS'
-		| 'FCA'
-		| 'CPT'
-		| 'CFR'
-		| 'CIF'
-		| 'CIP'
-		| 'DAT'
-		| 'DAP'
-		| 'DDP'
-		| 'DPU'
+	readonly incoterm?: PurchaseOrderIncotermTypes
 	readonly transportation_mode?: TransportationMode
 	/**
 	 * JSON-schema: string (date)

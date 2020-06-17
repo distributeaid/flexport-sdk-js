@@ -29,6 +29,7 @@ parseOpenAPI(
 					(ops, [method, def]) => ({
 						...ops,
 						[def.operationId]: {
+							operationId: def.operationId,
 							summary: def.summary,
 							description: def.description,
 							method,
@@ -47,6 +48,7 @@ parseOpenAPI(
 		// Create the return type of the client function
 
 		const deps: (string | { [key: string]: string })[] = []
+		const enums: ts.EnumDeclaration[] = []
 
 		deps.push({
 			TaskEither: 'fp-ts/lib/TaskEither',
@@ -122,12 +124,14 @@ parseOpenAPI(
 												const {
 													method,
 													deps: methodDeps,
+													enums: methodEnums,
 												} = createOperationCall(f.components.schemas, def)
 												const a = ts.createPropertyAssignment(
 													operationId,
 													method,
 												)
 												deps.push(...methodDeps)
+												enums.push(...methodEnums)
 												return a
 											}),
 											true,
@@ -174,6 +178,7 @@ parseOpenAPI(
 				ts.createLiteral('../types/ApiPageObject'),
 			),
 			...Object.entries(uniqueDeps(deps)).map(makeImport),
+			...enums,
 			clientInstanceType,
 			client,
 		]

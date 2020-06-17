@@ -24,7 +24,11 @@ parseOpenAPI(
 		await Promise.all(
 			Object.entries(f.components.schemas as { [key: string]: any }).map(
 				async ([name, schema]) => {
-					const { type, deps } = makeType(name, schema, f.components.schemas)
+					const { type, deps, enums } = makeType(
+						name,
+						schema,
+						f.components.schemas,
+					)
 					const { lifter, deps: lifterDeps, liftedType } = makeLifter(
 						name,
 						schema,
@@ -38,12 +42,13 @@ parseOpenAPI(
 						...Object.entries(
 							uniqueDeps([...deps, ...lifterDeps]),
 						).map(([exp, mod]) => printNode(makeImport([exp, mod]))),
+						...enums.map((e) => printNode(e)),
 						printNode(type),
 						printNode(liftedType),
 						printNode(lifter),
 					]
 					const _object = schema?.properties?._object?.example
-					if (_object) typeIdentifiers.set(name, _object)
+					if (_object !== undefined) typeIdentifiers.set(name, _object)
 					types.push(name)
 					return fs.writeFile(
 						path.join(process.cwd(), 'src', 'generated', `${name}.ts`),

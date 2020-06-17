@@ -14,6 +14,7 @@ export type OceanShipmentDetail = {
 	readonly _object: Type.OceanShipmentDetail
 	/**
 	 * JSON-schema: boolean
+	 * @example false
 	 */
 	readonly is_lcl?: boolean
 	/**
