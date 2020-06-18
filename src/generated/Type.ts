@@ -26,6 +26,7 @@ export enum Type {
 	ContainerCounts = '/container_counts',
 	ContainerLegCollectionRef = '/api/refs/collection',
 	ContainerRef = '/api/refs/object',
+	Coordinates = '/coordinates',
 	CreateBookingHsCode = '/bookings/product_descriptions',
 	CreateCommercialInvoiceLineItem = '/commercial_invoice_line_item/create',
 	CreditMemo = '/credit_memo',

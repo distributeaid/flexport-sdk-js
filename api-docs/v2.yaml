@@ -7001,6 +7001,18 @@ components:
         id:
           type: integer
           example: 123
+    Coordinates:
+      type: object
+      properties:
+        _object:
+          type: string
+          example: /coordinates
+        latitude:
+          type: string
+          example: '76.003'
+        longitude:
+          type: string
+          example: '-122.092'
     CreateAirBooking:
       type: object
       required:
