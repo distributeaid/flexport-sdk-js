@@ -16,7 +16,8 @@ jobs:
   monitor:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - uses: actions/setup-node@v1
         with:
           node-version: "14.x"
@@ -37,19 +38,37 @@ jobs:
           node dist/bin/generateApiOperations.js
           npx prettier --write src/**/*.ts
         continue-on-error: true
+      - name: create new branch
+        run: |
+          CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
+          git checkout -b flexport-api-upstream-changes-$CHECKSUM
+        id: create-branch
+        continue-on-error: true
+      - name: Check out branch
+        if: steps.create-branch.outcome == 'failure'
+        run: |
+          CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
+          git checkout flexport-api-upstream-changes-$CHECKSUM
       - name: Add changes to git
         run: |
           git config --global user.email "actions@example.com"
           git config --global user.name "GitHub Actions"
-          git checkout -b flexport-api-changes-`uuidgen`
+          git checkout -b flexport-api-upstream-changes
           git add -A
-          git commit -m 'fix: update generated code
+          git commit -m 'feat: update generated code
 
-          BREAKING CHANGE: Changes might be breaking.'
+          BREAKING CHANGE: These changes have not been checked by a human.'
       - name: Run tests
         run: npm test
         continue-on-error: true
+      - run:
+          echo "machine github.com login authtoken password ${GITHUB_TOKEN}" >
+          ~/.netrc
       - name: Create PR
+        if: steps.create-branch.outcome == 'success'
         run: |
-          echo "machine github.com login authtoken password ${GITHUB_TOKEN}" > ~/.netrc
-          gh pr create --fill -d
+          gh pr create -B saga -b '' -d -t 'Implement Flexport API upstream changes'
+      - name: Append PR
+        if: steps.create-branch.outcome == 'failure'
+        run: |
+          git push
