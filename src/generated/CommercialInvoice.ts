@@ -8,6 +8,7 @@ import { Weight } from './Weight'
 import { Volume } from './Volume'
 import { CommercialInvoiceLineItem } from './CommercialInvoiceLineItem'
 import { ApiObjectRef } from '../types/ApiObjectRef'
+import { Metadata } from './Metadata'
 import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
@@ -48,6 +49,7 @@ export type CommercialInvoice = {
 	 */
 	readonly line_items?: CommercialInvoiceLineItem[]
 	readonly shipment?: ApiObjectRef
+	readonly metadata?: Metadata
 }
 export type LiftedCommercialInvoice = TypedApiObject &
 	Omit<CommercialInvoice, 'shipment'> & {

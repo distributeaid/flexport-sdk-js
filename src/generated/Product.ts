@@ -33,6 +33,13 @@ export type Product = {
 	 */
 	readonly sku?: string
 	/**
+	 * Description of product
+	 *
+	 * JSON-schema: string
+	 * @example "The best 12V AC Adapter on the market"
+	 */
+	readonly description?: string
+	/**
 	 * If the product has been archived, the time it was archived. If the product is still active this will be null.
 	 *
 	 * JSON-schema: string
@@ -53,6 +60,13 @@ export type Product = {
 	 * @example "China"
 	 */
 	readonly country_of_origin?: string
+	/**
+	 * Indicates whether Client has verified this Product.
+	 *
+	 * JSON-schema: boolean
+	 * @example true
+	 */
+	readonly client_verified?: boolean
 	/**
 	 * A user defined set of key-value objects to describe the product
 	 *

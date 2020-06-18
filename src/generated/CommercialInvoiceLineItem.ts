@@ -3,27 +3,31 @@
  */
 import { Type } from './Type'
 import { Money } from './Money'
+import { CommercialInvoiceLineItemContainerNumber } from './CommercialInvoiceLineItemContainerNumber'
 import { Weight } from './Weight'
 import { Volume } from './Volume'
 import { ProductRef } from './ProductRef'
+import { Metadata } from './Metadata'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type CommercialInvoiceLineItem = {
 	/**
 	 * Type of the object. Always /commercial_invoice_line_item for this object.
 	 */
 	readonly _object: Type.CommercialInvoiceLineItem
+	/**
+	 * JSON-schema: integer
+	 * @example 4
+	 */
+	readonly document_line_number?: number
 	readonly price_per_unit?: Money
+	readonly first_sale_value?: Money
 	readonly value?: Money
 	/**
 	 * JSON-schema: integer
 	 * @example 10
 	 */
 	readonly total_units?: number
-	/**
-	 * JSON-schema: string
-	 * @example "XYZ123"
-	 */
-	readonly container_number?: string
+	readonly container_number?: CommercialInvoiceLineItemContainerNumber
 	/**
 	 * JSON-schema: string
 	 * @example "9876-ABC"
@@ -32,6 +36,7 @@ export type CommercialInvoiceLineItem = {
 	readonly weight?: Weight
 	readonly volume?: Volume
 	readonly product?: ProductRef
+	readonly metadata?: Metadata
 }
 export type LiftedCommercialInvoiceLineItem = TypedApiObject &
 	CommercialInvoiceLineItem

@@ -7,6 +7,7 @@ import { Airport } from './Airport'
 import { Railport } from './Railport'
 import { Roadport } from './Roadport'
 import { Seaport } from './Seaport'
+import { Manufacturer } from './Manufacturer'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type Place = {
 	/**
@@ -24,7 +25,7 @@ export type Place = {
 	/**
 	 * JSON-schema: array
 	 */
-	readonly details?: (Airport | Railport | Roadport | Seaport)[]
+	readonly details?: (Airport | Railport | Roadport | Seaport | Manufacturer)[]
 }
 export type LiftedPlace = TypedApiObject & Place
 /**
