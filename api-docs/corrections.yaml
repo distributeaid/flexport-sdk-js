@@ -1,5 +1,9 @@
 components:
   schemas:
+    CommercialInvoiceLineItem:
+      properties:
+        first_sale_value:
+          $ref: "#/components/schemas/Money"
     Shipment:
       properties:
         _object:
