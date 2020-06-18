@@ -37,6 +37,7 @@ jobs:
           node dist/bin/generateTypes.js
           node dist/bin/generateApiOperations.js
           npx prettier --write src/**/*.ts
+          npx tsc
         continue-on-error: true
       - name: create new branch
         run: |
