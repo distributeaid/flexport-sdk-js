@@ -9142,7 +9142,7 @@ components:
           example: '2019-04-16T18:05:10.964Z'
         type:
           type: string
-          example: /shipment_leg#departed
+          example: '/shipment_leg#departed'
         data:
           $ref: '#/components/schemas/ShipmentEventData'
     Weight:
