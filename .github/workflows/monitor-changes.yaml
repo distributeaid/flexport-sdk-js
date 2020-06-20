@@ -51,6 +51,8 @@ jobs:
           CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
           git checkout flexport-api-upstream-changes-$CHECKSUM
       - name: Add changes to git
+        id: commit-changes
+        continue-on-error: true
         run: |
           git config --global user.email "actions@example.com"
           git config --global user.name "GitHub Actions"
@@ -66,10 +68,14 @@ jobs:
           echo "machine github.com login authtoken password ${GITHUB_TOKEN}" >
           ~/.netrc
       - name: Create PR
-        if: steps.create-branch.outcome == 'success'
+        if:
+          steps.create-branch.outcome == 'success' &&
+          steps.commit-changes.outcome == 'success'
         run: |
           gh pr create -B saga -b '' -d -t 'Implement Flexport API upstream changes'
       - name: Append PR
-        if: steps.create-branch.outcome == 'failure'
+        if:
+          steps.create-branch.outcome == 'failure' &&
+          steps.commit-changes.outcome == 'success'
         run: |
           git push
