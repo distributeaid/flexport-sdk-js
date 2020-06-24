@@ -6764,28 +6764,32 @@ components:
         invoice_number:
           type: string
           example: ABCDEFGHIJKLMNOP
-        manufacturer_addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Address'
-        total_value:
-          $ref: '#/components/schemas/Money'
-        total_unit_count:
-          type: string
-          description: Total units on this commercial invoice.
-          example: '123.0'
-        total_weight:
-          $ref: '#/components/schemas/Weight'
-        total_volume:
-          $ref: '#/components/schemas/Volume'
         line_items:
           type: array
           items:
             $ref: '#/components/schemas/CommercialInvoiceLineItem'
-        shipment:
-          $ref: '#/components/schemas/ShipmentRef'
+        involved_parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomsInvolvedParty'
+        manufacturer_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
         metadata:
           $ref: '#/components/schemas/Metadata'
+        shipment:
+          $ref: '#/components/schemas/ShipmentRef'
+        total_unit_count:
+          type: string
+          description: Total units on this commercial invoice.
+          example: '123.0'
+        total_value:
+          $ref: '#/components/schemas/Money'
+        total_volume:
+          $ref: '#/components/schemas/Volume'
+        total_weight:
+          $ref: '#/components/schemas/Weight'
     CommercialInvoiceCollectionRef:
       type: object
       properties:
@@ -7661,6 +7665,23 @@ components:
         link:
           type: string
           example: 'https://api.flexport.com/customs_entries?f.shipment.id=2983'
+    CustomsInvolvedParty:
+      type: object
+      properties:
+        _object:
+          type: string
+          description: Type of the object
+          example: /customs/involved_party
+        address:
+          $ref: '#/components/schemas/Address'
+        name:
+          type: string
+          description: The name of involved party.
+          example: The West Coast Company
+        type:
+          type: string
+          description: The type of involved party.
+          example: consignee
     Document:
       type: object
       properties:
