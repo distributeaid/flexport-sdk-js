@@ -39,18 +39,18 @@
     ]
   },
   "devDependencies": {
-    "@bifravst/code-style": "^8.0.1",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-angular": "^8.3.4",
+    "@bifravst/code-style": "^8.0.2",
+    "@commitlint/cli": "^9.0.1",
+    "@commitlint/config-angular": "^9.0.1",
     "@distributeaid/flexport-api-sandbox": "^1.5.2",
     "@semantic-release/commit-analyzer": "^8.0.1",
-    "@types/jest": "^26.0.0",
-    "@types/js-yaml": "^3.12.4",
+    "@types/jest": "^26.0.3",
+    "@types/js-yaml": "^3.12.5",
     "husky": "^4.2.5",
-    "jest": "^26.0.1",
+    "jest": "^26.1.0",
     "js-yaml": "^3.14.0",
-    "semantic-release": "^17.0.8",
-    "ts-jest": "^26.1.0",
+    "semantic-release": "^17.1.0",
+    "ts-jest": "^26.1.1",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.5"
   },
@@ -86,7 +86,7 @@
     "check-node-version": "^4.0.3",
     "deepmerge": "^4.2.2",
     "fetch-ponyfill": "^6.1.1",
-    "fp-ts": "^2.6.5"
+    "fp-ts": "^2.6.6"
   },
   "publishConfig": {
     "access": "public"
