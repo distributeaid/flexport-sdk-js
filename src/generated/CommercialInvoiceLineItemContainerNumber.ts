@@ -19,7 +19,6 @@ export type CommercialInvoiceLineItemContainerNumber = {
 	readonly commercial_invoice_line_item_id?: number
 	/**
 	 * JSON-schema: string
-	 * @example null
 	 */
 	readonly deleted_at?: string
 	/**

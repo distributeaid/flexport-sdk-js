@@ -44,7 +44,6 @@ export type CreateAirBooking = {
 	 * One of `origin_port_us_cbp_port_code`, `origin_port_loc_code`, `origin_port_iata_code`, or `origin_port_icao_code` is required if `pickup_service` = `no`. Unique port reference code used by US CBP, not applicable for non-US airports.
 	 *
 	 * JSON-schema: string
-	 * @example null
 	 */
 	readonly origin_port_us_cbp_port_code?: string
 	/**

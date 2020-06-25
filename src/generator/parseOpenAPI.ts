@@ -1,6 +1,7 @@
 import * as yaml from 'js-yaml'
 import { promises as fs } from 'fs'
 import * as merge from 'deepmerge'
+import { nullToUndefined } from '../transformer'
 
 const arrayMerge = (target: any[], source: any[], options: merge.Options) =>
 	source.map((v, k) =>
@@ -17,11 +18,13 @@ export const parseOpenAPI = async (
 	const corrections = yaml.safeLoad(
 		await fs.readFile(correctionsFilename, 'utf8'),
 	)
-	return merge(
-		apiDefinition as Record<string, any>,
-		corrections as Record<string, any>,
-		{
-			arrayMerge,
-		},
+	return nullToUndefined(
+		merge(
+			apiDefinition as Record<string, any>,
+			corrections as Record<string, any>,
+			{
+				arrayMerge,
+			},
+		),
 	)
 }
