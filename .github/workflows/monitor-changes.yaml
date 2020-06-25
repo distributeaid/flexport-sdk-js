@@ -39,24 +39,23 @@ jobs:
           npx prettier --write src/**/*.ts
           npx tsc
         continue-on-error: true
-      - name: create new branch
+      - name: Calculate checksum for API docs
         run: |
           CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
-          git checkout -b flexport-api-upstream-changes-$CHECKSUM
+          echo "::set-env name=CHECKSUM::${CHECKSUM}"
+      - name: create new branch
+        run: git checkout -b flexport-api-upstream-changes-${{ env.CHECKSUM }}
         id: create-branch
         continue-on-error: true
       - name: Check out branch
         if: steps.create-branch.outcome == 'failure'
-        run: |
-          CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
-          git checkout flexport-api-upstream-changes-$CHECKSUM
+        run: git checkout flexport-api-upstream-changes-${{ env.CHECKSUM }}
       - name: Add changes to git
         id: commit-changes
         continue-on-error: true
         run: |
           git config --global user.email "actions@example.com"
           git config --global user.name "GitHub Actions"
-          git checkout -b flexport-api-upstream-changes
           git add -A
           git commit -m 'feat: update generated code
 

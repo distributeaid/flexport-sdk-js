@@ -1,6 +1,9 @@
 name: Test and Release
 
-on: push
+on:
+  push:
+    paths-ignore:
+      - .github/workflows/monitor-changes.yaml
 
 env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
