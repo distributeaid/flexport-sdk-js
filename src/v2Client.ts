@@ -95,38 +95,39 @@ export const v2Client = ({
 				if (Object.keys(query).length) {
 					args.query = query
 				}
-				return (fetchImplementation || fetch)(url, args).then(
-					async (res: any) => {
-						if (res.status >= 400) {
-							return res.text().then((text: string) => {
+				return (fetchImplementation ?? fetch)(url, args).then(async (res) => {
+					if (res.status >= 400) {
+						return res.text().then((text: string) => {
+							throw new Error(
+								`Encountered error ${res.status} when ${method}ing ${url}${
+									text && `: ${text}`
+								}!`,
+							)
+						})
+					}
+					if (
+						res.headers?.get('content-type')?.startsWith('application/json') ??
+						false
+					)
+						return res.json().then((res: ApiResponseObject<A>) => {
+							if (!res) throw new Error('Empty response received')
+							const { _object, version, error, data } = res
+							if (_object !== Type.Response)
 								throw new Error(
-									`Encountered error ${res.status} when ${method}ing ${url}${
-										text && `: ${text}`
-									}!`,
+									`Expected "${Type.Response}", received: "${_object}"!`,
 								)
-							})
-						}
-						if (res.headers.get('content-type').startsWith('application/json'))
-							return res.json().then((res: ApiResponseObject<A>) => {
-								if (!res) throw new Error('Empty response received')
-								const { _object, version, error, data } = res
-								if (_object !== Type.Response)
-									throw new Error(
-										`Expected "${Type.Response}", received: "${_object}"!`,
-									)
-								if (version !== 2) {
-									throw new Error(`Expected version 2, received: ${version}!`)
-								}
-								if (error) {
-									throw new Error(
-										`API returned an error: ${error.message} (${error.code})`,
-									)
-								}
-								return data
-							})
-						return res.text()
-					},
-				)
+							if (version !== 2) {
+								throw new Error(`Expected version 2, received: ${version}!`)
+							}
+							if (error) {
+								throw new Error(
+									`API returned an error: ${error.message} (${error.code})`,
+								)
+							}
+							return data
+						})
+					throw new Error(`API did not return JSON: ${await res.text()}`)
+				})
 			},
 			(err) => createError((err as Error).message),
 		)

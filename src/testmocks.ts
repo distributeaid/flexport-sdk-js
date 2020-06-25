@@ -20,9 +20,9 @@ export const mockHeaders = () => {
 
 export const emptyPageMock = () =>
 	jest.fn(async () =>
-		Promise.resolve({
+		Promise.resolve(({
 			status: 200,
 			headers: mockHeaders(),
 			json: async () => emptyPage,
-		}),
+		} as unknown) as Response),
 	)

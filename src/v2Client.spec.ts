@@ -93,7 +93,7 @@ describe('v2Client', () => {
 		})
 
 		const fetchMock = jest.fn(async () =>
-			Promise.resolve({
+			Promise.resolve(({
 				status: 200,
 				headers: mockHeaders(),
 				json: async () =>
@@ -111,7 +111,7 @@ describe('v2Client', () => {
 							)
 						).toString(),
 					),
-			}),
+			} as unknown) as Response),
 		)
 		const client = v2Client({
 			apiKey: 'some-api-key',
@@ -176,11 +176,11 @@ describe('v2Client', () => {
 	})
 	it('can handle invalid responses', async () => {
 		const fetchMock = jest.fn(async () =>
-			Promise.resolve({
+			Promise.resolve(({
 				status: 200,
 				headers: mockHeaders(),
 				json: async () => ({}),
-			}),
+			} as unknown) as Response),
 		)
 		const client = v2Client({
 			apiKey: 'some-api-key',
@@ -202,10 +202,10 @@ describe('v2Client', () => {
 	})
 	it('can handle not found', async () => {
 		const fetchMock = jest.fn(async () =>
-			Promise.resolve({
+			Promise.resolve(({
 				status: 404,
 				text: async () => 'NOT FOUND',
-			}),
+			} as unknown) as Response),
 		)
 		const client = v2Client({
 			apiKey: 'some-api-key',
