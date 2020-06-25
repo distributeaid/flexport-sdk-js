@@ -76,9 +76,16 @@ export const createPropertyDefinition = (
 		enums.push(...itemEnums)
 		t = ts.createArrayTypeNode(itemType)
 	} else {
-		let type = def.type as string
-		if (def.type === 'integer') type = 'number'
-		t = ts.createTypeReferenceNode(type, [])
+		if (def.type === 'integer') {
+			t = ts.createTypeReferenceNode('number', [])
+		} else if (def.type === 'object') {
+			t = ts.createTypeReferenceNode('Record', [
+				ts.createTypeReferenceNode('string', []),
+				ts.createTypeReferenceNode('any', []),
+			])
+		} else {
+			t = ts.createTypeReferenceNode(def.type as string, [])
+		}
 	}
 	return {
 		type: t,

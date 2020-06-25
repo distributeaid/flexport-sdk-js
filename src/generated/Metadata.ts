@@ -7,7 +7,7 @@
  * @example {"purchase_order":["12345"],"sku":["abc123"]}
  *
  */
-export type Metadata = object
+export type Metadata = Record<string, any>
 export type LiftedMetadata = Metadata
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.

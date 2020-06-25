@@ -38,9 +38,10 @@ export const linkPage = <A extends ApiObject>(
 	dir: 'next' | 'prev',
 	c?: ApiPageObject<A>,
 ) =>
-	c &&
+	c !== undefined &&
 	isLinkedPage(c) &&
-	((dir === 'prev' && c.prev) || (dir === 'next' && c.next))
+	((dir === 'prev' && c.prev !== undefined) ||
+		(dir === 'next' && c.next !== undefined))
 		? some({
 				link: dir === 'prev' ? c.prev : c.next,
 		  } as ResolvablePage)

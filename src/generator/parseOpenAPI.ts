@@ -5,8 +5,8 @@ import * as merge from 'deepmerge'
 const arrayMerge = (target: any[], source: any[], options: merge.Options) =>
 	source.map((v, k) =>
 		options.isMergeableObject?.(v) ?? false
-			? merge(target[k] || v, v, { arrayMerge })
-			: target[k] || v,
+			? merge(target[k] ?? v, v, { arrayMerge })
+			: target[k] ?? v,
 	)
 
 export const parseOpenAPI = async (
@@ -17,7 +17,11 @@ export const parseOpenAPI = async (
 	const corrections = yaml.safeLoad(
 		await fs.readFile(correctionsFilename, 'utf8'),
 	)
-	return merge(apiDefinition, corrections, {
-		arrayMerge,
-	})
+	return merge(
+		apiDefinition as Record<string, any>,
+		corrections as Record<string, any>,
+		{
+			arrayMerge,
+		},
+	)
 }

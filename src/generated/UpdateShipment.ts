@@ -8,7 +8,7 @@ export type UpdateShipment = {
 	 * JSON-schema: object
 	 * @example {"purchase_order":["12345"]}
 	 */
-	readonly metadata?: object
+	readonly metadata?: Record<string, any>
 }
 export type LiftedUpdateShipment = UpdateShipment
 /**

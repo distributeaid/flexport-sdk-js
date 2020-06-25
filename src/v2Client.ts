@@ -20,6 +20,7 @@ import { TypedApiObject } from './types/TypedApiObject'
 import { ApiPageObject } from './types/ApiPageObject'
 import { toPage } from './toPage'
 import { Type } from './generated'
+import { nullToUndefined } from './transformer'
 
 const { fetch } = fetchPonyfill()
 
@@ -60,7 +61,7 @@ export const v2Client = ({
 	endpoint?: string
 	fetchImplementation?: typeof fetch
 }): V2Client => {
-	const e = endpoint?.replace(/\/$/, '') || 'https://api.flexport.com'
+	const e = endpoint?.replace(/\/$/, '') ?? 'https://api.flexport.com'
 	const fetchClient: ClientImplementation = <A>({
 		path,
 		method,
@@ -75,7 +76,7 @@ export const v2Client = ({
 		)
 		const url = path.startsWith('http') ? path : `${e}${replacedPath}`
 		return TE.tryCatch<ErrorInfo, A>(
-			() => {
+			async () => {
 				const args = {
 					method,
 					headers: headers({ apiKey }),
@@ -110,7 +111,6 @@ export const v2Client = ({
 						false
 					)
 						return res.json().then((res: ApiResponseObject<A>) => {
-							if (!res) throw new Error('Empty response received')
 							const { _object, version, error, data } = res
 							if (_object !== Type.Response)
 								throw new Error(
@@ -124,7 +124,7 @@ export const v2Client = ({
 									`API returned an error: ${error.message} (${error.code})`,
 								)
 							}
-							return data
+							return nullToUndefined(data)
 						})
 					throw new Error(`API did not return JSON: ${await res.text()}`)
 				})

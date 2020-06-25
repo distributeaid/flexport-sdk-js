@@ -31,7 +31,7 @@ export type UpdateLocation = {
 	 * JSON-schema: object
 	 * @example {"color":["blue","green"]}
 	 */
-	readonly metadata?: object
+	readonly metadata?: Record<string, any>
 }
 export type LiftedUpdateLocation = UpdateLocation
 /**

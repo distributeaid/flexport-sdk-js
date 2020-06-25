@@ -8,7 +8,10 @@ export const parseDateFields = <
 	dateFields.reduce(
 		(d, f) => ({
 			...d,
-			[f]: apiResponseObject[f] ? new Date(apiResponseObject[f]) : undefined,
+			[f]:
+				apiResponseObject[f] !== undefined
+					? new Date(apiResponseObject[f])
+					: undefined,
 		}),
 		{} as { [key in F]: Date | undefined },
 	)

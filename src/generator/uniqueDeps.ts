@@ -3,7 +3,7 @@ export const uniqueDeps = (deps: (string | { [key: string]: string })[] = []) =>
 		if (typeof dep === 'object') {
 			return {
 				...(uniqueDeps as { [key: string]: string }),
-				...(dep as object),
+				...(dep as Record<string, any>),
 			}
 		} else {
 			return {

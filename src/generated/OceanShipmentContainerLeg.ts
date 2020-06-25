@@ -17,7 +17,7 @@ export type OceanShipmentContainerLeg = {
 	/**
 	 * JSON-schema: array
 	 */
-	readonly dates?: object[]
+	readonly dates?: Record<string, any>[]
 }
 export type LiftedOceanShipmentContainerLeg = TypedApiObject &
 	Omit<OceanShipmentContainerLeg, 'shipment_container' | 'leg'> & {
