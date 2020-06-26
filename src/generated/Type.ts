@@ -32,6 +32,7 @@ export enum Type {
 	CreditMemo = '/credit_memo',
 	CustomsEntry = '/customs_entry',
 	CustomsEntryCollectionRef = '/api/refs/collection',
+	CustomsInvolvedParty = '/customs/involved_party',
 	Document = '/document',
 	DocumentCollectionRef = '/api/refs/collection',
 	FileMetadata = '/file_metadata',

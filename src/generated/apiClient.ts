@@ -262,10 +262,21 @@ export type FlexportApiV2ClientInstance = {
 	 * Create and return a new commercial invoice. Special permissions are required to use this endpoint, please contact your integration team for more details.
 	 *
 	 * Returns:
-	 * - for status code 200: The created company entity
+	 * - for status code 200: The created commercial invoice
 	 * FIXME: Implement request body handling
 	 */
 	commercial_invoices_create: () => TaskEither<
+		ErrorInfo,
+		LiftedCommercialInvoice
+	>
+	/**
+	 * Update an existing commercial invoice. Special permissions are required to use this endpoint, please contact your integration team for more details.
+	 *
+	 * Returns:
+	 * - for status code 200: The updated commercial invoice
+	 * FIXME: Implement request body handling
+	 */
+	commercial_invoices_update: () => TaskEither<
 		ErrorInfo,
 		LiftedCommercialInvoice
 	>
@@ -980,6 +991,14 @@ export const flexportApiV2 = (
 			pipe(
 				apiClient<CommercialInvoice>({
 					method: 'POST',
+					path: '/commercial_invoices',
+				}),
+				map(liftCommercialInvoice),
+			),
+		commercial_invoices_update: () =>
+			pipe(
+				apiClient<CommercialInvoice>({
+					method: 'PATCH',
 					path: '/commercial_invoices',
 				}),
 				map(liftCommercialInvoice),
