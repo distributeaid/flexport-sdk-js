@@ -39,17 +39,28 @@ jobs:
           npx prettier --write src/**/*.ts
           npx tsc
         continue-on-error: true
-      - name: Calculate checksum for API docs
+      - name: Calculate branch name from API docs checksum
         run: |
           CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
-          echo "::set-env name=CHECKSUM::${CHECKSUM}"
+          echo "::set-env name=BRANCH::flexport-api-upstream-changes-${CHECKSUM}"
+      - name: check if PR is open already
+        id: check-pr
+        run: |
+          PR_BRANCH=`gh pr list 2>&1 | grep "Implement Flexport API upstream changes" | head -n 1 | awk '{ print $(NF) }'`
+          if [ "$PR_BRANCH" = "" ]
+          then
+            echo "No PR exists"
+          else
+            echo "PR exists"
+            echo "::set-env name=BRANCH::${PR_BRANCH}"
+          fi
       - name: create new branch
-        run: git checkout -b flexport-api-upstream-changes-${{ env.CHECKSUM }}
+        run: git checkout -b ${{ env.BRANCH }}
         id: create-branch
         continue-on-error: true
       - name: Check out branch
         if: steps.create-branch.outcome == 'failure'
-        run: git checkout flexport-api-upstream-changes-${{ env.CHECKSUM }}
+        run: git checkout ${{ env.BRANCH }}
       - name: Add changes to git
         id: commit-changes
         continue-on-error: true
