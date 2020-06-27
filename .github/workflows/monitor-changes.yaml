@@ -76,7 +76,9 @@ jobs:
       - name: Create PR
         if: env.PR == 'new'
         run: |
-          gh pr create -B saga -b "" -d -t "${{ env.PR_TITLE }}"
+          gh pr create -B saga -b 'This PR has been automatically generated
+          by pulling the latest Flexport API definition
+          and re-generating the client.' -d -t "${{ env.PR_TITLE }}"
       - name: Append PR
         if: env.PR == 'append'
         run: |
