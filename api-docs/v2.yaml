@@ -1137,6 +1137,46 @@ paths:
                         sku:
                           - abc123
                       created_at: '2019-04-01T18:44:34.098Z'
+  /carbon_calculation:
+    post:
+      operationId: carbon_calculation_create
+      summary: Return a new carbon calculation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCarbonCalculation'
+            example:
+              weight:
+                value: 40
+                unit: kg
+              transportation_mode: air
+              origin_coordinates:
+                latitude: 37.78
+                longitude: -12.41
+              destination_port: JFK
+      responses:
+        '200':
+          description: The new carbon calculation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarbonCalculation'
+              examples:
+                response:
+                  description: Success
+                  value:
+                    _object: /api/response
+                    self: 'https://api.flexport.com/carbon_calculation'
+                    version: 2
+                    data:
+                      _object: /carbon_calculation
+                      co2e_emissions:
+                        value: 0.13
+                        unit: t
+                        _object: /quantity/weight
+                    error: null
   /commercial_invoices:
     get:
       tags:
@@ -1295,7 +1335,95 @@ paths:
               $ref: '#/components/schemas/CreateCommercialInvoice'
       responses:
         '200':
-          description: The created company entity
+          description: The created commercial invoice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommercialInvoice'
+              examples:
+                response:
+                  summary: Success
+                  description: Success
+                  value:
+                    _object: /api/response
+                    self: 'https://api.flexport.com/commercial_invoices'
+                    version: 2
+                    data:
+                      _object: /commercial_invoice
+                      data:
+                        id: abcxyz-23456-def
+                        invoice_number: ABCDEFGHIJKLMNOP
+                        manufacturer_addresses:
+                          - _object: /address
+                            street_address: 1641 Settlers Lane
+                            street_address2: STE 2918
+                            city: Albany
+                            state: MN
+                            country: United States of America
+                            country_code: US
+                            zip: '56307'
+                            unlocode: US AL2
+                            timezone: America/Los_Angeles
+                            ref: id-3333
+                        total_value:
+                          _object: /money
+                          amount: '100'
+                          currency_code: USD
+                        total_unit_count: '12345'
+                        total_weight:
+                          _object: /quantity/weight
+                          value: 100
+                          unit: kg
+                        total_volume:
+                          _object: /quantity/volume
+                          value: 100
+                          unit: cbm
+                        line_items:
+                          - _object: /commercial_invoice_line_item
+                            price_per_unit:
+                              _object: /money
+                              amount: '12.34'
+                              currency_code: USD
+                            value:
+                              _object: /money
+                              amount: '12.34'
+                              currency_code: USD
+                            total_units: 10
+                            container_number: XYZ123
+                            purchase_order_number: 9876-ABC
+                            weight:
+                              _object: /quantity/weight
+                              value: '12.34'
+                              unit: kg
+                            volume:
+                              _object: /quantity/volume
+                              value: '12.34'
+                              unit: cbm
+                            product:
+                              _object: /api/refs/object
+                              ref_type: /product
+                              link: 'https://api.flexport.com/products/12345'
+                              id: 12345
+                        shipment:
+                          _object: /api/refs/object
+                          ref_type: /shipment
+                          link: 'https://api.flexport.com/shipments/123456'
+                          id: 123456
+                      error: null
+    patch:
+      tags:
+        - Commercial Invoices
+      operationId: commercial_invoices_update
+      summary: 'Update an existing commercial invoice. Special permissions are required to use this endpoint, please contact your integration team for more details.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCommercialInvoice'
+      responses:
+        '200':
+          description: The updated commercial invoice
           content:
             application/json:
               schema:
@@ -6673,6 +6801,15 @@ components:
         id:
           type: integer
           example: 123
+    CarbonCalculation:
+      type: object
+      properties:
+        _object:
+          type: string
+          description: Type of the object
+          example: /carbon_calculation
+        co2e_emissions:
+          $ref: '#/components/schemas/Weight'
     Cargo:
       type: object
       description: 'With cargo you have two options, detailed or simple. These are both expressed directly on the cargo object. For detailed cargo, `shipping_units` is required, and `weight` and `volume` is required in the `cargo` object or the `shipping_units` object. For simple cargo, `shipping_units` is required, but only one should be specified, and `weight` and `volume` are required in the `cargo` object.'
@@ -6763,29 +6900,34 @@ components:
           example: abcxyz-23456-def
         invoice_number:
           type: string
-          example: ABCDEFGHIJKLMNOP
-        manufacturer_addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/Address'
-        total_value:
-          $ref: '#/components/schemas/Money'
-        total_unit_count:
-          type: string
-          description: Total units on this commercial invoice.
-          example: '123.0'
-        total_weight:
-          $ref: '#/components/schemas/Weight'
-        total_volume:
-          $ref: '#/components/schemas/Volume'
+          description: 'Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens.'
+          example: INVOICE-04-05-2020
         line_items:
           type: array
           items:
             $ref: '#/components/schemas/CommercialInvoiceLineItem'
-        shipment:
-          $ref: '#/components/schemas/ShipmentRef'
+        involved_parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomsInvolvedParty'
+        manufacturer_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
         metadata:
           $ref: '#/components/schemas/Metadata'
+        shipment:
+          $ref: '#/components/schemas/ShipmentRef'
+        total_unit_count:
+          type: string
+          description: Total units on this commercial invoice.
+          example: '123.0'
+        total_value:
+          $ref: '#/components/schemas/Money'
+        total_volume:
+          $ref: '#/components/schemas/Volume'
+        total_weight:
+          $ref: '#/components/schemas/Weight'
     CommercialInvoiceCollectionRef:
       type: object
       properties:
@@ -7234,6 +7376,81 @@ components:
           type: integer
           description: Always required. Number of units to book
           example: 234
+    CreateCarbonCalculation:
+      type: object
+      required:
+        - transportation_mode
+      properties:
+        weight:
+          allOf:
+            - $ref: '#/components/schemas/Weight'
+          description: 'The exact weight being shipped. One of `weight`, `chargeable_weight`, or `teus` is required.'
+        chargeable_weight:
+          allOf:
+            - $ref: '#/components/schemas/Weight'
+          description: 'The heavier of volumetric and actual weight.  One of `weight`, `chargeable_weight`, or `teus` is required.'
+        distance:
+          allOf:
+            - $ref: '#/components/schemas/Length'
+          description: The total distance traveled by the shipment.  This can be used instead of origin/destination locations.
+        origin_coordinates:
+          allOf:
+            - $ref: '#/components/schemas/Coordinates'
+          description: 'The latitude and logitude of the origin.  One of `distance`, `origin_coordinates`, `origin_address`, or `origin_port` is required.'
+        origin_address:
+          allOf:
+            - $ref: '#/components/schemas/Address'
+          description: 'The physical address of the origin.  One of `distance`, `origin_coordinates`, `origin_address`, or `origin_port` is required.'
+        destination_coordinates:
+          allOf:
+            - $ref: '#/components/schemas/Coordinates'
+          description: 'The latitude and logitude of the destination.  One of `distance`, `destination_coordinates`, `destination_address`, or `destination_port` is required.'
+        destination_address:
+          allOf:
+            - $ref: '#/components/schemas/Address'
+          description: 'The physical address of the destination.  One of `distance`, `destination_coordinates`, `destination_address`, or `destination_port` is required.'
+        origin_port:
+          type: string
+          description: 'Port of origin, used if no more specific origin location is provided.'
+        destination_port:
+          type: string
+          description: 'Port of destination, used if no more specific destination location is provided.'
+        is_inland:
+          type: boolean
+          description: 'For `transportation_mode: ocean`, indicates if the calculation was inland or not.'
+        flight_type:
+          type: string
+          description: 'For Air shipments, the type of plane used. Defaults to "unknown".'
+          enum:
+            - freighter
+            - belly_freighter
+            - unknown
+          example: freighter
+        trucking_service_type:
+          type: string
+          description: 'For `transportation_mode: truck`, the type of service used.'
+          enum:
+            - ftl
+            - ltl
+            - drayage
+            - cartage
+            - last_mile
+            - airport_transfer
+            - air_cartage
+          example: drayage
+        teus:
+          type: string
+          description: 'The number of TEUs (Twenty-foot Equivalent Units) moved in the calculation. One of `weight`, `chargeable_weight`, or `teus` is required.'
+          example: '2'
+        transportation_mode:
+          type: string
+          description: 'The mode of transportation for calculation. One of `air`, `ocean`, `truck`, or `rail`. If `transportation_mode` is `truck` or `rail`, `country_code` in both `origin_address` and `destination_address` is required.'
+          enum:
+            - air
+            - ocean
+            - truck
+            - rail
+          example: ocean
     CreateCommercialInvoice:
       type: object
       required:
@@ -7252,7 +7469,7 @@ components:
           example: PO-123
         invoice_number:
           type: string
-          description: 'Invoice number. Can only contain letters, numbers, and hyphens.'
+          description: 'Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens. Uniqueness is based on the supplier Involved Party. There can be multiple commercial invoices with the same invoice_number only if they have different suppliers. '
           example: INVOICE-04-05-2020
         currency_code:
           type: string
@@ -7661,6 +7878,23 @@ components:
         link:
           type: string
           example: 'https://api.flexport.com/customs_entries?f.shipment.id=2983'
+    CustomsInvolvedParty:
+      type: object
+      properties:
+        _object:
+          type: string
+          description: Type of the object
+          example: /customs/involved_party
+        address:
+          $ref: '#/components/schemas/Address'
+        name:
+          type: string
+          description: The name of involved party.
+          example: The West Coast Company
+        type:
+          type: string
+          description: The type of involved party.
+          example: consignee
     Document:
       type: object
       properties:
@@ -8953,6 +9187,38 @@ components:
           example: 32
         container_legs:
           $ref: '#/components/schemas/ContainerLegCollectionRef'
+    UpdateCommercialInvoice:
+      type: object
+      properties:
+        invoice_number:
+          type: string
+          description: 'Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens. There can be multiple commercial invoices with the same invoice_number.'
+          example: INVOICE-04-05-2020
+        unique_invoice_number:
+          type: string
+          description: 'The unique invoice number or identifier for the commercial invoice. Must be globally unique. Can only contain letters, numbers, and hyphens. This may be the same as the invoice number.'
+          example: INVOICE-04-05-2020
+        currency_code:
+          type: string
+          description: The currency being used on the commercial invoice.
+          example: USD
+        is_related_parties:
+          type: boolean
+          description: Whether there was a related parties transaction as defined by CBP.
+          example: false
+        proration_amount:
+          $ref: '#/components/schemas/Money'
+        manufacturer_refs:
+          type: array
+          items:
+            type: string
+            description: Your custom string used to refer to a manufacturer location.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateCommercialInvoiceLineItem'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
     UpdateCompany:
       type: object
       properties:
@@ -9142,7 +9408,7 @@ components:
           example: '2019-04-16T18:05:10.964Z'
         type:
           type: string
-          example: '/shipment_leg#departed'
+          example: /shipment_leg#departed
         data:
           $ref: '#/components/schemas/ShipmentEventData'
     Weight:

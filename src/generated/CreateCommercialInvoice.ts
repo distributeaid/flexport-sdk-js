@@ -20,7 +20,7 @@ export type CreateCommercialInvoice = {
 	 */
 	readonly shipment_ref?: string
 	/**
-	 * Invoice number. Can only contain letters, numbers, and hyphens.
+	 * Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens. Uniqueness is based on the supplier Involved Party. There can be multiple commercial invoices with the same invoice_number only if they have different suppliers.
 	 *
 	 * JSON-schema: string
 	 * @example "INVOICE-04-05-2020"
