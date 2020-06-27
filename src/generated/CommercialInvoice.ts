@@ -2,13 +2,14 @@
  * Auto-generated file. Do not change.
  */
 import { Type } from './Type'
-import { Address } from './Address'
-import { Money } from './Money'
-import { Weight } from './Weight'
-import { Volume } from './Volume'
 import { CommercialInvoiceLineItem } from './CommercialInvoiceLineItem'
-import { ApiObjectRef } from '../types/ApiObjectRef'
+import { CustomsInvolvedParty } from './CustomsInvolvedParty'
+import { Address } from './Address'
 import { Metadata } from './Metadata'
+import { ApiObjectRef } from '../types/ApiObjectRef'
+import { Money } from './Money'
+import { Volume } from './Volume'
+import { Weight } from './Weight'
 import { TypedApiObject } from '../types/TypedApiObject'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
@@ -26,15 +27,26 @@ export type CommercialInvoice = {
 	 */
 	readonly id?: string
 	/**
+	 * Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens.
+	 *
 	 * JSON-schema: string
-	 * @example "ABCDEFGHIJKLMNOP"
+	 * @example "INVOICE-04-05-2020"
 	 */
 	readonly invoice_number?: string
 	/**
 	 * JSON-schema: array
 	 */
+	readonly line_items?: CommercialInvoiceLineItem[]
+	/**
+	 * JSON-schema: array
+	 */
+	readonly involved_parties?: CustomsInvolvedParty[]
+	/**
+	 * JSON-schema: array
+	 */
 	readonly manufacturer_addresses?: Address[]
-	readonly total_value?: Money
+	readonly metadata?: Metadata
+	readonly shipment?: ApiObjectRef
 	/**
 	 * Total units on this commercial invoice.
 	 *
@@ -42,14 +54,9 @@ export type CommercialInvoice = {
 	 * @example "123.0"
 	 */
 	readonly total_unit_count?: string
-	readonly total_weight?: Weight
+	readonly total_value?: Money
 	readonly total_volume?: Volume
-	/**
-	 * JSON-schema: array
-	 */
-	readonly line_items?: CommercialInvoiceLineItem[]
-	readonly shipment?: ApiObjectRef
-	readonly metadata?: Metadata
+	readonly total_weight?: Weight
 }
 export type LiftedCommercialInvoice = TypedApiObject &
 	Omit<CommercialInvoice, 'shipment'> & {
