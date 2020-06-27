@@ -20,6 +20,7 @@ export enum Type {
 	CommercialInvoice = '/commercial_invoice',
 	CommercialInvoiceCollectionRef = '/api/refs/collection',
 	CommercialInvoiceLineItem = '/commercial_invoice_line_item',
+	CommercialInvoiceRef = '/api/refs/object',
 	Company = '/network/company',
 	CompanyEntity = '/company_entity',
 	Contact = '/network/contact',

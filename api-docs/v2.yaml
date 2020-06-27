@@ -1139,6 +1139,8 @@ paths:
                       created_at: '2019-04-01T18:44:34.098Z'
   /carbon_calculation:
     post:
+      tags:
+        - Carbon Calculation
       operationId: carbon_calculation_create
       summary: Return a new carbon calculation
       requestBody:
@@ -6995,6 +6997,21 @@ components:
         updated_at:
           type: string
           example: '2020-01-01:28:03.265Z'
+    CommercialInvoiceRef:
+      type: object
+      properties:
+        _object:
+          type: string
+          example: /api/refs/object
+        ref_type:
+          type: string
+          example: /commercial_invoice
+        link:
+          type: string
+          example: 'https://api.flexport.com/commercial_invoices/123'
+        id:
+          type: integer
+          example: 123
     Company:
       type: object
       properties:
@@ -9192,11 +9209,7 @@ components:
       properties:
         invoice_number:
           type: string
-          description: 'Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens. There can be multiple commercial invoices with the same invoice_number.'
-          example: INVOICE-04-05-2020
-        unique_invoice_number:
-          type: string
-          description: 'The unique invoice number or identifier for the commercial invoice. Must be globally unique. Can only contain letters, numbers, and hyphens. This may be the same as the invoice number.'
+          description: 'Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens. Uniqueness is based on the supplier Involved Party. There can be multiple commercial invoices with the same invoice_number only if they have different suppliers. '
           example: INVOICE-04-05-2020
         currency_code:
           type: string
