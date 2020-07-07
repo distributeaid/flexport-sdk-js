@@ -1,7 +1,8 @@
 # JavaScript client SDK for Flexport's API v2 [![npm version](https://img.shields.io/npm/v/@distributeaid/flexport-sdk.svg)](https://www.npmjs.com/package/@distributeaid/flexport-sdk)
 
-![Build and Release](https://github.com/distributeaid/chat-ui/workflows/Build%20and%20Release/badge.svg?branch=saga)
+![Build and Release](https://github.com/distributeaid/flexport-sdk-js/workflows/Build%20and%20Release/badge.svg?branch=saga)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![Mergify Status](https://img.shields.io/endpoint.svg?url=https://dashboard.mergify.io/badges/distributeaid/flexport-sdk-js&style=flat)](https://mergify.io)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
