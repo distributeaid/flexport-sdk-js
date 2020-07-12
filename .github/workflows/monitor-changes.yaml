@@ -59,7 +59,7 @@ jobs:
         run: |
           CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
           echo "::set-env name=CHECKSUM::${CHECKSUM}"
-          git checkout -b ${CHECKSUM}
+          git checkout -b changes-${CHECKSUM}
       - name: Add changes to git
         id: commit-changes
         continue-on-error: true
