@@ -271,6 +271,8 @@ export type FlexportApiV2ClientInstance = {
 		['per']?: number
 		['f.shipment.id']?: string
 		['f.invoice_number']?: string
+		['f.involved_party_seller_id']?: string
+		['f.involved_party_seller_ref']?: string
 	}) => TaskEither<ErrorInfo, Page<LiftedCommercialInvoice>>
 	/**
 	 * Create and return a new commercial invoice. Special permissions are required to use this endpoint, please contact your integration team for more details.
@@ -413,6 +415,8 @@ export type FlexportApiV2ClientInstance = {
 		['f.name']?: string
 		['f.issued_at.gt']?: string
 		['f.issued_at.lt']?: string
+		['f.last_updated_at.gt']?: string
+		['f.last_updated_at.lt']?: string
 		['f.client_id']?: number
 		['f.shipment_id']?: number
 	}) => TaskEither<ErrorInfo, Page<LiftedInvoice>>
@@ -989,6 +993,8 @@ export const flexportApiV2 = (
 			['per']?: number
 			['f.shipment.id']?: string
 			['f.invoice_number']?: string
+			['f.involved_party_seller_id']?: string
+			['f.involved_party_seller_ref']?: string
 		}) =>
 			pipe(
 				apiClient<ApiPageObject<CommercialInvoice>>({
@@ -1000,6 +1006,10 @@ export const flexportApiV2 = (
 							['per']: params?.['per'],
 							['f.shipment.id']: params?.['f.shipment.id'],
 							['f.invoice_number']: params?.['f.invoice_number'],
+							['f.involved_party_seller_id']:
+								params?.['f.involved_party_seller_id'],
+							['f.involved_party_seller_ref']:
+								params?.['f.involved_party_seller_ref'],
 						},
 					},
 				}),
@@ -1165,6 +1175,8 @@ export const flexportApiV2 = (
 			['f.name']?: string
 			['f.issued_at.gt']?: string
 			['f.issued_at.lt']?: string
+			['f.last_updated_at.gt']?: string
+			['f.last_updated_at.lt']?: string
 			['f.client_id']?: number
 			['f.shipment_id']?: number
 		}) =>
@@ -1187,6 +1199,8 @@ export const flexportApiV2 = (
 							['f.name']: params?.['f.name'],
 							['f.issued_at.gt']: params?.['f.issued_at.gt'],
 							['f.issued_at.lt']: params?.['f.issued_at.lt'],
+							['f.last_updated_at.gt']: params?.['f.last_updated_at.gt'],
+							['f.last_updated_at.lt']: params?.['f.last_updated_at.lt'],
 							['f.client_id']: params?.['f.client_id'],
 							['f.shipment_id']: params?.['f.shipment_id'],
 						},

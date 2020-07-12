@@ -3,13 +3,18 @@
  */
 import { Type } from './Type'
 import { Address } from './Address'
+import { ApiObjectRef } from '../types/ApiObjectRef'
 import { TypedApiObject } from '../types/TypedApiObject'
+import { Option } from 'fp-ts/lib/Option'
+import { ResolvableObject } from '../types/Link'
+import { linkObject } from '../links'
 export type CustomsInvolvedParty = {
 	/**
 	 * Type of the object
 	 */
 	readonly _object: Type.CustomsInvolvedParty
 	readonly address?: Address
+	readonly company_entity?: ApiObjectRef
 	/**
 	 * The name of involved party.
 	 *
@@ -25,12 +30,19 @@ export type CustomsInvolvedParty = {
 	 */
 	readonly type?: string
 }
-export type LiftedCustomsInvolvedParty = TypedApiObject & CustomsInvolvedParty
+export type LiftedCustomsInvolvedParty = TypedApiObject &
+	Omit<CustomsInvolvedParty, 'company_entity'> & {
+		readonly company_entity: Option<ResolvableObject>
+	}
 /**
  * Lifts an object return from a Flexport API responses into the SDK domain by augmenting them with higher level properties.
  */
 export const liftCustomsInvolvedParty = (
 	original: CustomsInvolvedParty,
 ): LiftedCustomsInvolvedParty => {
-	return original
+	const { company_entity, ...rest } = original
+	return {
+		...rest,
+		company_entity: linkObject(company_entity),
+	}
 }

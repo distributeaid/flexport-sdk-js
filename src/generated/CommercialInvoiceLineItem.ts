@@ -6,6 +6,7 @@ import { Money } from './Money'
 import { CommercialInvoiceLineItemContainerNumber } from './CommercialInvoiceLineItemContainerNumber'
 import { Weight } from './Weight'
 import { Volume } from './Volume'
+import { Address } from './Address'
 import { ProductRef } from './ProductRef'
 import { Metadata } from './Metadata'
 import { TypedApiObject } from '../types/TypedApiObject'
@@ -22,6 +23,7 @@ export type CommercialInvoiceLineItem = {
 	readonly price_per_unit?: Money
 	readonly first_sale_value?: Money
 	readonly value?: Money
+	readonly net_value?: Money
 	/**
 	 * JSON-schema: integer
 	 * @example 10
@@ -33,8 +35,28 @@ export type CommercialInvoiceLineItem = {
 	 * @example "9876-ABC"
 	 */
 	readonly purchase_order_number?: string
+	/**
+	 * Weight including any associated packaging (padding, foam, etc).
+	 *
+	 */
 	readonly weight?: Weight
 	readonly volume?: Volume
+	/**
+	 * Weight excluding packaging.
+	 *
+	 */
+	readonly net_weight?: Weight
+	/**
+	 * Weight excluding packaging, tags, labels, instruction manuals, etc.
+	 *
+	 */
+	readonly net_net_weight?: Weight
+	readonly manufacturer_address?: Address
+	/**
+	 * JSON-schema: string
+	 * @example "Company Name"
+	 */
+	readonly manufacturer_name?: string
 	readonly product?: ProductRef
 	readonly metadata?: Metadata
 }

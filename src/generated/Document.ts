@@ -20,11 +20,21 @@ export type Document = {
 	 */
 	readonly id?: string
 	/**
+	 * JSON-schema: string
+	 */
+	readonly file_name?: string
+	/**
 	 * Type of the document.
 	 *
 	 * JSON-schema: string (string)
 	 */
 	readonly document_type?: string
+	/**
+	 * A short message or description about the document
+	 *
+	 * JSON-schema: string
+	 */
+	readonly memo?: string
 	/**
 	 * The link that can be used to download the file.
 	 *
