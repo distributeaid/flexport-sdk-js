@@ -4,6 +4,7 @@ import { TypesById } from './knowTypes'
 export type Item = {
 	$ref?: string
 	oneOf?: Item[]
+	allOf?: Item[]
 	type?: 'string' | 'integer' | 'boolean' | 'array' | 'object'
 	enum?: string[]
 	description?: string
@@ -66,6 +67,13 @@ export const createPropertyDefinition = (
 		deps.push(...defs.map(({ deps }) => deps).flat())
 		enums.push(...defs.map(({ enums }) => enums).flat())
 		t = ts.createUnionTypeNode(defs.map(({ type }) => type))
+	} else if (def.allOf !== undefined) {
+		const defs = def.allOf.map((t, k) =>
+			createPropertyDefinition(t, schemas, `${name}Types${k}`),
+		)
+		deps.push(...defs.map(({ deps }) => deps).flat())
+		enums.push(...defs.map(({ enums }) => enums).flat())
+		t = ts.createIntersectionTypeNode(defs.map(({ type }) => type))
 	} else if (def.type === 'array') {
 		const {
 			type: itemType,
