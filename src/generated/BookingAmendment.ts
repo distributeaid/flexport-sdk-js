@@ -1,12 +1,12 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { ContainerCounts } from './ContainerCounts'
 import { Address } from './Address'
-import { Place } from './Place'
 import { Cargo } from './Cargo'
+import { ContainerCounts } from './ContainerCounts'
 import { Metadata } from './Metadata'
+import { Place } from './Place'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type BookingAmendment = {
 	/**

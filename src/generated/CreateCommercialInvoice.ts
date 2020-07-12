@@ -1,9 +1,9 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Money } from './Money'
 import { CreateCommercialInvoiceLineItem } from './CreateCommercialInvoiceLineItem'
 import { Metadata } from './Metadata'
+import { Money } from './Money'
 export type CreateCommercialInvoice = {
 	/**
 	 * Flexport's unique identifier for the shipment. Either shipment_id or shipment_ref is required.

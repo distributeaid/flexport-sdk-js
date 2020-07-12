@@ -1,8 +1,8 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { HsCode } from './HsCode'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type BookingHsCode = {
 	/**

@@ -1,17 +1,17 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Company } from './Company'
-import { TransportationMode } from './TransportationMode'
-import { Place } from './Place'
 import { Address } from './Address'
-import { ApiCollectionRef } from '../types/ApiCollectionRef'
+import { Company } from './Company'
 import { Metadata } from './Metadata'
-import { TypedApiObject } from '../types/TypedApiObject'
+import { Place } from './Place'
+import { TransportationMode } from './TransportationMode'
+import { Type } from './Type'
+import { ApiCollectionRef } from '../types/ApiCollectionRef'
+import { linkCollection } from '../links'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableCollection } from '../types/Link'
-import { linkCollection } from '../links'
+import { TypedApiObject } from '../types/TypedApiObject'
 export enum PurchaseOrderStatusTypes {
 	OPEN = 'open',
 	CLOSED = 'closed',

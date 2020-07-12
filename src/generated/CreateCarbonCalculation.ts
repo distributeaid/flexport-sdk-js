@@ -1,10 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Weight } from './Weight'
-import { Length } from './Length'
-import { Coordinates } from './Coordinates'
 import { Address } from './Address'
+import { Coordinates } from './Coordinates'
+import { Length } from './Length'
+import { Weight } from './Weight'
 export enum CreateCarbonCalculationFlightTypeTypes {
 	FREIGHTER = 'freighter',
 	BELLY_FREIGHTER = 'belly_freighter',

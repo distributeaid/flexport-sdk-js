@@ -3,10 +3,10 @@
  */
 import { Type } from './Type'
 import { ApiCollectionRef } from '../types/ApiCollectionRef'
-import { TypedApiObject } from '../types/TypedApiObject'
+import { linkCollection } from '../links'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableCollection } from '../types/Link'
-import { linkCollection } from '../links'
+import { TypedApiObject } from '../types/TypedApiObject'
 export type OceanShipmentLeg = {
 	readonly _object: Type.OceanShipmentLeg
 	/**

@@ -1,10 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { CreateOceanBooking } from './CreateOceanBooking'
-import { CreateAirBooking } from './CreateAirBooking'
-import { CreateTruckingBooking } from './CreateTruckingBooking'
 import { Cargo } from './Cargo'
+import { CreateAirBooking } from './CreateAirBooking'
+import { CreateOceanBooking } from './CreateOceanBooking'
+import { CreateTruckingBooking } from './CreateTruckingBooking'
 import { Metadata } from './Metadata'
 export type CreateBooking = {
 	/**

@@ -1,8 +1,8 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { Address } from './Address'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 /**
  * Name and address of a specific terminal within a port or airport.  Possibly null

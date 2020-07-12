@@ -1,9 +1,9 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { Place } from './Place'
 import { Terminal } from './Terminal'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type ShipmentNode = {
 	/**

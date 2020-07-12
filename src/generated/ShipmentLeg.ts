@@ -1,19 +1,19 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { ApiObjectRef } from '../types/ApiObjectRef'
 import { AdditionalDates } from './AdditionalDates'
-import { ShipmentNode } from './ShipmentNode'
-import { TransportationMode } from './TransportationMode'
 import { AirShipmentLeg } from './AirShipmentLeg'
 import { OceanShipmentLeg } from './OceanShipmentLeg'
-import { TruckingShipmentLeg } from './TruckingShipmentLeg'
 import { RailShipmentLeg } from './RailShipmentLeg'
-import { TypedApiObject } from '../types/TypedApiObject'
+import { ShipmentNode } from './ShipmentNode'
+import { TransportationMode } from './TransportationMode'
+import { TruckingShipmentLeg } from './TruckingShipmentLeg'
+import { Type } from './Type'
+import { ApiObjectRef } from '../types/ApiObjectRef'
+import { linkObject } from '../links'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
+import { TypedApiObject } from '../types/TypedApiObject'
 export type ShipmentLeg = {
 	/**
 	 * Type of the object

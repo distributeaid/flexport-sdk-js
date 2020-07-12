@@ -1,12 +1,12 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Shipment } from './Shipment'
-import { ShipmentLeg } from './ShipmentLeg'
 import { OceanShipmentContainerLeg } from './OceanShipmentContainerLeg'
-import { ShipmentNode } from './ShipmentNode'
+import { Shipment } from './Shipment'
 import { ShipmentContainer } from './ShipmentContainer'
+import { ShipmentLeg } from './ShipmentLeg'
+import { ShipmentNode } from './ShipmentNode'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type ShipmentEventData = {
 	/**

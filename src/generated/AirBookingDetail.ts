@@ -1,9 +1,9 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Place } from './Place'
 import { BookingHsCode } from './BookingHsCode'
+import { Place } from './Place'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export enum AirBookingDetailIncotermTypes {
 	EXW = 'EXW',

@@ -2,8 +2,8 @@
  * Auto-generated file. Do not change.
  */
 import { Type } from './Type'
-import { Weight } from './Weight'
 import { Volume } from './Volume'
+import { Weight } from './Weight'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type AirShipmentDetail = {
 	/**

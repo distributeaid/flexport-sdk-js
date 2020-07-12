@@ -1,10 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { ProductProperty } from './ProductProperty'
 import { HsCode } from './HsCode'
 import { ProductClassification } from './ProductClassification'
+import { ProductProperty } from './ProductProperty'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type Product = {
 	/**

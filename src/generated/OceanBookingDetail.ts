@@ -1,10 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
+import { BookingHsCode } from './BookingHsCode'
 import { ContainerCounts } from './ContainerCounts'
 import { Place } from './Place'
-import { BookingHsCode } from './BookingHsCode'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export enum OceanBookingDetailIncotermTypes {
 	EXW = 'EXW',

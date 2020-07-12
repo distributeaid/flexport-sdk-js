@@ -1,8 +1,8 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { ContainerCounts } from './ContainerCounts'
 import { Cargo } from './Cargo'
+import { ContainerCounts } from './ContainerCounts'
 import { Metadata } from './Metadata'
 export type CreateBookingAmendment = {
 	/**

@@ -1,17 +1,17 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { Metadata } from './Metadata'
-import { ApiObjectRef } from '../types/ApiObjectRef'
-import { ApiCollectionRef } from '../types/ApiCollectionRef'
 import { ShipmentItem } from './ShipmentItem'
-import { TypedApiObject } from '../types/TypedApiObject'
-import { Option } from 'fp-ts/lib/Option'
-import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
-import { ResolvableCollection } from '../types/Link'
+import { Type } from './Type'
+import { ApiCollectionRef } from '../types/ApiCollectionRef'
+import { ApiObjectRef } from '../types/ApiObjectRef'
 import { linkCollection } from '../links'
+import { linkObject } from '../links'
+import { Option } from 'fp-ts/lib/Option'
+import { ResolvableCollection } from '../types/Link'
+import { ResolvableObject } from '../types/Link'
+import { TypedApiObject } from '../types/TypedApiObject'
 export enum ShipmentContainerContainerTypeTypes {
 	DRY = 'dry',
 	FLAT_RACK = 'flat_rack',

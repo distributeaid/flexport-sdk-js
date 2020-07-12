@@ -3,10 +3,10 @@
  */
 import { Type } from './Type'
 import { ApiObjectRef } from '../types/ApiObjectRef'
-import { TypedApiObject } from '../types/TypedApiObject'
+import { linkObject } from '../links'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
+import { TypedApiObject } from '../types/TypedApiObject'
 export type BookingLineItem = {
 	/**
 	 * Type of the object

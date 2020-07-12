@@ -1,13 +1,13 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { Address } from './Address'
 import { Airport } from './Airport'
+import { Manufacturer } from './Manufacturer'
 import { Railport } from './Railport'
 import { Roadport } from './Roadport'
 import { Seaport } from './Seaport'
-import { Manufacturer } from './Manufacturer'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type Place = {
 	/**
