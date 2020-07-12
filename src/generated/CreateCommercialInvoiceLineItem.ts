@@ -1,12 +1,12 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { CreateQuantity } from './CreateQuantity'
-import { Money } from './Money'
-import { Weight } from './Weight'
-import { Volume } from './Volume'
 import { Metadata } from './Metadata'
+import { Money } from './Money'
+import { Type } from './Type'
+import { Volume } from './Volume'
+import { Weight } from './Weight'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type CreateCommercialInvoiceLineItem = {
 	/**

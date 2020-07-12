@@ -1,10 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
+import { Length } from './Length'
 import { Type } from './Type'
 import { Volume } from './Volume'
 import { Weight } from './Weight'
-import { Length } from './Length'
 import { TypedApiObject } from '../types/TypedApiObject'
 /**
  * For detailed cargo, `shipping_units` is required. For simple cargo, `shipping_units` is required, but only one should be specified.

@@ -1,11 +1,11 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Metadata } from './Metadata'
 import { CompanyEntity } from './CompanyEntity'
-import { Location } from './Location'
 import { Contact } from './Contact'
+import { Location } from './Location'
+import { Metadata } from './Metadata'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type Company = {
 	/**

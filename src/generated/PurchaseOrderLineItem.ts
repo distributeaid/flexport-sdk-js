@@ -1,22 +1,22 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { ApiObjectRef } from '../types/ApiObjectRef'
-import { Product } from './Product'
-import { Money } from './Money'
-import { ApiCollectionRef } from '../types/ApiCollectionRef'
-import { TransportationMode } from './TransportationMode'
-import { Place } from './Place'
 import { Address } from './Address'
 import { HsCode } from './HsCode'
 import { Metadata } from './Metadata'
-import { TypedApiObject } from '../types/TypedApiObject'
-import { Option } from 'fp-ts/lib/Option'
-import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
-import { ResolvableCollection } from '../types/Link'
+import { Money } from './Money'
+import { Place } from './Place'
+import { Product } from './Product'
+import { TransportationMode } from './TransportationMode'
+import { Type } from './Type'
+import { ApiCollectionRef } from '../types/ApiCollectionRef'
+import { ApiObjectRef } from '../types/ApiObjectRef'
 import { linkCollection } from '../links'
+import { linkObject } from '../links'
+import { Option } from 'fp-ts/lib/Option'
+import { ResolvableCollection } from '../types/Link'
+import { ResolvableObject } from '../types/Link'
+import { TypedApiObject } from '../types/TypedApiObject'
 export enum PurchaseOrderLineItemIncotermTypes {
 	EXW = 'EXW',
 	FOB = 'FOB',

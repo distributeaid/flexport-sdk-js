@@ -1,16 +1,16 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Money } from './Money'
 import { CompanyEntity } from './CompanyEntity'
-import { InvoiceItem } from './InvoiceItem'
 import { CreditMemo } from './CreditMemo'
+import { InvoiceItem } from './InvoiceItem'
+import { Money } from './Money'
+import { Type } from './Type'
 import { ApiObjectRef } from '../types/ApiObjectRef'
-import { TypedApiObject } from '../types/TypedApiObject'
+import { linkObject } from '../links'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
+import { TypedApiObject } from '../types/TypedApiObject'
 export enum InvoiceStatusTypes {
 	OUTSTANDING = 'outstanding',
 	PAST_DUE = 'past_due',

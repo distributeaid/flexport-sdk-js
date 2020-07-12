@@ -1,10 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
+import { ShippingUnit } from './ShippingUnit'
 import { Type } from './Type'
 import { Volume } from './Volume'
 import { Weight } from './Weight'
-import { ShippingUnit } from './ShippingUnit'
 import { TypedApiObject } from '../types/TypedApiObject'
 export enum CargoLithiumBatteriesPackingTypesTypes {
 	PACKED_LOOSE = 'packed_loose',

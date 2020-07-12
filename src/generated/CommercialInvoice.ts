@@ -1,19 +1,19 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
+import { Address } from './Address'
 import { CommercialInvoiceLineItem } from './CommercialInvoiceLineItem'
 import { CustomsInvolvedParty } from './CustomsInvolvedParty'
-import { Address } from './Address'
 import { Metadata } from './Metadata'
-import { ApiObjectRef } from '../types/ApiObjectRef'
 import { Money } from './Money'
+import { Type } from './Type'
 import { Volume } from './Volume'
 import { Weight } from './Weight'
-import { TypedApiObject } from '../types/TypedApiObject'
+import { ApiObjectRef } from '../types/ApiObjectRef'
+import { linkObject } from '../links'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
+import { TypedApiObject } from '../types/TypedApiObject'
 export type CommercialInvoice = {
 	/**
 	 * Type of the object. Always /commercial_invoice for this object.

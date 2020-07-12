@@ -1,23 +1,23 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { ApiObjectRef } from '../types/ApiObjectRef'
-import { CompanyEntity } from './CompanyEntity'
-import { TransportationMode } from './TransportationMode'
-import { OceanBookingDetail } from './OceanBookingDetail'
-import { AirBookingDetail } from './AirBookingDetail'
-import { TruckingBookingDetail } from './TruckingBookingDetail'
 import { Address } from './Address'
+import { AirBookingDetail } from './AirBookingDetail'
 import { Cargo } from './Cargo'
-import { ApiCollectionRef } from '../types/ApiCollectionRef'
+import { CompanyEntity } from './CompanyEntity'
 import { Metadata } from './Metadata'
-import { TypedApiObject } from '../types/TypedApiObject'
-import { Option } from 'fp-ts/lib/Option'
-import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
-import { ResolvableCollection } from '../types/Link'
+import { OceanBookingDetail } from './OceanBookingDetail'
+import { TransportationMode } from './TransportationMode'
+import { TruckingBookingDetail } from './TruckingBookingDetail'
+import { Type } from './Type'
+import { ApiCollectionRef } from '../types/ApiCollectionRef'
+import { ApiObjectRef } from '../types/ApiObjectRef'
 import { linkCollection } from '../links'
+import { linkObject } from '../links'
+import { Option } from 'fp-ts/lib/Option'
+import { ResolvableCollection } from '../types/Link'
+import { ResolvableObject } from '../types/Link'
+import { TypedApiObject } from '../types/TypedApiObject'
 export enum BookingStatusTypes {
 	ARCHIVED = 'archived',
 	DRAFT = 'draft',

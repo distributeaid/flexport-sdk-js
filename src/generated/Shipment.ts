@@ -1,25 +1,25 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Metadata } from './Metadata'
-import { Type } from './Type'
-import { TransportationMode } from './TransportationMode'
-import { FreightType } from './FreightType'
-import { Weight } from './Weight'
-import { Volume } from './Volume'
-import { ShipmentStatus } from './ShipmentStatus'
-import { OceanShipmentDetail } from './OceanShipmentDetail'
 import { AirShipmentDetail } from './AirShipmentDetail'
 import { CompanyEntity } from './CompanyEntity'
+import { FreightType } from './FreightType'
+import { Metadata } from './Metadata'
+import { OceanShipmentDetail } from './OceanShipmentDetail'
 import { ShipmentItem } from './ShipmentItem'
+import { ShipmentStatus } from './ShipmentStatus'
+import { TransportationMode } from './TransportationMode'
+import { Type } from './Type'
+import { Volume } from './Volume'
+import { Weight } from './Weight'
 import { ApiCollectionRef } from '../types/ApiCollectionRef'
 import { ApiObjectRef } from '../types/ApiObjectRef'
-import { TypedApiObject } from '../types/TypedApiObject'
-import { Option } from 'fp-ts/lib/Option'
-import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
-import { ResolvableCollection } from '../types/Link'
 import { linkCollection } from '../links'
+import { linkObject } from '../links'
+import { Option } from 'fp-ts/lib/Option'
+import { ResolvableCollection } from '../types/Link'
+import { ResolvableObject } from '../types/Link'
+import { TypedApiObject } from '../types/TypedApiObject'
 export enum ShipmentIncotermTypes {
 	EXW = 'EXW',
 	FOB = 'FOB',

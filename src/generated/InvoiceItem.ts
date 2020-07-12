@@ -1,10 +1,10 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Money } from './Money'
-import { InvoiceRate } from './InvoiceRate'
 import { InvoiceQuantity } from './InvoiceQuantity'
+import { InvoiceRate } from './InvoiceRate'
+import { Money } from './Money'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export enum InvoiceItemCategoryTypes {
 	FREIGHT = 'freight',

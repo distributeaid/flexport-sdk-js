@@ -1,9 +1,9 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Location } from './Location'
 import { Company } from './Company'
+import { Location } from './Location'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type Contact = {
 	/**

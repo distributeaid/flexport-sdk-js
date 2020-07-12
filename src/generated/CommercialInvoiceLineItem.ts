@@ -1,13 +1,13 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Money } from './Money'
 import { CommercialInvoiceLineItemContainerNumber } from './CommercialInvoiceLineItemContainerNumber'
-import { Weight } from './Weight'
-import { Volume } from './Volume'
-import { ProductRef } from './ProductRef'
 import { Metadata } from './Metadata'
+import { Money } from './Money'
+import { ProductRef } from './ProductRef'
+import { Type } from './Type'
+import { Volume } from './Volume'
+import { Weight } from './Weight'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type CommercialInvoiceLineItem = {
 	/**

@@ -1,13 +1,13 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { FileMetadata } from './FileMetadata'
+import { Type } from './Type'
 import { ApiObjectRef } from '../types/ApiObjectRef'
-import { TypedApiObject } from '../types/TypedApiObject'
+import { linkObject } from '../links'
 import { Option } from 'fp-ts/lib/Option'
 import { ResolvableObject } from '../types/Link'
-import { linkObject } from '../links'
+import { TypedApiObject } from '../types/TypedApiObject'
 export type Document = {
 	/**
 	 * Type of the object. Always /document for this object.

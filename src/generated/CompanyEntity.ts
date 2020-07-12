@@ -1,8 +1,8 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
 import { Address } from './Address'
+import { Type } from './Type'
 import { VatNumber } from './VatNumber'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type CompanyEntity = {

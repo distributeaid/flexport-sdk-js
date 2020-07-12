@@ -1,8 +1,8 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { WriteProductProperty } from './WriteProductProperty'
 import { WriteProductClassification } from './WriteProductClassification'
+import { WriteProductProperty } from './WriteProductProperty'
 import { WriteProductSupplier } from './WriteProductSupplier'
 export type CreateProduct = {
 	/**

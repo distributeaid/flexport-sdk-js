@@ -1,11 +1,11 @@
 /**
  * Auto-generated file. Do not change.
  */
-import { Type } from './Type'
-import { Metadata } from './Metadata'
 import { Address } from './Address'
 import { Company } from './Company'
 import { Contact } from './Contact'
+import { Metadata } from './Metadata'
+import { Type } from './Type'
 import { TypedApiObject } from '../types/TypedApiObject'
 export type Location = {
 	/**
