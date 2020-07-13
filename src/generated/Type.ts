@@ -23,6 +23,7 @@ export enum Type {
 	CommercialInvoiceRef = '/api/refs/object',
 	Company = '/network/company',
 	CompanyEntity = '/company_entity',
+	CompanyEntityRef = '/api/refs/object',
 	Contact = '/network/contact',
 	ContainerCollectionRef = '/api/refs/collection',
 	ContainerCounts = '/container_counts',
