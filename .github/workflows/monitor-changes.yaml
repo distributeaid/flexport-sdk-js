@@ -47,7 +47,7 @@ jobs:
           fi
       - name: Download API definition
         run: |
-          curl https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
+          curl -f https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
           npx prettier --write api-docs/v2.yaml
       - name: Update client
         run: |
