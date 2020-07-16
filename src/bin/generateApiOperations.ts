@@ -15,6 +15,8 @@ import {
 } from '../generator/apiClientFactories'
 import { uniqueDeps } from '../generator/uniqueDeps'
 
+const API_CLIENT_TYPE = 'FlexportApiV2ClientInstance'
+
 parseOpenAPI(
 	path.join(process.cwd(), 'api-docs', 'v2.yaml'),
 	path.join(process.cwd(), 'api-docs', 'corrections.yaml'),
@@ -58,7 +60,7 @@ parseOpenAPI(
 		const clientInstanceType = ts.createTypeAliasDeclaration(
 			undefined,
 			[ts.createToken(ts.SyntaxKind.ExportKeyword)],
-			'FlexportApiV2ClientInstance',
+			API_CLIENT_TYPE,
 			undefined,
 			ts.createTypeLiteralNode(
 				Object.entries(operations).map(([operationId, def]) => {
@@ -114,7 +116,7 @@ parseOpenAPI(
 									ts.createTypeReferenceNode('ClientImplementation', []),
 								),
 							],
-							ts.createTypeReferenceNode('FlexportApiV2ClientInstance', []),
+							ts.createTypeReferenceNode(API_CLIENT_TYPE, []),
 							undefined,
 							ts.createBlock(
 								[
@@ -125,7 +127,12 @@ parseOpenAPI(
 													method,
 													deps: methodDeps,
 													enums: methodEnums,
-												} = createOperationCall(f.components.schemas, def)
+												} = createOperationCall(
+													API_CLIENT_TYPE,
+													operationId,
+													f.components.schemas,
+													def,
+												)
 												const a = ts.createPropertyAssignment(
 													operationId,
 													method,

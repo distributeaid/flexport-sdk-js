@@ -46,7 +46,9 @@ jobs:
             echo "::set-env name=PR::append"
           fi
       - name: Download API definition
-        run: curl https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
+        run: |
+          curl -f https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
+          npx prettier --write api-docs/v2.yaml
       - name: Update client
         run: |
           node dist/bin/generateTypes.js

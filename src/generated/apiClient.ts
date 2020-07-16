@@ -868,13 +868,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftBookingAmendment),
 			),
-		booking_line_item_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['sort']?: BookingLineItemIndexSortTypes
-			['direction']?: BookingLineItemIndexDirectionTypes
-			['f.purchase_order.id']?: number
-		}) =>
+		booking_line_item_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['booking_line_item_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<BookingLineItem>>({
 					method: 'GET',
@@ -901,7 +899,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftBookingLineItem),
 			),
-		booking_line_item_show: (params: { ['id']: number }) =>
+		booking_line_item_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['booking_line_item_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<BookingLineItem>({
 					method: 'GET',
@@ -910,27 +912,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftBookingLineItem),
 			),
-		bookings_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['sort']?: BookingsIndexSortTypes
-			['direction']?: BookingsIndexDirectionTypes
-			['f.status']?: BookingsIndexStatusTypes
-			['f.shipment.id']?: number
-			['f.consignee_entity_ref']?: string
-			['f.shipper_entity_ref']?: string
-			['f.cargo_ready_date']?: string
-			['f.cargo_ready_date.gt']?: string
-			['f.cargo_ready_date.gte']?: string
-			['f.cargo_ready_date.lt']?: string
-			['f.cargo_ready_date.lte']?: string
-			['f.created_at']?: string
-			['f.created_at.gt']?: string
-			['f.created_at.gte']?: string
-			['f.created_at.lt']?: string
-			['f.created_at.lte']?: string
-			['f.metadata.YOUR_METADATA_KEY']?: string
-		}) =>
+		bookings_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['bookings_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Booking>>({
 					method: 'GET',
@@ -967,7 +951,9 @@ export const flexportApiV2 = (
 				apiClient<Booking>({ method: 'POST', path: '/bookings' }),
 				map(liftBooking),
 			),
-		booking_show: (params: { ['id']: number }) =>
+		booking_show: (
+			params: Parameters<FlexportApiV2ClientInstance['booking_show']>[0],
+		) =>
 			pipe(
 				apiClient<Booking>({
 					method: 'GET',
@@ -984,12 +970,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCarbonCalculation),
 			),
-		commercial_invoices_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.shipment.id']?: string
-			['f.invoice_number']?: string
-		}) =>
+		commercial_invoices_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['commercial_invoices_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<CommercialInvoice>>({
 					method: 'GET',
@@ -1025,7 +1010,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCommercialInvoice),
 			),
-		commercial_invoices_show: (params: { ['id']: number }) =>
+		commercial_invoices_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['commercial_invoices_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<CommercialInvoice>({
 					method: 'GET',
@@ -1034,11 +1023,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCommercialInvoice),
 			),
-		customs_entry_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.shipment.id']?: string
-		}) =>
+		customs_entry_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['customs_entry_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<CustomsEntry>>({
 					method: 'GET',
@@ -1053,7 +1042,11 @@ export const flexportApiV2 = (
 				}),
 				map(toPage<CustomsEntry, LiftedCustomsEntry>(liftCustomsEntry)),
 			),
-		customs_entries_show: (params: { ['id']: number }) =>
+		customs_entries_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['customs_entries_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<CustomsEntry>({
 					method: 'GET',
@@ -1062,17 +1055,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftCustomsEntry),
 			),
-		documents_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.shipment.id']?: string
-			['f.document_type']?: string
-			['f.archived_at.exists']?: string
-			['f.uploaded_at.gt']?: string
-			['f.uploaded_at.lt']?: string
-			['f.uploaded_at.gte']?: string
-			['f.uploaded_at.lte']?: string
-		}) =>
+		documents_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['documents_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Document>>({
 					method: 'GET',
@@ -1093,7 +1078,9 @@ export const flexportApiV2 = (
 				}),
 				map(toPage<Document, LiftedDocument>(liftDocument)),
 			),
-		documents_show: (params: { ['id']: number }) =>
+		documents_show: (
+			params: Parameters<FlexportApiV2ClientInstance['documents_show']>[0],
+		) =>
 			pipe(
 				apiClient<Document>({
 					method: 'GET',
@@ -1102,7 +1089,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftDocument),
 			),
-		documents_download: (params: { ['id']: number }) =>
+		documents_download: (
+			params: Parameters<FlexportApiV2ClientInstance['documents_download']>[0],
+		) =>
 			pipe(
 				apiClient<
 					| string
@@ -1126,12 +1115,9 @@ export const flexportApiV2 = (
 					return res
 				}),
 			),
-		events_index: (params?: {
-			['f.occurred_at.gte']?: string
-			['f.occurred_at.lte']?: string
-			['f.data.shipment.id']?: number
-			['f.data.resource._object']?: string
-		}) =>
+		events_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['events_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<WebhookEvent>>({
 					method: 'GET',
@@ -1152,22 +1138,9 @@ export const flexportApiV2 = (
 				apiClient<WebhookEvent>({ method: 'GET', path: '/events/:id' }),
 				map(liftWebhookEvent),
 			),
-		invoice_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['sort']?: InvoiceIndexSortTypes
-			['direction']?: InvoiceIndexDirectionTypes
-			['f.status']?: InvoiceIndexStatusTypes
-			['f.shipment.id']?: number
-			['f.billed_directly_to_client']?: boolean
-			['f.entity.id']?: number
-			['f.entity.ref']?: string
-			['f.name']?: string
-			['f.issued_at.gt']?: string
-			['f.issued_at.lt']?: string
-			['f.client_id']?: number
-			['f.shipment_id']?: number
-		}) =>
+		invoice_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['invoice_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Invoice>>({
 					method: 'GET',
@@ -1194,7 +1167,9 @@ export const flexportApiV2 = (
 				}),
 				map(toPage<Invoice, LiftedInvoice>(liftInvoice)),
 			),
-		invoices_show: (params: { ['id']: number }) =>
+		invoices_show: (
+			params: Parameters<FlexportApiV2ClientInstance['invoices_show']>[0],
+		) =>
 			pipe(
 				apiClient<Invoice>({
 					method: 'GET',
@@ -1203,12 +1178,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftInvoice),
 			),
-		network_company_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.ref']?: string
-			['f.metadata.YOUR_METADATA_KEY']?: string
-		}) =>
+		network_company_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['network_company_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Company>>({
 					method: 'GET',
@@ -1230,7 +1204,11 @@ export const flexportApiV2 = (
 				apiClient<Company>({ method: 'POST', path: '/network/companies' }),
 				map(liftCompany),
 			),
-		network_company_show: (params: { ['id']: number }) =>
+		network_company_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['network_company_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<Company>({
 					method: 'GET',
@@ -1239,7 +1217,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCompany),
 			),
-		network_company_update: (params: { ['id']: number }) =>
+		network_company_update: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['network_company_update']
+			>[0],
+		) =>
 			pipe(
 				apiClient<Company>({
 					method: 'PATCH',
@@ -1248,13 +1230,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCompany),
 			),
-		company_entity_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.ref']?: string
-			['f.company_id']?: string
-			['f.company_ref']?: string
-		}) =>
+		company_entity_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['company_entity_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<CompanyEntity>>({
 					method: 'GET',
@@ -1279,7 +1259,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCompanyEntity),
 			),
-		network_company_entity_show: (params: { ['id']: number }) =>
+		network_company_entity_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['network_company_entity_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<CompanyEntity>({
 					method: 'GET',
@@ -1288,7 +1272,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCompanyEntity),
 			),
-		network_company_entity_update: (params: { ['id']: number }) =>
+		network_company_entity_update: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['network_company_entity_update']
+			>[0],
+		) =>
 			pipe(
 				apiClient<CompanyEntity>({
 					method: 'PATCH',
@@ -1297,13 +1285,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftCompanyEntity),
 			),
-		network_contact_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.company_ref']?: string
-			['f.company.id']?: string
-			['f.location.id']?: string
-		}) =>
+		network_contact_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['network_contact_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Contact>>({
 					method: 'GET',
@@ -1325,7 +1311,11 @@ export const flexportApiV2 = (
 				apiClient<Contact>({ method: 'POST', path: '/network/contacts' }),
 				map(liftContact),
 			),
-		network_contact_show: (params: { ['id']: number }) =>
+		network_contact_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['network_contact_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<Contact>({
 					method: 'GET',
@@ -1334,7 +1324,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftContact),
 			),
-		network_contact_update: (params: { ['id']: number }) =>
+		network_contact_update: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['network_contact_update']
+			>[0],
+		) =>
 			pipe(
 				apiClient<Contact>({
 					method: 'PATCH',
@@ -1343,15 +1337,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftContact),
 			),
-		location_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.ref']?: string
-			['f.company_ref']?: string
-			['f.company.id']?: string
-			['f.contact.id']?: string
-			['f.metadata.YOUR_METADATA_KEY']?: string
-		}) =>
+		location_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['location_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Location>>({
 					method: 'GET',
@@ -1376,7 +1364,11 @@ export const flexportApiV2 = (
 				apiClient<Location>({ method: 'POST', path: '/network/locations' }),
 				map(liftLocation),
 			),
-		network_location_show: (params: { ['id']: number }) =>
+		network_location_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['network_location_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<Location>({
 					method: 'GET',
@@ -1385,7 +1377,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftLocation),
 			),
-		location_update: (params: { ['id']: number }) =>
+		location_update: (
+			params: Parameters<FlexportApiV2ClientInstance['location_update']>[0],
+		) =>
 			pipe(
 				apiClient<Location>({
 					method: 'PATCH',
@@ -1399,13 +1393,11 @@ export const flexportApiV2 = (
 				apiClient<Company>({ method: 'GET', path: '/network/me/companies' }),
 				map(liftCompany),
 			),
-		ocean_shipment_legs_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.leg.id']?: number
-			['f.shipment_container.id']?: number
-			['f.shipment_container.container_number']?: string
-		}) =>
+		ocean_shipment_legs_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['ocean_shipment_legs_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<OceanShipmentContainerLeg>>({
 					method: 'GET',
@@ -1435,13 +1427,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftOceanShipmentContainerLeg),
 			),
-		container_list: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.shipment.id']?: number
-			['f.container_number']?: string
-			['f.metadata.YOUR_METADATA_KEY']?: string
-		}) =>
+		container_list: (
+			params?: Parameters<FlexportApiV2ClientInstance['container_list']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<ShipmentContainer>>({
 					method: 'GET',
@@ -1463,7 +1451,9 @@ export const flexportApiV2 = (
 					),
 				),
 			),
-		container_show: (params: { ['id']: number }) =>
+		container_show: (
+			params: Parameters<FlexportApiV2ClientInstance['container_show']>[0],
+		) =>
 			pipe(
 				apiClient<ShipmentContainer>({
 					method: 'GET',
@@ -1472,12 +1462,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftShipmentContainer),
 			),
-		ports_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.port_type']?: PortsIndexPortTypeTypes
-			['f.unlocode']?: string
-		}) =>
+		ports_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['ports_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Address>>({
 					method: 'GET',
@@ -1493,11 +1480,9 @@ export const flexportApiV2 = (
 				}),
 				map(toPage<Address, LiftedAddress>(liftAddress)),
 			),
-		product_index: (params?: {
-			['f.sku']?: string
-			['f.archived_at.exists']?: boolean
-			['f.product_properties.TYPE']?: string
-		}) =>
+		product_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['product_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Product>>({
 					method: 'GET',
@@ -1518,7 +1503,9 @@ export const flexportApiV2 = (
 				apiClient<Product>({ method: 'POST', path: '/products' }),
 				map(liftProduct),
 			),
-		product_show: (params: { ['id']: number }) =>
+		product_show: (
+			params: Parameters<FlexportApiV2ClientInstance['product_show']>[0],
+		) =>
 			pipe(
 				apiClient<Product>({
 					method: 'GET',
@@ -1527,7 +1514,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftProduct),
 			),
-		product_update: (params: { ['id']: number }) =>
+		product_update: (
+			params: Parameters<FlexportApiV2ClientInstance['product_update']>[0],
+		) =>
 			pipe(
 				apiClient<Product>({
 					method: 'PATCH',
@@ -1536,15 +1525,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftProduct),
 			),
-		purchase_order_line_item_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['sort']?: PurchaseOrderLineItemIndexSortTypes
-			['direction']?: PurchaseOrderLineItemIndexDirectionTypes
-			['f.purchase_order.id']?: number
-			['f.line_item_number']?: string
-			['f.item_key']?: string
-		}) =>
+		purchase_order_line_item_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['purchase_order_line_item_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<PurchaseOrderLineItem>>({
 					method: 'GET',
@@ -1567,7 +1552,11 @@ export const flexportApiV2 = (
 					),
 				),
 			),
-		purchase_order_line_item_show: (params: { ['id']: number }) =>
+		purchase_order_line_item_show: (
+			params: Parameters<
+				FlexportApiV2ClientInstance['purchase_order_line_item_show']
+			>[0],
+		) =>
 			pipe(
 				apiClient<PurchaseOrderLineItem>({
 					method: 'GET',
@@ -1576,19 +1565,11 @@ export const flexportApiV2 = (
 				}),
 				map(liftPurchaseOrderLineItem),
 			),
-		purchase_order_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['sort']?: PurchaseOrderIndexSortTypes
-			['direction']?: PurchaseOrderIndexDirectionTypes
-			['f.archived_at.exists']?: boolean
-			['f.status']?: PurchaseOrderIndexStatusTypes
-			['f.buyer_ref']?: string
-			['f.seller_ref']?: string
-			['f.role']?: PurchaseOrderIndexRoleTypes
-			['f.shipment.id']?: number
-			['f.name']?: string
-		}) =>
+		purchase_order_index: (
+			params?: Parameters<
+				FlexportApiV2ClientInstance['purchase_order_index']
+			>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<PurchaseOrder>>({
 					method: 'GET',
@@ -1611,7 +1592,9 @@ export const flexportApiV2 = (
 				}),
 				map(toPage<PurchaseOrder, LiftedPurchaseOrder>(liftPurchaseOrder)),
 			),
-		purchase_order_show: (params: { ['id']: number }) =>
+		purchase_order_show: (
+			params: Parameters<FlexportApiV2ClientInstance['purchase_order_show']>[0],
+		) =>
 			pipe(
 				apiClient<PurchaseOrder>({
 					method: 'GET',
@@ -1620,12 +1603,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftPurchaseOrder),
 			),
-		shipment_leg_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['f.shipment.id']?: number
-			['f.transportation_mode']?: number
-		}) =>
+		shipment_leg_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['shipment_leg_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<ShipmentLeg>>({
 					method: 'GET',
@@ -1646,24 +1626,9 @@ export const flexportApiV2 = (
 				apiClient<ShipmentLeg>({ method: 'GET', path: '/shipment_legs/:id' }),
 				map(liftShipmentLeg),
 			),
-		shipment_index: (params?: {
-			['page']?: number
-			['per']?: number
-			['sort']?: ShipmentIndexSortTypes
-			['direction']?: ShipmentIndexDirectionTypes
-			['f.transportation_mode']?: TransportationMode
-			['f.status']?: ShipmentStatus
-			['f.statuses.any']?: ShipmentStatus
-			['f.container_number']?: string
-			['f.purchase_order']?: string
-			['f.sku']?: string
-			['f.updated_at.gt']?: string
-			['f.updated_at.lt']?: string
-			['f.master_bill_number']?: string
-			['f.house_bill_number']?: string
-			['f.consignee_external_ref']?: string
-			['f.metadata.YOUR_METADATA_KEY']?: string
-		}) =>
+		shipment_index: (
+			params?: Parameters<FlexportApiV2ClientInstance['shipment_index']>[0],
+		) =>
 			pipe(
 				apiClient<ApiPageObject<Shipment>>({
 					method: 'GET',
@@ -1693,7 +1658,9 @@ export const flexportApiV2 = (
 				}),
 				map(toPage<Shipment, LiftedShipment>(liftShipment)),
 			),
-		shipment_show: (params: { ['id']: number }) =>
+		shipment_show: (
+			params: Parameters<FlexportApiV2ClientInstance['shipment_show']>[0],
+		) =>
 			pipe(
 				apiClient<Shipment>({
 					method: 'GET',
@@ -1702,7 +1669,9 @@ export const flexportApiV2 = (
 				}),
 				map(liftShipment),
 			),
-		shipment_update: (params: { ['id']: number }) =>
+		shipment_update: (
+			params: Parameters<FlexportApiV2ClientInstance['shipment_update']>[0],
+		) =>
 			pipe(
 				apiClient<Shipment>({
 					method: 'PATCH',

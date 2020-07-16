@@ -269,6 +269,37 @@ export const commentOperation = (p: ts.Node, def: ApiMethodInfo) => {
 	)
 }
 
+export const generateParamsReference = (
+	type: string,
+	operationId: string,
+	def: ApiMethodInfo,
+) => {
+	const params = []
+	const paramsRequired = def.parameters?.find(({ required }) => required)
+	if (def.parameters) {
+		params.push(
+			ts.createParameter(
+				undefined,
+				undefined,
+				undefined,
+				'params',
+				paramsRequired
+					? undefined
+					: ts.createToken(ts.SyntaxKind.QuestionToken),
+				ts.createIndexedAccessTypeNode(
+					ts.createTypeReferenceNode('Parameters', [
+						ts.createTypeReferenceNode(`${type}['${operationId}']`, []),
+					]),
+					ts.createLiteralTypeNode(ts.createNumericLiteral('0')),
+				),
+				undefined,
+			),
+		)
+	}
+
+	return params
+}
+
 export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 	const params = []
 	const deps: (string | { [key: string]: string })[] = []
@@ -364,15 +395,20 @@ export const generateParams = (schemas: any, def: ApiMethodInfo) => {
 	}
 }
 
-export const createOperationCall = (schemas: any, def: ApiMethodInfo) => {
+export const createOperationCall = (
+	clientType: string,
+	operationId: string,
+	schemas: any,
+	def: ApiMethodInfo,
+) => {
 	const deps: (string | { [key: string]: string })[] = []
 	const enums: ts.EnumDeclaration[] = []
 	const {
-		params,
 		paramProperties,
 		deps: paramDeps,
 		enums: paramEnums,
 	} = generateParams(schemas, def)
+	const params = generateParamsReference(clientType, operationId, def)
 	deps.push(...paramDeps)
 	enums.push(...paramEnums)
 

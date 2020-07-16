@@ -4,7 +4,7 @@
   "description": "JavaScript client SDK for Flexport's API v2",
   "scripts": {
     "test": "jest",
-    "prettier": "prettier --write src/**/*.ts",
+    "prettier": "prettier --write src/**/*.ts api-docs/*.yaml adr/*.md",
     "postinstall": "check-node-version --package"
   },
   "main": "dist/index.js",
