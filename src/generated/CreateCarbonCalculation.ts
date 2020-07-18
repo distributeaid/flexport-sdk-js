@@ -101,7 +101,7 @@ export type CreateCarbonCalculation = {
 	 */
 	readonly teus?: string
 	/**
-	 * The mode of transportation for calculation. One of `air`, `ocean`, `truck`, or `rail`. If `transportation_mode` is `truck` or `rail`, `country_code` in both `origin_address` and `destination_address` is required.
+	 * The mode of transportation for calculation. One of `air`, `ocean`, `truck`, or `rail`. If `transportation_mode` is `truck`, `ocean`, or `rail`, `country_code` in both `origin_address` and `destination_address` is required.
 	 *
 	 * JSON-schema: string
 	 * @example "ocean"

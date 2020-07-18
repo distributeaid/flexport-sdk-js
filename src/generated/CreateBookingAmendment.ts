@@ -47,6 +47,20 @@ export type CreateBookingAmendment = {
 	 */
 	readonly new_origin_port_loc_code?: string
 	/**
+	 * At most one of `new_destination_port_us_cbp_port_code` or `new_destination_port_loc_code` may be specified. Unique port reference code used by US Customs and Border Protection.
+	 *
+	 * JSON-schema: string
+	 * @example 57078
+	 */
+	readonly new_destination_port_us_cbp_port_code?: string
+	/**
+	 * At most one of `new_destination_port_us_cbp_port_code` or `new_destination_port_loc_code` may be specified. UN code for the destination port.
+	 *
+	 * JSON-schema: string
+	 * @example "CNYTN"
+	 */
+	readonly new_destination_port_loc_code?: string
+	/**
 	 * Date when cargo is ready for pickup at the origin location.
 	 *
 	 * JSON-schema: string (date)

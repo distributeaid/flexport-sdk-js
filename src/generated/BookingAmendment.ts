@@ -59,10 +59,15 @@ export type BookingAmendment = {
 	 */
 	readonly new_origin_address?: Address
 	/**
-	 * The requested new origin port
+	 * The requested new origin port (port of loading)
 	 *
 	 */
-	readonly new_origin_port?: Place
+	readonly new_port_of_loading?: Place
+	/**
+	 * The requested new destination port (port of unloading)
+	 *
+	 */
+	readonly new_port_of_unloading?: Place
 	/**
 	 * The requested new cargo ready date
 	 *
