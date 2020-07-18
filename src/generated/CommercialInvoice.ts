@@ -42,6 +42,13 @@ export type CommercialInvoice = {
 	 */
 	readonly involved_parties?: CustomsInvolvedParty[]
 	/**
+	 * Whether there was a related parties transaction as defined by CBP.
+	 *
+	 * JSON-schema: boolean
+	 * @example false
+	 */
+	readonly is_related_parties?: boolean
+	/**
 	 * JSON-schema: array
 	 */
 	readonly manufacturer_addresses?: Address[]

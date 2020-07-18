@@ -1245,6 +1245,18 @@ paths:
           required: false
           schema:
             type: string
+        - in: query
+          name: f.involved_party_seller_id
+          description: Filters results based on the involved party seller ID.
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: f.involved_party_seller_ref
+          description: Filters results based on the invoolved party seller ref.
+          required: false
+          schema:
+            type: string
       responses:
         "200":
           description: Success
@@ -1909,7 +1921,9 @@ paths:
                       data:
                         - _object: /document
                           id: ABC123
+                          file_name: readme.txt
                           document_type: billing_packet
+                          memo: null
                           file_link: "https://api.flexport.com/documents/ABC123/download"
                           archived_at: null
                           file_metadata:
@@ -1966,7 +1980,9 @@ paths:
                     data:
                       _object: /document
                       id: ABC123
+                      file_name: readme.txt
                       document_type: billing_packet
+                      memo: null
                       file_link: "https://api.flexport.com/documents/ABC123/download"
                       archived_at: null
                       file_metadata:
@@ -2256,6 +2272,22 @@ paths:
           name: f.issued_at.lt
           description:
             Filters the list for invoices issued before the specified date
+          required: false
+          schema:
+            type: string
+            example: "2019-06-01T17:29:23.172Z"
+        - in: query
+          name: f.last_updated_at.gt
+          description:
+            Filters the list for invoices last updated after the specified date
+          required: false
+          schema:
+            type: string
+            example: "2019-06-01"
+        - in: query
+          name: f.last_updated_at.lt
+          description:
+            Filters the list for invoices last updated before the specified date
           required: false
           schema:
             type: string
@@ -5284,7 +5316,7 @@ paths:
                           origin_address:
                             _object: /address
                             street_address: 10th YouSong Industrial District
-                            street_address2: ""
+                            street_address2: null
                             city: Shenzhen
                             state: "44"
                             country: China
@@ -5297,7 +5329,7 @@ paths:
                           destination_address:
                             _object: /address
                             street_address: 1556 20TH ST STE 2D
-                            street_address2: ""
+                            street_address2: null
                             city: SANTA MONICA
                             state: CA
                             country: United States
@@ -6891,8 +6923,11 @@ components:
         new_origin_address:
           description: The requested new origin address
           $ref: "#/components/schemas/Address"
-        new_origin_port:
-          description: The requested new origin port
+        new_port_of_loading:
+          description: The requested new origin port (port of loading)
+          $ref: "#/components/schemas/Place"
+        new_port_of_unloading:
+          description: The requested new destination port (port of unloading)
           $ref: "#/components/schemas/Place"
         new_cargo_ready_date:
           type: string
@@ -7115,6 +7150,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CustomsInvolvedParty"
+        is_related_parties:
+          type: boolean
+          description:
+            Whether there was a related parties transaction as defined by CBP.
+          example: false
         manufacturer_addresses:
           type: array
           items:
@@ -7165,6 +7205,8 @@ components:
             - $ref: "#/components/schemas/Money"
         value:
           $ref: "#/components/schemas/Money"
+        net_value:
+          $ref: "#/components/schemas/Money"
         total_units:
           type: integer
           example: 10
@@ -7175,8 +7217,22 @@ components:
           example: 9876-ABC
         weight:
           $ref: "#/components/schemas/Weight"
+          description:
+            "Weight including any associated packaging (padding, foam, etc)."
         volume:
           $ref: "#/components/schemas/Volume"
+        net_weight:
+          $ref: "#/components/schemas/Weight"
+          description: Weight excluding packaging.
+        net_net_weight:
+          $ref: "#/components/schemas/Weight"
+          description:
+            "Weight excluding packaging, tags, labels, instruction manuals, etc."
+        manufacturer_address:
+          $ref: "#/components/schemas/Address"
+        manufacturer_name:
+          type: string
+          example: Company Name
         product:
           $ref: "#/components/schemas/ProductRef"
         metadata:
@@ -7271,6 +7327,21 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/VatNumber"
+    CompanyEntityRef:
+      type: object
+      properties:
+        _object:
+          type: string
+          example: /api/refs/object
+        ref_type:
+          type: string
+          example: /company_entity
+        link:
+          type: string
+          example: "https://api.flexport.com/network/company_entities/12345"
+        id:
+          type: integer
+          example: 12345
     Contact:
       type: object
       properties:
@@ -7602,6 +7673,20 @@ components:
             or  `origin_port_loc_code` may be specified. UN code for the origin
             port.
           example: CNYTN
+        new_destination_port_us_cbp_port_code:
+          type: string
+          description:
+            At most one of `new_destination_port_us_cbp_port_code` or
+            `new_destination_port_loc_code` may be specified. Unique port
+            reference code used by US Customs and Border Protection.
+          example: 57078
+        new_destination_port_loc_code:
+          type: string
+          description:
+            At most one of `new_destination_port_us_cbp_port_code` or
+            `new_destination_port_loc_code` may be specified. UN code for the
+            destination port.
+          example: CNYTN
         new_cargo_ready_date:
           type: string
           description:
@@ -7773,9 +7858,9 @@ components:
           type: string
           description:
             "The mode of transportation for calculation. One of `air`, `ocean`,
-            `truck`, or `rail`. If `transportation_mode` is `truck` or `rail`,
-            `country_code` in both `origin_address` and `destination_address` is
-            required."
+            `truck`, or `rail`. If `transportation_mode` is `truck`, `ocean`, or
+            `rail`, `country_code` in both `origin_address` and
+            `destination_address` is required."
           enum:
             - air
             - ocean
@@ -8281,6 +8366,8 @@ components:
           example: /customs/involved_party
         address:
           $ref: "#/components/schemas/Address"
+        company_entity:
+          $ref: "#/components/schemas/CompanyEntityRef"
         name:
           type: string
           description: The name of involved party.
@@ -8300,10 +8387,16 @@ components:
           type: string
           format: string
           description: Unique identifier for the document
+        file_name:
+          type: string
         document_type:
           type: string
           format: string
           description: Type of the document.
+        memo:
+          type: string
+          nullable: true
+          description: A short message or description about the document
         file_link:
           type: string
           format: uri
