@@ -29,6 +29,16 @@ jobs:
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci --no-audit
+      - name: Download API definition
+        run: |
+          curl -f https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
+          npx prettier --write api-docs/v2.yaml
+          if ! git diff-index --quiet HEAD --; then
+            echo "::set-env name=HAS_CHANGES::true"
+          fi
+      - name: Cancel job if no changes
+        if: env.HAS_CHANGES != 'true'
+        uses: andymckay/cancel-action@0.2
       - name: Compile
         run: npx tsc
       - name: check if a PR is open already
@@ -45,10 +55,6 @@ jobs:
             git checkout -t origin/${PR_BRANCH}
             echo "::set-env name=PR::append"
           fi
-      - name: Download API definition
-        run: |
-          curl -f https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
-          npx prettier --write api-docs/v2.yaml
       - name: Update client
         run: |
           node dist/bin/generateTypes.js
