@@ -74,11 +74,17 @@ export type CreateCarbonCalculation = {
 	 */
 	readonly destination_port?: string
 	/**
-	 * For `transportation_mode: ocean`, indicates if the calculation was inland or not.
+	 * For `transportation_mode: ocean`, indicates if the calculation was inland or not. Defaults to false.
 	 *
 	 * JSON-schema: boolean
 	 */
 	readonly is_inland?: boolean
+	/**
+	 * For `transportation_mode: ocean`, indicates if the calculation is less than container load or not. Defaults to false.
+	 *
+	 * JSON-schema: boolean
+	 */
+	readonly is_lcl?: boolean
 	/**
 	 * For Air shipments, the type of plane used. Defaults to "unknown".
 	 *

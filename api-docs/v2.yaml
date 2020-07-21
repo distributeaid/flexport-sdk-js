@@ -7824,7 +7824,12 @@ components:
           type: boolean
           description:
             "For `transportation_mode: ocean`, indicates if the calculation was
-            inland or not."
+            inland or not. Defaults to false."
+        is_lcl:
+          type: boolean
+          description:
+            "For `transportation_mode: ocean`, indicates if the calculation is
+            less than container load or not. Defaults to false."
         flight_type:
           type: string
           description:
