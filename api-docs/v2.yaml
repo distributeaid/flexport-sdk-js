@@ -6933,6 +6933,11 @@ components:
           type: string
           description: The requested new cargo ready date
           format: date
+        new_product_descriptions:
+          description: New product (HS code) information
+          type: array
+          items:
+            $ref: "#/components/schemas/BookingAmendmentHsCode"
         new_cargo:
           description:
             "The requested new cargo, possibly including package details"
@@ -6940,6 +6945,28 @@ components:
         new_metadata:
           description: The requested new metadata
           $ref: "#/components/schemas/Metadata"
+    BookingAmendmentHsCode:
+      type: object
+      properties:
+        _object:
+          type: string
+          description:
+            String representing the object’s type. Always
+            `/booking_amendment_product_description` for this object.
+          example: /booking_amendment_product_description
+        description:
+          type: string
+          description:
+            Always required. English description of product in booking.
+          example: Wristwatches
+        description_for_export_customs:
+          type: string
+          description:
+            Required if booking if origin address or origin port is in Mainland
+            China. Chinese description of product in booking.
+          example: 手表
+        hs_code:
+          $ref: "#/components/schemas/HsCode"
     BookingHsCode:
       type: object
       properties:
@@ -7693,10 +7720,44 @@ components:
             Date when cargo is ready for pickup at the origin location.
           format: date
           example: "2019-06-30"
+        new_product_descriptions:
+          description: New product (HS code) information
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateBookingAmendmentHsCode"
         new_cargo:
           $ref: "#/components/schemas/Cargo"
         new_metadata:
           $ref: "#/components/schemas/Metadata"
+    CreateBookingAmendmentHsCode:
+      type: object
+      required:
+        - description
+        - hs_code
+      properties:
+        _object:
+          type: string
+          description:
+            String representing the object’s type. Always
+            `/bookings/update/product_description` for this object.
+          example: /bookings/update/product_description
+        description:
+          type: string
+          description:
+            Always required. English description of product in booking.
+          example: Wristwatches
+        description_for_export_customs:
+          type: string
+          description:
+            Required if booking if origin address or origin port is in Mainland
+            China. Chinese description of product in booking.
+          example: 手表
+        hs_code:
+          type: string
+          description:
+            The six digit code under which the product should be classified for
+            export customs.
+          example: 9101
     CreateBookingHsCode:
       type: object
       required:

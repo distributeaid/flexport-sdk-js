@@ -3,6 +3,7 @@
  */
 import { Cargo } from './Cargo'
 import { ContainerCounts } from './ContainerCounts'
+import { CreateBookingAmendmentHsCode } from './CreateBookingAmendmentHsCode'
 import { Metadata } from './Metadata'
 export type CreateBookingAmendment = {
 	/**
@@ -67,6 +68,12 @@ export type CreateBookingAmendment = {
 	 * @example "2019-06-30"
 	 */
 	readonly new_cargo_ready_date?: string
+	/**
+	 * New product (HS code) information
+	 *
+	 * JSON-schema: array
+	 */
+	readonly new_product_descriptions?: CreateBookingAmendmentHsCode[]
 	readonly new_cargo?: Cargo
 	readonly new_metadata?: Metadata
 }
