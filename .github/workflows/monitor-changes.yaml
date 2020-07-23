@@ -41,6 +41,23 @@ jobs:
         uses: andymckay/cancel-action@0.2
       - name: Compile
         run: npx tsc
+      - name: Update client
+        run: |
+          node dist/bin/generateTypes.js
+          node dist/bin/generateApiOperations.js
+          npx prettier --write src/**/*.ts
+          npx tsc
+        continue-on-error: true
+      - name: Add changes to git
+        id: commit-changes
+        continue-on-error: true
+        run: |
+          git config --global user.email "actions@example.com"
+          git config --global user.name "GitHub Actions"
+          git add -A
+          git commit -m 'feat: update generated code
+
+          BREAKING CHANGE: These changes have not been checked by a human.'
       - name: check if a PR is open already
         id: check-pr
         run: |
@@ -55,29 +72,12 @@ jobs:
             git checkout -t origin/${PR_BRANCH}
             echo "::set-env name=PR::append"
           fi
-      - name: Update client
-        run: |
-          node dist/bin/generateTypes.js
-          node dist/bin/generateApiOperations.js
-          npx prettier --write src/**/*.ts
-          npx tsc
-        continue-on-error: true
       - name: Calculate branch name from API docs checksum
         if: env.PR == 'new'
         run: |
           CHECKSUM=`sha1sum api-docs/v2.yaml | awk '{ print $1 }' | tr -d '\n'`
           echo "::set-env name=CHECKSUM::${CHECKSUM}"
           git checkout -b changes-${CHECKSUM}
-      - name: Add changes to git
-        id: commit-changes
-        continue-on-error: true
-        run: |
-          git config --global user.email "actions@example.com"
-          git config --global user.name "GitHub Actions"
-          git add -A
-          git commit -m 'feat: update generated code
-
-          BREAKING CHANGE: These changes have not been checked by a human.'
       - run:
           echo "machine github.com login authtoken password ${GITHUB_TOKEN}" >
           ~/.netrc
