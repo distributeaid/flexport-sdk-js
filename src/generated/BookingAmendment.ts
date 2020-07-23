@@ -2,6 +2,7 @@
  * Auto-generated file. Do not change.
  */
 import { Address } from './Address'
+import { BookingAmendmentHsCode } from './BookingAmendmentHsCode'
 import { Cargo } from './Cargo'
 import { ContainerCounts } from './ContainerCounts'
 import { Metadata } from './Metadata'
@@ -75,6 +76,12 @@ export type BookingAmendment = {
 	 * @example "1970-01-01"
 	 */
 	readonly new_cargo_ready_date?: string
+	/**
+	 * New product (HS code) information
+	 *
+	 * JSON-schema: array
+	 */
+	readonly new_product_descriptions?: BookingAmendmentHsCode[]
 	/**
 	 * The requested new cargo, possibly including package details
 	 *
