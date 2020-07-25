@@ -248,7 +248,7 @@ export type FlexportApiV2ClientInstance = {
 		['id']: number
 	}) => TaskEither<ErrorInfo, LiftedBooking>
 	/**
-	 * Return a new carbon calculation
+	 * Return a new carbon calculation. Rate limited to 1,000 requests per hour.
 	 *
 	 * Returns:
 	 * - for status code 200: The new carbon calculation
