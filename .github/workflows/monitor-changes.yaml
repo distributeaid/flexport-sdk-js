@@ -37,7 +37,7 @@ jobs:
           then
             echo "API definitions HAVE NOT changed.";
             echo "::set-env name=HAS_CHANGES::false";
-          else;
+          else
             echo "API definitions HAVE changed.";
             echo "::set-env name=HAS_CHANGES::true";
           fi
