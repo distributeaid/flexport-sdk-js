@@ -33,17 +33,6 @@ jobs:
         run: |
           curl -f https://api.flexport.com/docs/v2/flexport > api-docs/v2.yaml
           npx prettier --write api-docs/v2.yaml
-          if git diff-index --quiet HEAD --;
-          then
-            echo "API definitions HAVE NOT changed.";
-            echo "::set-env name=HAS_CHANGES::false";
-          else
-            echo "API definitions HAVE changed.";
-            echo "::set-env name=HAS_CHANGES::true";
-          fi
-      - name: Cancel job if no changes
-        if: env.HAS_CHANGES == 'false'
-        uses: andymckay/cancel-action@0.2
       - name: Compile
         run: npx tsc
       - name: Update client
@@ -63,6 +52,9 @@ jobs:
           git commit -m 'feat: update generated code
 
           BREAKING CHANGE: These changes have not been checked by a human.'
+      - name: Cancel job if no changes
+        if: steps.commit-changes.outcome == 'failure'
+        uses: andymckay/cancel-action@0.2
       - name: check if a PR is open already
         id: check-pr
         run: |
