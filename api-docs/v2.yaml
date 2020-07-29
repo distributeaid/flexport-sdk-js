@@ -1,4 +1,4 @@
-# TEAM: enterprise_enablement
+# TEAM: public_api
 openapi: 3.0.0
 x-explorer-enabled: false
 x-samples-languages:
