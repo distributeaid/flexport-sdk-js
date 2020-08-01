@@ -720,6 +720,7 @@ paths:
               cargo_ready_date: "2019-06-30"
               delivery_date: "2019-07-31"
               wants_export_customs_service: true
+              wants_import_customs_service: true
               cargo:
                 volume:
                   value: 472.62
@@ -916,6 +917,7 @@ paths:
                         ref: warehouse_us
                       delivery_date: "2019-05-30"
                       wants_export_customs_service: true
+                      wants_import_customs_service: true
                       cargo:
                         volume:
                           _object: /quantity/volume
@@ -1134,6 +1136,7 @@ paths:
                         ref: null
                       delivery_date: "2019-02-22"
                       wants_export_customs_service: true
+                      wants_import_customs_service: true
                       cargo:
                         volume: 9.8
                         weight: 8.7
@@ -6009,6 +6012,8 @@ paths:
                           estimated_delivered_in_full_date: "2019-02-06T19:28:25+00:00"
                           actual_delivered_in_full_date: "2019-02-06T19:28:25+00:00"
                           cargo_ready_date: "2019-02-06"
+                          wants_export_customs_service: true
+                          wants_import_customs_service: true
                           air_shipment: null
                           ocean_shipment:
                             _object: /ocean/shipment
@@ -6242,6 +6247,8 @@ paths:
                       estimated_delivered_in_full_date: "2019-02-06T19:28:25+00:00"
                       actual_delivered_in_full_date: "2019-02-06T19:28:25+00:00"
                       cargo_ready_date: "2019-02-06"
+                      wants_export_customs_service: true
+                      wants_import_customs_service: true
                       air_shipment: null
                       ocean_shipment:
                         _object: /ocean/shipment
@@ -6468,6 +6475,8 @@ paths:
                       estimated_delivered_in_full_date: "2019-02-06T19:28:25+00:00"
                       actual_delivered_in_full_date: "2019-02-06T19:28:25+00:00"
                       cargo_ready_date: "2019-02-06"
+                      wants_export_customs_service: true
+                      wants_import_customs_service: true
                       air_shipment: null
                       ocean_shipment:
                         _object: /ocean/shipment
@@ -6874,6 +6883,15 @@ components:
           format: date
         wants_export_customs_service:
           type: boolean
+          description:
+            Determines if the booking requires Flexport to provide export
+            customs services.
+          example: true
+        wants_import_customs_service:
+          type: boolean
+          description:
+            Determines if the booking requires Flexport to provide import
+            customs services.
           example: true
         cargo:
           $ref: "#/components/schemas/Cargo"
@@ -9386,6 +9404,18 @@ components:
         actual_delivered_in_full_date:
           type: string
           format: date-time
+        wants_export_customs_service:
+          type: boolean
+          description:
+            Determines if the shipment requires Flexport to provide export
+            customs services.
+          example: true
+        wants_import_customs_service:
+          type: boolean
+          description:
+            Determines if the shipment requires Flexport to provide import
+            customs services.
+          example: true
         ocean_shipment:
           $ref: "#/components/schemas/OceanShipmentDetail"
         air_shipment:

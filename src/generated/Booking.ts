@@ -73,10 +73,19 @@ export type Booking = {
 	 */
 	readonly delivery_date?: string
 	/**
+	 * Determines if the booking requires Flexport to provide export customs services.
+	 *
 	 * JSON-schema: boolean
 	 * @example true
 	 */
 	readonly wants_export_customs_service?: boolean
+	/**
+	 * Determines if the booking requires Flexport to provide import customs services.
+	 *
+	 * JSON-schema: boolean
+	 * @example true
+	 */
+	readonly wants_import_customs_service?: boolean
 	readonly cargo?: Cargo
 	/**
 	 * JSON-schema: string
