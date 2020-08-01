@@ -144,6 +144,20 @@ export type Shipment = {
 	 * @example "1970-01-01T10:05:08+01:00"
 	 */
 	readonly actual_delivered_in_full_date?: string
+	/**
+	 * Determines if the shipment requires Flexport to provide export customs services.
+	 *
+	 * JSON-schema: boolean
+	 * @example true
+	 */
+	readonly wants_export_customs_service?: boolean
+	/**
+	 * Determines if the shipment requires Flexport to provide import customs services.
+	 *
+	 * JSON-schema: boolean
+	 * @example true
+	 */
+	readonly wants_import_customs_service?: boolean
 	readonly ocean_shipment?: OceanShipmentDetail
 	readonly air_shipment?: AirShipmentDetail
 	/**
