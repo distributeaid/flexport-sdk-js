@@ -125,6 +125,20 @@ export type Shipment = {
 	 */
 	readonly cargo_ready_date?: string
 	/**
+	 * Determines if a shipment bypasses a freight forwader and is booked directly with a steamship line.
+	 *
+	 * JSON-schema: boolean
+	 * @example true
+	 */
+	readonly wants_freight_management_bco?: boolean
+	/**
+	 * Determines if a shipment is using Flexport services for a combination of import customs clearance or final leg delivery.
+	 *
+	 * JSON-schema: boolean
+	 * @example true
+	 */
+	readonly wants_flexport_freight?: boolean
+	/**
 	 * JSON-schema: string (date-time)
 	 * @example "1970-01-01T10:05:08+01:00"
 	 */
