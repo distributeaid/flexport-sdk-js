@@ -5931,6 +5931,34 @@ paths:
           required: false
           schema:
             type: string
+        - in: query
+          name: f.wants_freight_management_bco
+          description:
+            Filters the list based on shipment's wants_freight_management_bco
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: f.wants_flexport_freight
+          description:
+            Filters the list based on shipment's wants_flexport_freight
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: f.wants_import_customs_service
+          description:
+            Filters the list based on shipment's wants_import_customs_service
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: f.wants_export_customs_service
+          description:
+            Filters the list based on shipment's wants_export_customs_service
+          required: false
+          schema:
+            type: boolean
       responses:
         "200":
           description: collection of shipments
@@ -6015,6 +6043,8 @@ paths:
                           wants_export_customs_service: true
                           wants_import_customs_service: true
                           air_shipment: null
+                          wants_freight_management_bco: true
+                          wants_flexport_freight: true
                           ocean_shipment:
                             _object: /ocean/shipment
                             is_lcl: false
@@ -6250,6 +6280,8 @@ paths:
                       wants_export_customs_service: true
                       wants_import_customs_service: true
                       air_shipment: null
+                      wants_freight_management_bco: true
+                      wants_flexport_freight: true
                       ocean_shipment:
                         _object: /ocean/shipment
                         is_lcl: false
@@ -6478,6 +6510,8 @@ paths:
                       wants_export_customs_service: true
                       wants_import_customs_service: true
                       air_shipment: null
+                      wants_freight_management_bco: true
+                      wants_flexport_freight: true
                       ocean_shipment:
                         _object: /ocean/shipment
                         is_lcl: false
@@ -9392,6 +9426,18 @@ components:
         cargo_ready_date:
           type: string
           format: date
+        wants_freight_management_bco:
+          type: boolean
+          description:
+            Determines if a shipment bypasses a freight forwader and is booked
+            directly with a steamship line.
+          example: true
+        wants_flexport_freight:
+          type: boolean
+          description:
+            Determines if a shipment is using Flexport services for a
+            combination of import customs clearance or final leg delivery.
+          example: true
         estimated_picked_up_in_full_date:
           type: string
           format: date-time

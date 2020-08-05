@@ -837,6 +837,10 @@ export type FlexportApiV2ClientInstance = {
 		['f.house_bill_number']?: string
 		['f.consignee_external_ref']?: string
 		['f.metadata.YOUR_METADATA_KEY']?: string
+		['f.wants_freight_management_bco']?: boolean
+		['f.wants_flexport_freight']?: boolean
+		['f.wants_import_customs_service']?: boolean
+		['f.wants_export_customs_service']?: boolean
 	}) => TaskEither<ErrorInfo, Page<LiftedShipment>>
 	/**
 	 * Retrieve a shipment
@@ -1663,6 +1667,14 @@ export const flexportApiV2 = (
 								params?.['f.consignee_external_ref'],
 							['f.metadata.YOUR_METADATA_KEY']:
 								params?.['f.metadata.YOUR_METADATA_KEY'],
+							['f.wants_freight_management_bco']:
+								params?.['f.wants_freight_management_bco'],
+							['f.wants_flexport_freight']:
+								params?.['f.wants_flexport_freight'],
+							['f.wants_import_customs_service']:
+								params?.['f.wants_import_customs_service'],
+							['f.wants_export_customs_service']:
+								params?.['f.wants_export_customs_service'],
 						},
 					},
 				}),
