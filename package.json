@@ -86,7 +86,7 @@
     "check-node-version": "^4.0.3",
     "deepmerge": "^4.2.2",
     "fetch-ponyfill": "^6.1.1",
-    "fp-ts": "^2.7.0"
+    "fp-ts": "^2.7.1"
   },
   "publishConfig": {
     "access": "public"
