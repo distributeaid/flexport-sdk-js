@@ -25,7 +25,7 @@
   "homepage": "https://github.com/distributeaid/flexport-sdk-js#readme",
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -e",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged && npm test"
     }
   },
@@ -40,8 +40,8 @@
   },
   "devDependencies": {
     "@bifravst/code-style": "^8.0.2",
-    "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-angular": "^9.0.1",
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-angular": "^9.1.2",
     "@distributeaid/flexport-api-sandbox": "^1.5.2",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@types/jest": "^26.0.3",
