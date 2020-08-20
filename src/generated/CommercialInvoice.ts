@@ -27,7 +27,7 @@ export type CommercialInvoice = {
 	 */
 	readonly id?: string
 	/**
-	 * Invoice number on the commercial invoice, typically used for display purposes. Can only contain letters, numbers, and hyphens.
+	 * Invoice number on the commercial invoice, typically used for display purposes.
 	 *
 	 * JSON-schema: string
 	 * @example "INVOICE-04-05-2020"
