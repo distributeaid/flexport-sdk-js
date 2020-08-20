@@ -7221,7 +7221,7 @@ components:
           type: string
           description:
             "Invoice number on the commercial invoice, typically used for
-            display purposes. Can only contain letters, numbers, and hyphens."
+            display purposes."
           example: INVOICE-04-05-2020
         line_items:
           type: array
@@ -8012,10 +8012,9 @@ components:
           type: string
           description:
             "Invoice number on the commercial invoice, typically used for
-            display purposes. Can only contain letters, numbers, and hyphens.
-            Uniqueness is based on the supplier Involved Party. There can be
-            multiple commercial invoices with the same invoice_number only if
-            they have different suppliers. "
+            display purposes. Uniqueness is based on the supplier Involved
+            Party. There can be multiple commercial invoices with the same
+            invoice_number only if they have different suppliers. "
           example: INVOICE-04-05-2020
         currency_code:
           type: string
@@ -9862,10 +9861,9 @@ components:
           type: string
           description:
             "Invoice number on the commercial invoice, typically used for
-            display purposes. Can only contain letters, numbers, and hyphens.
-            Uniqueness is based on the supplier Involved Party. There can be
-            multiple commercial invoices with the same invoice_number only if
-            they have different suppliers. "
+            display purposes. Uniqueness is based on the supplier Involved
+            Party. There can be multiple commercial invoices with the same
+            invoice_number only if they have different suppliers. "
           example: INVOICE-04-05-2020
         currency_code:
           type: string
