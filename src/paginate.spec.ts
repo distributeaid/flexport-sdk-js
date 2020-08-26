@@ -1,6 +1,4 @@
 import { paginate } from './paginate'
-import * as fs from 'fs'
-import * as path from 'path'
 import { isRight, Right } from 'fp-ts/lib/Either'
 import * as TE from 'fp-ts/lib/TaskEither'
 import { pipe } from 'fp-ts/lib/pipeable'
@@ -9,33 +7,10 @@ import { Type } from './generated/Type'
 import { v2Client } from './v2Client'
 import { emptyPageMock, mockHeaders } from './testmocks'
 
-const shipmentsPage1 = JSON.parse(
-	fs
-		.readFileSync(
-			path.join(
-				process.cwd(),
-				'node_modules',
-				'@distributeaid/flexport-api-sandbox',
-				'sandbox',
-				'shipments.json',
-			),
-		)
-		.toString(),
-)
-
-const shipmentsPage2 = JSON.parse(
-	fs
-		.readFileSync(
-			path.join(
-				process.cwd(),
-				'node_modules',
-				'@distributeaid/flexport-api-sandbox',
-				'sandbox',
-				'shipments?page=2&per=10.json',
-			),
-		)
-		.toString(),
-)
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
+const shipmentsPage1 = require('@distributeaid/flexport-api-sandbox/sandbox/shipments')
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
+const shipmentsPage2 = require('@distributeaid/flexport-api-sandbox/sandbox/shipments?page=2&per=10')
 
 describe('paginate', () => {
 	it('follows pagination links', async () => {

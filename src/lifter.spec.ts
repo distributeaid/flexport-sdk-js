@@ -1,23 +1,10 @@
-import * as path from 'path'
 import { liftShipment } from './generated'
-import { promises as fs } from 'fs'
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
+const shipmentJSON = require('@distributeaid/flexport-api-sandbox/sandbox/shipments/685551')
 
 describe('lifter', () => {
 	it('should transform JSON', async () => {
-		const shipmentJSON = JSON.parse(
-			(
-				await fs.readFile(
-					path.join(
-						process.cwd(),
-						'node_modules',
-						'@distributeaid/flexport-api-sandbox',
-						'sandbox',
-						'shipments',
-						'685551.json',
-					),
-				)
-			).toString(),
-		)
 		const shipment = liftShipment(shipmentJSON.data)
 		expect(shipment.name).toEqual('Ron-Quote_2 ')
 	})
