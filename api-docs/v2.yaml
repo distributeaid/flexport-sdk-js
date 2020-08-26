@@ -7948,7 +7948,8 @@ components:
         flight_type:
           type: string
           description:
-            'For Air shipments, the type of plane used. Defaults to "unknown".'
+            "For `transportation_mode: air`, the type of plane used. One of
+            `freighter`, `belly_freighter`, or `unknown`. Defaults to `unknown`."
           enum:
             - freighter
             - belly_freighter
@@ -7957,7 +7958,9 @@ components:
         trucking_service_type:
           type: string
           description:
-            "For `transportation_mode: truck`, the type of service used."
+            "For `transportation_mode: truck`, the type of service used. One of
+            `ftl`, `ltl`, `drayage`, `cartage`, `last_mile`, `airport_transfer`,
+            or `air_cartage`."
           enum:
             - ftl
             - ltl

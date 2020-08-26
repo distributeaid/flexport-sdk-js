@@ -86,14 +86,14 @@ export type CreateCarbonCalculation = {
 	 */
 	readonly is_lcl?: boolean
 	/**
-	 * For Air shipments, the type of plane used. Defaults to "unknown".
+	 * For `transportation_mode: air`, the type of plane used. One of `freighter`, `belly_freighter`, or `unknown`. Defaults to `unknown`.
 	 *
 	 * JSON-schema: string
 	 * @example "freighter"
 	 */
 	readonly flight_type?: CreateCarbonCalculationFlightTypeTypes
 	/**
-	 * For `transportation_mode: truck`, the type of service used.
+	 * For `transportation_mode: truck`, the type of service used. One of `ftl`, `ltl`, `drayage`, `cartage`, `last_mile`, `airport_transfer`, or `air_cartage`.
 	 *
 	 * JSON-schema: string
 	 * @example "drayage"
