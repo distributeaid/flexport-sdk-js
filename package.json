@@ -44,7 +44,7 @@
     "@commitlint/config-angular": "9.1.2",
     "@distributeaid/flexport-api-sandbox": "1.5.4",
     "@semantic-release/commit-analyzer": "8.0.1",
-    "@types/jest": "26.0.10",
+    "@types/jest": "26.0.11",
     "@types/js-yaml": "3.12.5",
     "husky": "4.2.5",
     "jest": "26.4.2",
